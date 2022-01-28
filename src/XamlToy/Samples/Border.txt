@@ -1,4 +1,5 @@
-﻿<StackPanel xmlns="https://github.com/avaloniaui" Orientation="Vertical" Spacing="4">
+﻿<StackPanel xmlns="https://github.com/avaloniaui" 
+            Orientation="Vertical" Spacing="4">
   <TextBlock Classes="h2">A control which decorates a child with a border and background</TextBlock>
 
   <StackPanel Orientation="Vertical"
