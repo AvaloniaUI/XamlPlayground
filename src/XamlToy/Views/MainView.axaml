@@ -13,18 +13,30 @@
     <vm:MainViewModel />
   </Design.DataContext>
   <Grid ColumnDefinitions="50*,Auto,50*" RowDefinitions="Auto,*">
-    <ComboBox Grid.Column="2"
-              Grid.Row="0" 
-              Margin="6"
-              HorizontalAlignment="Right"
-              Items="{Binding Samples}"
-              SelectedItem="{Binding SelectedSample}">
-      <ComboBox.ItemTemplate>
-        <DataTemplate DataType="vm:SampleViewModel">
-          <Label Content="{Binding Name}" />
-        </DataTemplate>
-      </ComboBox.ItemTemplate>
-    </ComboBox>
+    <DockPanel Grid.Column="0"
+               Grid.ColumnSpan="3"
+               Grid.Row="0"
+               Background="LightGray">
+      <Image Source="/Assets/avalonia-logo.ico"
+             Margin="6,6,0,6" 
+             Height="32"/>
+      <Label FontSize="18"
+             Margin="0,6,0,6" 
+             VerticalAlignment="Center"
+             Content="Avalonia XamlToy" />
+      <ComboBox DockPanel.Dock="Right"
+                Background="White"
+                Margin="6"
+                HorizontalAlignment="Right"
+                Items="{Binding Samples}"
+                SelectedItem="{Binding SelectedSample}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate DataType="vm:SampleViewModel">
+            <Label Content="{Binding Name}" />
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+    </DockPanel>
     <ae:TextEditor Grid.Column="0"
                    Grid.Row="1"
                    Margin="0"
