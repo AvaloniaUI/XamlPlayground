@@ -110,8 +110,8 @@
       "System.Threading.ThreadPool.dll": "sha256-jsGVqYMRRRODC9GHVFS9j1VM3Z8eSMMhwE4yZTWDXOA=",
       "System.Threading.Timer.dll": "sha256-KlbZuujOkq4PJRrsQiI9IkEnS2S3cbByh\/mZLtQIIqo=",
       "System.Web.HttpUtility.dll": "sha256-PxYsE9ZSZYZ8zeQJKFnTbAt+QwUk3m3ftGbEnFtrNyA=",
-      "XamlToy.dll": "sha256-ULVyHxhOY2LHeW7bo0M2P+ho3TTehM6c0AbyuqtJFu8=",
-      "XamlToy.Web.dll": "sha256-qvDFCZCkolFpaPJJP+pP29Muia876Kapl\/cqRZs6igA="
+      "XamlToy.dll": "sha256-Dj+Kim3zZo9IMhGeAoUsZtL8zEMy+RtPa7H5wa6q1FU=",
+      "XamlToy.Web.dll": "sha256-9gDSzaVhSCBm1qxpOHf5PX6EtQHi4FGQUoOXoni5Dh4="
     },
     "extensions": null,
     "lazyAssembly": null,
