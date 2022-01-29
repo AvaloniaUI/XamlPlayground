@@ -16,6 +16,7 @@ namespace XamlPlayground.ViewModels
         private string? _xaml;
         private IControl? _control;
         private bool _enableAutoRun;
+        private string? _lastErrorMessage;
 
         public MainViewModel()
         {
@@ -68,6 +69,12 @@ namespace XamlPlayground.ViewModels
         {
             get => _enableAutoRun;
             set => this.RaiseAndSetIfChanged(ref _enableAutoRun, value);
+        }
+
+        public string? LastErrorMessage
+        {
+            get => _lastErrorMessage;
+            set => this.RaiseAndSetIfChanged(ref _lastErrorMessage, value);
         }
 
         public ICommand RunCommand { get; }
@@ -131,6 +138,7 @@ namespace XamlPlayground.ViewModels
         private void Open(string xaml)
         {
             Control = null;
+            LastErrorMessage = null;
             Xaml = xaml;
         }
  
@@ -144,11 +152,13 @@ namespace XamlPlayground.ViewModels
                     if (control is { })
                     {
                         Control = control;
+                        LastErrorMessage = null;
                     }
                 }
             }
             catch (Exception e)
             {
+                LastErrorMessage = e.Message;
                 Console.WriteLine(e);
             }
         }

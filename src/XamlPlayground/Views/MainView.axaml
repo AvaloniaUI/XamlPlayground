@@ -82,22 +82,27 @@
         </MenuItem>
       </Menu>
     </Grid>
-    <ae:TextEditor Grid.Column="0"
-                   Grid.Row="1"
-                   Margin="0"
-                   Background="WhiteSmoke"
-                   SyntaxHighlighting="XML"
-                   HorizontalScrollBarVisibility="Auto"
-                   VerticalScrollBarVisibility="Auto"
-                   FontFamily="Consolas,Menlo,Monospace"
-                   ShowLineNumbers="True"
-                   FontWeight="Normal"
-                   FontSize="14"
-                   WordWrap="False">
-      <i:Interaction.Behaviors>
-        <behaviors:DocumentTextBindingBehavior Text="{Binding Xaml, Mode=TwoWay}" />
-      </i:Interaction.Behaviors>
-    </ae:TextEditor>
+    <DockPanel Grid.Column="0" Grid.Row="1">
+      <Label Content="{Binding LastErrorMessage}" 
+             IsVisible="{Binding !!LastErrorMessage}"
+             Background="Red"
+             Foreground="White"
+             DockPanel.Dock="Bottom" />
+      <ae:TextEditor Margin="0"
+                     Background="WhiteSmoke"
+                     SyntaxHighlighting="XML"
+                     HorizontalScrollBarVisibility="Auto"
+                     VerticalScrollBarVisibility="Auto"
+                     FontFamily="Consolas,Menlo,Monospace"
+                     ShowLineNumbers="True"
+                     FontWeight="Normal"
+                     FontSize="14"
+                     WordWrap="False">
+        <i:Interaction.Behaviors>
+          <behaviors:DocumentTextBindingBehavior Text="{Binding Xaml, Mode=TwoWay}" />
+        </i:Interaction.Behaviors>
+      </ae:TextEditor>
+    </DockPanel>
     <GridSplitter Grid.Column="1"
                   Grid.Row="1"
                   Width="6"
