@@ -48,28 +48,39 @@
                    ShowLineNumbers="True"
                    FontWeight="Normal"
                    FontSize="14"
-                   WordWrap="False">
+                   WordWrap="False"
+                   DataContext="{Binding SelectedSample}">
       <i:Interaction.Behaviors>
         <behaviors:DocumentTextBindingBehavior Text="{Binding Xaml, Mode=TwoWay}" />
       </i:Interaction.Behaviors>
     </ae:TextEditor>
-    <Button Grid.Column="0" 
-            Grid.Row="1"
-            Background="#2fa6e2"
-            Foreground="White"
-            Content="Run" 
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Margin="0,10,25,0"
-            Command="{Binding RunCommand}" />
+    <DockPanel Grid.Column="0" 
+               Grid.Row="1"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Top"
+               LastChildFill="False">
+      <CheckBox DockPanel.Dock="Left"
+                Margin="0,10,10,0"
+                Content="Auto" 
+                IsChecked="{Binding EnableAutoRun}" />
+      <Button DockPanel.Dock="Left"
+              Margin="0,10,25,0"
+              Background="#2fa6e2"
+              Foreground="White"
+              Content="Run" 
+              Command="{Binding RunCommand}" />
+    </DockPanel>
     <GridSplitter Grid.Column="1"
                   Grid.Row="1"
                   Width="6"
                   ResizeBehavior="PreviousAndNext"
                   ResizeDirection="Columns"
                   Background="Transparent"/>
-    <ContentControl Grid.Column="2" 
-                    Grid.Row="1"
-                    Content="{Binding Control}" />
+    <ScrollViewer Grid.Column="2" 
+                  Grid.Row="1" 
+                  HorizontalScrollBarVisibility="Auto" 
+                  VerticalScrollBarVisibility="Auto">
+      <ContentControl Content="{Binding Control}" />
+    </ScrollViewer>
   </Grid>
 </UserControl>

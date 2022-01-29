@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Windows.Input;
 using Avalonia.Controls;
 using ReactiveUI;
@@ -13,14 +14,15 @@ namespace XamlToy.ViewModels
     {
         private ObservableCollection<SampleViewModel> _samples;
         private SampleViewModel? _selectedSample;
-        private string? _xaml;
+        private IDisposable? _selectedSampleXamlDisposable;
         private IControl? _control;
+        private bool _enableAutoRun;
 
         public MainViewModel()
         {
-            _samples = GetSamples();
+            _samples = GetSamples(".xml");
             _selectedSample = _samples.FirstOrDefault();
-            _xaml = _selectedSample?.Xaml;
+            _enableAutoRun = true;
 
             RunCommand = ReactiveCommand.Create(Run);
 
@@ -28,8 +30,18 @@ namespace XamlToy.ViewModels
                 .WhereNotNull()
                 .Subscribe(x =>
                 {
-                    Xaml = x.Xaml;
+                    AutoRun(x, _enableAutoRun);
                     Control = null;
+                });
+
+            this.WhenAnyValue(x => x.EnableAutoRun)
+                .DistinctUntilChanged()
+                .Subscribe(x =>
+                {
+                    if (_selectedSample is { })
+                    {
+                        AutoRun(_selectedSample, x);
+                    }
                 });
         }
 
@@ -45,21 +57,21 @@ namespace XamlToy.ViewModels
             set => this.RaiseAndSetIfChanged(ref _selectedSample, value);
         }
 
-        public string? Xaml
-        {
-            get => _xaml;
-            set => this.RaiseAndSetIfChanged(ref _xaml, value);
-        }
-
         public IControl? Control
         {
             get => _control;
             set => this.RaiseAndSetIfChanged(ref _control, value);
         }
 
+        public bool EnableAutoRun
+        {
+            get => _enableAutoRun;
+            set => this.RaiseAndSetIfChanged(ref _enableAutoRun, value);
+        }
+
         public ICommand RunCommand { get; }
 
-        private string? GetSampleName(string resourceName)
+        private static string? GetSampleName(string resourceName)
         {
             var parts = resourceName.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length >= 2)
@@ -70,7 +82,7 @@ namespace XamlToy.ViewModels
             return null;
         }
 
-        private string? LoadResourceString(string name)
+        private static string? LoadResourceString(string name)
         {
             var assembly = typeof(MainViewModel).Assembly;
             using var stream = assembly.GetManifestResourceStream(name);
@@ -82,9 +94,8 @@ namespace XamlToy.ViewModels
             return reader.ReadToEnd();
         }
 
-        private ObservableCollection<SampleViewModel> GetSamples()
+        private static ObservableCollection<SampleViewModel> GetSamples(string sampleExtension)
         {
-            var sampleExtension = ".txt";
             var samples = new ObservableCollection<SampleViewModel>();
             var assembly = typeof(MainViewModel).Assembly;
             var resourceNames = assembly.GetManifestResourceNames();
@@ -108,14 +119,29 @@ namespace XamlToy.ViewModels
             return samples;
         }
 
+        private void AutoRun(SampleViewModel sample, bool enableAutoRun)
+        {
+            _selectedSampleXamlDisposable?.Dispose();
+
+            if (enableAutoRun)
+            {
+                _selectedSampleXamlDisposable = sample.WhenAnyValue(s => s.Xaml)
+                    .WhereNotNull()
+                    .Subscribe(_ => Run());
+            }
+        }
+
         private void Run()
         {
             try
             {
-                var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(_xaml);
-                if (control is { })
+                if (_selectedSample?.Xaml is { } xaml)
                 {
-                    Control = control;
+                    var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(xaml);
+                    if (control is { })
+                    {
+                        Control = control;
+                    }
                 }
             }
             catch (Exception e)

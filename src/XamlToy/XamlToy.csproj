@@ -20,6 +20,6 @@
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="$(AvaloniaEditVersion)" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Samples\*.txt" />
+    <EmbeddedResource Include="Samples\*.xml" />
   </ItemGroup>
 </Project>
