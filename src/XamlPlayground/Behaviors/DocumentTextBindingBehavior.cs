@@ -3,7 +3,7 @@ using Avalonia;
 using Avalonia.Xaml.Interactivity;
 using AvaloniaEdit;
 
-namespace XamlToy.Behaviors;
+namespace XamlPlayground.Behaviors;
 
 public class DocumentTextBindingBehavior : Behavior<TextEditor>
 {

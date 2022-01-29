@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace XamlToy.Views;
+namespace XamlPlayground.Views;
 
 public class MainView : UserControl
 {

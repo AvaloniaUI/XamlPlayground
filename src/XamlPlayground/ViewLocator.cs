@@ -1,9 +1,9 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using XamlToy.ViewModels;
+using XamlPlayground.ViewModels;
 
-namespace XamlToy
+namespace XamlPlayground
 {
     public class ViewLocator : IDataTemplate
     {

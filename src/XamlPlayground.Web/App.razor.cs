@@ -1,7 +1,7 @@
 using Avalonia.ReactiveUI;
 using Avalonia.Web.Blazor;
 
-namespace XamlToy.Web;
+namespace XamlPlayground.Web;
 
 public partial class App
 {
@@ -9,7 +9,7 @@ public partial class App
     {
         base.OnParametersSet();
 
-        WebAppBuilder.Configure<XamlToy.App>()
+        WebAppBuilder.Configure<XamlPlayground.App>()
             .UseReactiveUI()
             .SetupWithSingleViewLifetime();
     }

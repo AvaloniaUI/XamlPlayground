@@ -1,10 +1,10 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using XamlToy.ViewModels;
-using XamlToy.Views;
+using XamlPlayground.ViewModels;
+using XamlPlayground.Views;
 
-namespace XamlToy
+namespace XamlPlayground
 {
     public class App : Application
     {

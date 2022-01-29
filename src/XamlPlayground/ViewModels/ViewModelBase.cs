@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ReactiveUI;
 
-namespace XamlToy.ViewModels
+namespace XamlPlayground.ViewModels
 {
     public class ViewModelBase : ReactiveObject
     {

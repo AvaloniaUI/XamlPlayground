@@ -17,10 +17,10 @@ jobs:
       run: dotnet workload install wasm-tools
 
     - name: Publish .NET Project
-      run: dotnet publish src/XamlToy.Web/XamlToy.Web.csproj -c Release -o release --nologo
+      run: dotnet publish src/XamlPlayground.Web/XamlPlayground.Web.csproj -c Release -o release --nologo
 
-    - name: Change base-tag in index.html from / to XamlToy
-      run: sed -i 's/<base href="\/" \/>/<base href="\/XamlToy\/" \/>/g' release/wwwroot/index.html
+    - name: Change base-tag in index.html from / to XamlPlayground
+      run: sed -i 's/<base href="\/" \/>/<base href="\/XamlPlayground\/" \/>/g' release/wwwroot/index.html
 
     - name: copy index.html to 404.html
       run: cp release/wwwroot/index.html release/wwwroot/404.html

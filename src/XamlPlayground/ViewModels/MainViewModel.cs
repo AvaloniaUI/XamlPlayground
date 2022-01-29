@@ -8,39 +8,40 @@ using Avalonia.Controls;
 using ReactiveUI;
 using Avalonia.Markup.Xaml;
 
-namespace XamlToy.ViewModels
+namespace XamlPlayground.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
         private ObservableCollection<SampleViewModel> _samples;
-        private SampleViewModel? _selectedSample;
-        private IDisposable? _selectedSampleXamlDisposable;
+        private string? _xaml;
         private IControl? _control;
         private bool _enableAutoRun;
 
         public MainViewModel()
         {
             _samples = GetSamples(".xml");
-            _selectedSample = _samples.FirstOrDefault();
+            _xaml = _samples.FirstOrDefault()?.Xaml;
             _enableAutoRun = true;
 
             RunCommand = ReactiveCommand.Create(Run);
 
-            this.WhenAnyValue(x => x.SelectedSample)
+            this.WhenAnyValue(x => x.Xaml)
                 .WhereNotNull()
-                .Subscribe(x =>
+                .Subscribe(_ =>
                 {
-                    AutoRun(x, _enableAutoRun);
-                    Control = null;
+                    if (_enableAutoRun)
+                    {
+                        Run();
+                    }
                 });
 
             this.WhenAnyValue(x => x.EnableAutoRun)
                 .DistinctUntilChanged()
                 .Subscribe(x =>
                 {
-                    if (_selectedSample is { })
+                    if (x)
                     {
-                        AutoRun(_selectedSample, x);
+                        Run();
                     }
                 });
         }
@@ -51,16 +52,16 @@ namespace XamlToy.ViewModels
             set => this.RaiseAndSetIfChanged(ref _samples, value);
         }
 
-        public SampleViewModel? SelectedSample
-        {
-            get => _selectedSample;
-            set => this.RaiseAndSetIfChanged(ref _selectedSample, value);
-        }
-
         public IControl? Control
         {
             get => _control;
             set => this.RaiseAndSetIfChanged(ref _control, value);
+        }
+
+        public string? Xaml
+        {
+            get => _xaml;
+            set => this.RaiseAndSetIfChanged(ref _xaml, value);
         }
 
         public bool EnableAutoRun
@@ -71,9 +72,9 @@ namespace XamlToy.ViewModels
 
         public ICommand RunCommand { get; }
 
-        private static string? GetSampleName(string resourceName)
+        private string? GetSampleName(string resourceName)
         {
-            var parts = resourceName.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+            var parts = resourceName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length >= 2)
             {
                 return $"{parts[parts.Length - 2]}";
@@ -82,7 +83,7 @@ namespace XamlToy.ViewModels
             return null;
         }
 
-        private static string? LoadResourceString(string name)
+        private string? LoadResourceString(string name)
         {
             var assembly = typeof(MainViewModel).Assembly;
             using var stream = assembly.GetManifestResourceStream(name);
@@ -94,11 +95,19 @@ namespace XamlToy.ViewModels
             return reader.ReadToEnd();
         }
 
-        private static ObservableCollection<SampleViewModel> GetSamples(string sampleExtension)
+        private ObservableCollection<SampleViewModel> GetSamples(string sampleExtension)
         {
             var samples = new ObservableCollection<SampleViewModel>();
             var assembly = typeof(MainViewModel).Assembly;
             var resourceNames = assembly.GetManifestResourceNames();
+
+            var playground = 
+                "<Grid xmlns=\"https://github.com/avaloniaui\"\n" +
+                "      xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">\n" +
+                "\n" +
+                "</Grid>";
+
+            samples.Add(new SampleViewModel("Playground", playground, Open));
 
             foreach (var resourceName in resourceNames)
             {
@@ -111,7 +120,7 @@ namespace XamlToy.ViewModels
                 {
                     if (GetSampleName(resourceName) is { } name)
                     {
-                        samples.Add(new SampleViewModel(name, xaml));
+                        samples.Add(new SampleViewModel(name, xaml, Open));
                     }
                 }
             }
@@ -119,25 +128,19 @@ namespace XamlToy.ViewModels
             return samples;
         }
 
-        private void AutoRun(SampleViewModel sample, bool enableAutoRun)
+        private void Open(string xaml)
         {
-            _selectedSampleXamlDisposable?.Dispose();
-
-            if (enableAutoRun)
-            {
-                _selectedSampleXamlDisposable = sample.WhenAnyValue(s => s.Xaml)
-                    .WhereNotNull()
-                    .Subscribe(_ => Run());
-            }
+            Control = null;
+            Xaml = xaml;
         }
-
+ 
         private void Run()
         {
             try
             {
-                if (_selectedSample?.Xaml is { } xaml)
+                if (_xaml is { })
                 {
-                    var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(xaml);
+                    var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(_xaml);
                     if (control is { })
                     {
                         Control = control;

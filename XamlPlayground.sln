@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlToy", "src\XamlToy\XamlToy.csproj", "{4E84133A-4280-41FC-A4E1-34463403CA8A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlPlayground", "src\XamlPlayground\XamlPlayground.csproj", "{4E84133A-4280-41FC-A4E1-34463403CA8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlToy.NetCore", "src\XamlToy.NetCore\XamlToy.NetCore.csproj", "{5B0621D6-B7D4-49EF-8C24-FD81823D56AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlPlayground.NetCore", "src\XamlPlayground.NetCore\XamlPlayground.NetCore.csproj", "{5B0621D6-B7D4-49EF-8C24-FD81823D56AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlToy.Web", "src\XamlToy.Web\XamlToy.Web.csproj", "{5E83BE38-4F45-4966-8821-761B91C532C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlPlayground.Web", "src\XamlPlayground.Web\XamlPlayground.Web.csproj", "{5E83BE38-4F45-4966-8821-761B91C532C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -6,6 +6,7 @@
     <AvaloniaVersion>0.10.12</AvaloniaVersion>
     <AvaloniaBehaviorsVersion>0.10.12</AvaloniaBehaviorsVersion>
     <AvaloniaEditVersion>0.10.12.1</AvaloniaEditVersion>
+    <RootNamespace>XamlPlayground</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />

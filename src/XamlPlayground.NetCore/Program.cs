@@ -2,7 +2,7 @@
 using Avalonia;
 using Avalonia.ReactiveUI;
 
-namespace XamlToy.NetCore
+namespace XamlPlayground.NetCore
 {
     class Program
     {
