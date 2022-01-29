@@ -18,26 +18,11 @@ namespace XamlToy.ViewModels
 
         public MainViewModel()
         {
-            _samples = new ObservableCollection<SampleViewModel>();
-
-            var assembly = typeof(MainViewModel).Assembly;
-            var resourceNames = assembly.GetManifestResourceNames();
-
-            foreach (var resourceName in resourceNames)
-            {
-               var xaml = LoadResourceString(resourceName);
-               if (xaml is { } && resourceName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
-               {
-                   var name = GetName(resourceName);
-                   if (name is { })
-                   {
-                       _samples.Add(new SampleViewModel(name, xaml));
-                   }
-               }
-            }
-
+            _samples = GetSamples();
             _selectedSample = _samples.FirstOrDefault();
             _xaml = _selectedSample?.Xaml;
+
+            RunCommand = ReactiveCommand.Create(Run);
 
             this.WhenAnyValue(x => x.SelectedSample)
                 .WhereNotNull()
@@ -46,8 +31,6 @@ namespace XamlToy.ViewModels
                     Xaml = x.Xaml;
                     Control = null;
                 });
-
-            RunCommand = ReactiveCommand.Create(Run);
         }
 
         public ObservableCollection<SampleViewModel> Samples
@@ -76,7 +59,7 @@ namespace XamlToy.ViewModels
 
         public ICommand RunCommand { get; }
 
-        private string? GetName(string resourceName)
+        private string? GetSampleName(string resourceName)
         {
             var parts = resourceName.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length >= 2)
@@ -99,7 +82,33 @@ namespace XamlToy.ViewModels
             return reader.ReadToEnd();
         }
 
-        public void Run()
+        private ObservableCollection<SampleViewModel> GetSamples()
+        {
+            var sampleExtension = ".txt";
+            var samples = new ObservableCollection<SampleViewModel>();
+            var assembly = typeof(MainViewModel).Assembly;
+            var resourceNames = assembly.GetManifestResourceNames();
+
+            foreach (var resourceName in resourceNames)
+            {
+                if (!resourceName.EndsWith(sampleExtension, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                if (LoadResourceString(resourceName) is { } xaml)
+                {
+                    if (GetSampleName(resourceName) is { } name)
+                    {
+                        samples.Add(new SampleViewModel(name, xaml));
+                    }
+                }
+            }
+
+            return samples;
+        }
+
+        private void Run()
         {
             try
             {
