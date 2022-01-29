@@ -60,6 +60,29 @@
             </Style>
           </CheckBox.Styles>
         </CheckBox>
+        <Button DockPanel.Dock="Left"
+                Margin="10,0,0,0"
+                Background="White"
+                Foreground="Black"
+                Content="From Gist">
+          <Button.Flyout>
+            <Flyout Placement="Bottom">
+              <DockPanel Width="400">
+                <Label Content="The GitHub gist must contain file named Main.axaml" 
+                       Margin="0,0,0,10"
+                       DockPanel.Dock="Top" />
+                <Button DockPanel.Dock="Bottom"
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Right"
+                        Content="Get" 
+                        Command="{Binding GistCommand}"
+                        CommandParameter="{Binding #Id.Text}" />
+                <Label Content="Id:" VerticalAlignment="Center" />
+                <TextBox Name="Id" Text="" />
+              </DockPanel>
+            </Flyout>
+          </Button.Flyout>
+        </Button>
       </DockPanel>
       <Menu Grid.Column="2">
         <MenuItem Background="White"
