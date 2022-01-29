@@ -24,7 +24,7 @@
                Height="32"
                DockPanel.Dock="Left"/>
         <Label FontSize="18"
-               Margin="0,6,0,6" 
+               Margin="6,6,0,6" 
                VerticalAlignment="Center"
                Content="Xaml Playground"/>
       </DockPanel>
