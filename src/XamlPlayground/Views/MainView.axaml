@@ -12,6 +12,11 @@
   <Design.DataContext>
     <vm:MainViewModel />
   </Design.DataContext>
+  <UserControl.Styles>
+    <Style Selector="Label > AccessText">
+      <Setter Property="ClipToBounds" Value="False" />
+    </Style>
+  </UserControl.Styles>
   <Grid ColumnDefinitions="50*,Auto,50*" RowDefinitions="Auto,*">
     <Grid Grid.Column="0"
           Grid.ColumnSpan="3"
