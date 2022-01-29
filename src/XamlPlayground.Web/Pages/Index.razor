@@ -1,3 +1,30 @@
 @page "/"
+@page "/{Id}"
+@using Avalonia
+@using Avalonia.Controls.ApplicationLifetimes
+@using XamlPlayground.ViewModels
+@using XamlPlayground.Views
 
 <AvaloniaView/>
+
+@code {
+    [Parameter]
+    public string? Id { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime single)
+        {
+            if (single.MainView is MainView mainView)
+            {
+                if (mainView.DataContext is MainViewModel vm)
+                {
+                    if (Id is { } && !string.IsNullOrEmpty(Id))
+                    {
+                        vm.Gist(Id);
+                    }
+                }
+            }
+        }
+    }
+}
