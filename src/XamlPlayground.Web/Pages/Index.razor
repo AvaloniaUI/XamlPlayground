@@ -13,13 +13,13 @@
 
     protected override void OnInitialized()
     {
-        if (Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime single)
+        if (Id is { } && !string.IsNullOrEmpty(Id))
         {
-            if (single.MainView is MainView mainView)
+            if (Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime single)
             {
-                if (mainView.DataContext is MainViewModel vm)
+                if (single.MainView is MainView mainView)
                 {
-                    if (Id is { } && !string.IsNullOrEmpty(Id))
+                    if (mainView.DataContext is MainViewModel vm)
                     {
                         vm.Gist(Id);
                     }
