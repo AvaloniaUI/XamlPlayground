@@ -3,10 +3,12 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
 using ReactiveUI;
 using Avalonia.Markup.Xaml;
+using Octokit;
 
 namespace XamlPlayground.ViewModels
 {
@@ -25,6 +27,8 @@ namespace XamlPlayground.ViewModels
             _enableAutoRun = true;
 
             RunCommand = ReactiveCommand.Create(Run);
+            
+            GistCommand = ReactiveCommand.CreateFromTask<string>(Gist);
 
             this.WhenAnyValue(x => x.Xaml)
                 .WhereNotNull()
@@ -78,6 +82,28 @@ namespace XamlPlayground.ViewModels
         }
 
         public ICommand RunCommand { get; }
+
+        public ICommand GistCommand { get; }
+
+        private async Task<string> GetGistContent(string id)
+        {
+            var client = new GitHubClient(new ProductHeaderValue("XamlPlayground"));
+            var gist = await client.Gist.Get(id);
+            var file = gist.Files.First(x => string.Compare(x.Key, "Main.axaml", StringComparison.OrdinalIgnoreCase) == 0).Value;
+            return file.Content;
+        }
+
+        private async Task Gist(string id)
+        {
+            try
+            {
+                Xaml = await GetGistContent(id);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
 
         private string? GetSampleName(string resourceName)
         {
