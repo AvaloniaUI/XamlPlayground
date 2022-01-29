@@ -93,7 +93,7 @@ namespace XamlPlayground.ViewModels
             return file.Content;
         }
 
-        private async Task Gist(string id)
+        public async Task Gist(string id)
         {
             try
             {
