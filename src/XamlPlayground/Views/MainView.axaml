@@ -104,8 +104,11 @@
                   ResizeBehavior="PreviousAndNext"
                   ResizeDirection="Columns"
                   Background="Transparent"/>
-    <ContentControl Grid.Column="2" 
-                    Grid.Row="1"
-                    Content="{Binding Control}" />
+    <ScrollViewer Grid.Column="2" 
+                  Grid.Row="1" 
+                  HorizontalScrollBarVisibility="Auto" 
+                  VerticalScrollBarVisibility="Auto">
+      <ContentControl Content="{Binding Control}" />
+    </ScrollViewer>
   </Grid>
 </UserControl>
