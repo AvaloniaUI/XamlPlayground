@@ -1,6 +1,11 @@
-﻿<Panel xmlns="https://github.com/avaloniaui"
-       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-  <Panel.Styles>
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="800"
+             d:DesignWidth="400"
+             mc:Ignorable="d">
+  <UserControl.Styles>
     <Style Selector="ExperimentalAcrylicBorder">
       <Setter Property="CornerRadius" Value="5" />
       <Setter Property="MaxWidth" Value="660" />
@@ -16,7 +21,7 @@
       <Setter Property="LargeChange" Value="0.2" />
       <Setter Property="SmallChange" Value="0.1" />
     </Style>
-  </Panel.Styles>
+  </UserControl.Styles>
   <StackPanel Spacing="20">
 
     <ExperimentalAcrylicBorder>
@@ -155,4 +160,5 @@
       </ExperimentalAcrylicBorder.Material>
     </ExperimentalAcrylicBorder>
   </StackPanel>
-</Panel>
+
+</UserControl>
