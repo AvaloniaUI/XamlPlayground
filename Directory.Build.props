@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup>
-    <AvaloniaVersion>0.10.999-cibuild0018318-beta</AvaloniaVersion>
+    <AvaloniaVersion>0.10.999-cibuild0018342-beta</AvaloniaVersion>
     <AvaloniaBehaviorsVersion>0.10.12</AvaloniaBehaviorsVersion>
     <AvaloniaEditVersion>0.10.12.1</AvaloniaEditVersion>
     <OctokitVersion>0.50.0</OctokitVersion>
