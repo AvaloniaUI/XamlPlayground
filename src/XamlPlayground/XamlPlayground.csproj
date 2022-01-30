@@ -1,27 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-    <AvaloniaVersion>0.10.12</AvaloniaVersion>
-    <AvaloniaBehaviorsVersion>0.10.12</AvaloniaBehaviorsVersion>
-    <AvaloniaEditVersion>0.10.12.1</AvaloniaEditVersion>
     <RootNamespace>XamlPlayground</RootNamespace>
   </PropertyGroup>
+
   <ItemGroup>
-    <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Include="Assets\**"/>
   </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.Xaml.Behaviors" Version="$(AvaloniaBehaviorsVersion)" />
-    <PackageReference Include="Avalonia.AvaloniaEdit" Version="$(AvaloniaEditVersion)" />
-    <PackageReference Include="Octokit" Version="0.50.0" />
+    <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)"/>
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)"/>
+    <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)"/>
+    <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)"/>
+    <PackageReference Include="Avalonia.Xaml.Behaviors" Version="$(AvaloniaBehaviorsVersion)"/>
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="$(AvaloniaEditVersion)"/>
+    <PackageReference Include="Octokit" Version="$(OctokitVersion)"/>
   </ItemGroup>
+
   <ItemGroup>
-    <EmbeddedResource Include="Samples\*.xml" />
+    <EmbeddedResource Include="Samples\*.xml"/>
   </ItemGroup>
+
 </Project>
