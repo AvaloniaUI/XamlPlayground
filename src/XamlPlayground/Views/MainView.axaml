@@ -15,6 +15,7 @@
   <UserControl.Styles>
     <Style Selector="Label > AccessText">
       <Setter Property="ClipToBounds" Value="False" />
+      <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
   </UserControl.Styles>
   <Grid ColumnDefinitions="50*,Auto,50*" RowDefinitions="Auto,*">
