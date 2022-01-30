@@ -1,0 +1,37 @@
+﻿<UserControl
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns="https://github.com/avaloniaui">
+  <DockPanel>
+    <TextBlock
+      DockPanel.Dock="Top"
+      Classes="h2"
+      Text="A tab control that displays a tab strip along with the content of the selected tab"
+      Margin="4">
+    </TextBlock>
+    <DockPanel
+      Margin="4">
+      <TextBlock
+        DockPanel.Dock="Top"
+        Classes="h1"
+        Text="From Inline TabItems">
+      </TextBlock>
+      <TabControl
+        Margin="0 16"
+        TabStripPlacement="Top">
+        <TabItem Header="Arch">
+          <StackPanel Orientation="Vertical" Spacing="8">
+            <TextBlock>This is the first page in the TabControl.</TextBlock>
+          </StackPanel>
+        </TabItem>
+        <TabItem Header="Leaf">
+          <StackPanel Orientation="Vertical" Spacing="8">
+            <TextBlock>This is the second page in the TabControl.</TextBlock>
+          </StackPanel>
+        </TabItem>
+        <TabItem Header="Disabled" IsEnabled="False">
+          <TextBlock>You should not see this.</TextBlock>
+        </TabItem>
+      </TabControl>
+    </DockPanel>
+  </DockPanel>
+</UserControl>

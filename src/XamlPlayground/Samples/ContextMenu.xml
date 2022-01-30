@@ -1,0 +1,51 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <StackPanel Orientation="Vertical" Spacing="4">
+    <TextBlock Classes="h2">A right click menu that can be applied to any control.</TextBlock>
+
+    <UniformGrid HorizontalAlignment="Center" Rows="2">
+      <UniformGrid.Styles>
+        <Style Selector="UniformGrid > Border">
+          <Setter Property="Padding" Value="48,20" />
+          <Setter Property="Margin" Value="8" />
+          <Setter Property="Focusable" Value="True" />
+          <Setter Property="Background" Value="{DynamicResource SystemAccentColor}" />
+        </Style>
+        <Style Selector="UniformGrid > Border > :is(Control)">
+          <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+      </UniformGrid.Styles>
+      <Border>
+        <Border.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="Standard _Menu Item" InputGesture="Ctrl+A" />
+            <MenuItem Header="_Disabled Menu Item"
+                      InputGesture="Ctrl+D"
+                      IsEnabled="False" />
+            <Separator />
+            <MenuItem Header="Menu with _Submenu">
+              <MenuItem Header="Submenu _1" />
+              <MenuItem Header="Submenu _2" />
+            </MenuItem>
+            <MenuItem Header="Menu Item with _Checkbox">
+              <MenuItem.Icon>
+                <CheckBox BorderThickness="0"
+                          IsChecked="True"
+                          IsHitTestVisible="False" />
+              </MenuItem.Icon>
+            </MenuItem>
+          </ContextMenu>
+        </Border.ContextMenu>
+        <TextBlock Text="Defined in XAML" />
+      </Border>
+      <Border x:Name="CustomContextRequestedBorder">
+        <Border.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="Should never be visible" />
+          </ContextMenu>
+        </Border.ContextMenu>
+        <TextBlock Text="Custom ContextRequested handler" TextWrapping="Wrap" />
+      </Border>
+    </UniformGrid>
+  </StackPanel>
+</UserControl>
