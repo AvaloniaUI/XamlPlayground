@@ -88,6 +88,7 @@
       <Menu Grid.Column="2">
         <MenuItem Background="White"
                   Margin="12,0,6,0"
+                  Classes="popup"
                   Items="{Binding Samples}">
           <MenuItem.Header>
             <StackPanel Orientation="Horizontal">
@@ -106,6 +107,9 @@
               <Setter Property="Padding" Value="12"/>
               <Setter Property="Header" Value="{Binding Name}"/>
               <Setter Property="Command" Value="{Binding OpenCommand}"/>
+            </Style>
+            <Style Selector="MenuItem.popup /template/ Popup#PART_Popup" x:DataType="vm:SampleViewModel">
+              <Setter Property="MaxHeight" Value="430"/>
             </Style>
           </MenuItem.Styles>
         </MenuItem>
