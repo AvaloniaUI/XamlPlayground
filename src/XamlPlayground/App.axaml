@@ -8,5 +8,9 @@
   <Application.Styles>
     <FluentTheme Mode="Light" />
     <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />
+    <Style Selector="Label.text > AccessText">
+      <Setter Property="ClipToBounds" Value="False" />
+      <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
   </Application.Styles>
 </Application>

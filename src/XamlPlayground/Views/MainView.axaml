@@ -5,154 +5,114 @@
              xmlns:vm="clr-namespace:XamlPlayground.ViewModels"
              xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ir="clr-namespace:Avalonia.Xaml.Interactions.Responsive;assembly=Avalonia.Xaml.Interactions"
              xmlns:behaviors="clr-namespace:XamlPlayground.Behaviors"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:views="clr-namespace:XamlPlayground.Views"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="450"
              x:Class="XamlPlayground.Views.MainView"
              x:CompileBindings="True" x:DataType="vm:MainViewModel">
   <Design.DataContext>
     <vm:MainViewModel />
   </Design.DataContext>
-  <UserControl.Styles>
-    <Style Selector="Label > AccessText">
-      <Setter Property="ClipToBounds" Value="False" />
-      <Setter Property="TextWrapping" Value="Wrap" />
-    </Style>
-  </UserControl.Styles>
-  <Grid ColumnDefinitions="50*,Auto,50*" RowDefinitions="Auto,*">
-    <Grid Grid.Column="0"
-          Grid.ColumnSpan="3"
-          Grid.Row="0"
-          ColumnDefinitions="Auto,*"
-          Background="LightGray">
-      <DockPanel Grid.Column="0" >
-        <Image Source="/Assets/avalonia-logo.ico"
-               Margin="6,6,0,6" 
-               Height="32"
-               DockPanel.Dock="Left"/>
-        <Label FontSize="18"
-               Margin="12,6,0,6" 
-               VerticalAlignment="Center"
-               Content="Xaml Playground"/>
-      </DockPanel>
-      <ScrollViewer Grid.Column="1"  
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Right"
-                    HorizontalScrollBarVisibility="Auto"
-                    VerticalScrollBarVisibility="Disabled"
-                    Padding="0,6,0,6">
-      <StackPanel Orientation="Horizontal" Spacing="12" Margin="12,0,12,0">
-        <Button DockPanel.Dock="Left"
-                Margin="0,0,0,0"
-                Background="White"
-                Foreground="Black"
-                Content="Run" 
-                Command="{Binding RunCommand}" />
-        <CheckBox DockPanel.Dock="Left"
-                  Margin="0,0,0,0"
-                  Content="Live Preview" 
-                  IsChecked="{Binding EnableAutoRun}">
-          <CheckBox.Styles>
-            <Style Selector="CheckBox /template/ Path#CheckGlyph">
-              <Setter Property="Fill" Value="White" />
-            </Style>
-            <Style Selector="CheckBox:checked /template/ Path#CheckGlyph">
-              <Setter Property="Fill" Value="Black" />
-            </Style>
-            <Style Selector="CheckBox:checked /template/ Border#NormalRectangle">
-              <Setter Property="BorderBrush" Value="Black" />
-              <Setter Property="Background" Value="Transparent" />
-            </Style>
-          </CheckBox.Styles>
-        </CheckBox>
-        <Button DockPanel.Dock="Left"
-                Margin="0,0,0,0"
-                Background="White"
-                Foreground="Black"
-                Content="From Gist">
-          <Button.Flyout>
-            <Flyout Placement="Bottom">
-              <DockPanel Width="400">
-                <Label Content="The GitHub gist must contain file named Main.axaml" 
-                       Margin="0,0,0,10"
-                       DockPanel.Dock="Top" />
-                <Button DockPanel.Dock="Bottom"
-                        Margin="0,10,0,0"
-                        HorizontalAlignment="Right"
-                        Content="Get" 
-                        Command="{Binding GistCommand}"
-                        CommandParameter="{Binding #Id.Text}" />
-                <Label Content="Id:" VerticalAlignment="Center" />
-                <TextBox Name="Id" Text="" />
-              </DockPanel>
-            </Flyout>
-          </Button.Flyout>
-        </Button>
-        <Menu Height="NaN" VerticalAlignment="Center">
-          <MenuItem Background="White"
-                    Margin="0,0,0,0"
-                    CornerRadius="3"
-                    Classes="popup"
-                    Items="{Binding Samples}">
-            <MenuItem.Header>
-              <StackPanel Orientation="Horizontal"
-                          Margin="0,4,0,3">
-                <Label Content="Samples"/>
-                <Path Data="M 0 0 L 7 7 L 14 0"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      Stretch="None"
-                      Stroke="{DynamicResource SystemBaseHighColor}"
-                      StrokeThickness="1" 
-                      Margin="6,0,0,0"/>
-              </StackPanel>
-            </MenuItem.Header>
-            <MenuItem.Styles>
-              <Style Selector="MenuItem > MenuItem" x:DataType="vm:SampleViewModel">
-                <Setter Property="Padding" Value="12"/>
-                <Setter Property="Header" Value="{Binding Name}"/>
-                <Setter Property="Command" Value="{Binding OpenCommand}"/>
-              </Style>
-              <Style Selector="MenuItem.popup /template/ Popup#PART_Popup" x:DataType="vm:SampleViewModel">
-                <Setter Property="MaxHeight" Value="430"/>
-              </Style>
-            </MenuItem.Styles>
-          </MenuItem>
-        </Menu>
-      </StackPanel>
-      </ScrollViewer>
-    </Grid>
-    <DockPanel Grid.Column="0" Grid.Row="1">
-      <Label Content="{Binding LastErrorMessage}" 
-             IsVisible="{Binding !!LastErrorMessage}"
-             Background="Red"
-             Foreground="White"
-             DockPanel.Dock="Bottom" />
-      <ae:TextEditor Margin="0"
-                     Background="WhiteSmoke"
-                     SyntaxHighlighting="XML"
-                     HorizontalScrollBarVisibility="Auto"
-                     VerticalScrollBarVisibility="Auto"
-                     FontFamily="Consolas,Menlo,Monospace"
-                     ShowLineNumbers="True"
-                     FontWeight="Normal"
-                     FontSize="14"
-                     WordWrap="False">
+
+  <DockPanel Name="DockPanel">
+
+    <views:HeaderView DockPanel.Dock="Top" /> 
+
+    <Grid ColumnDefinitions="50*,Auto,50*" RowDefinitions="*,Auto,*">
+      <DockPanel>
+        <DockPanel.Styles>
+          <Style Selector="DockPanel.horizontal">
+            <Setter Property="(Grid.Column)" Value="0" />
+            <Setter Property="(Grid.Row)" Value="0" />
+            <Setter Property="(Grid.RowSpan)" Value="3" />
+          </Style>
+          <Style Selector="DockPanel.vertical">
+            <Setter Property="(Grid.Column)" Value="0" />
+            <Setter Property="(Grid.ColumnSpan)" Value="3" />
+            <Setter Property="(Grid.Row)" Value="0" />
+          </Style>
+        </DockPanel.Styles>
         <i:Interaction.Behaviors>
-          <behaviors:DocumentTextBindingBehavior Text="{Binding Xaml, Mode=TwoWay}" />
+          <ir:AdaptiveBehavior SourceControl="{Binding #DockPanel}">
+            <ir:AdaptiveClassSetter MinWidth="0" MaxWidth="900" ClassName="vertical" />
+            <ir:AdaptiveClassSetter MinWidth="900" MaxWidth="Infinity" ClassName="horizontal" />
+          </ir:AdaptiveBehavior>
         </i:Interaction.Behaviors>
-      </ae:TextEditor>
-    </DockPanel>
-    <GridSplitter Grid.Column="1"
-                  Grid.Row="1"
-                  Width="6"
-                  ResizeBehavior="PreviousAndNext"
-                  ResizeDirection="Columns"
-                  Background="Transparent"/>
-    <ScrollViewer Grid.Column="2" 
-                  Grid.Row="1" 
-                  HorizontalScrollBarVisibility="Auto" 
-                  VerticalScrollBarVisibility="Auto">
-      <ContentControl Content="{Binding Control}" />
-    </ScrollViewer>
-  </Grid>
+        <Label Content="{Binding LastErrorMessage}" 
+               IsVisible="{Binding !!LastErrorMessage}"
+               Background="Red"
+               Foreground="White"
+               Classes="text"
+               DockPanel.Dock="Bottom" />
+        <ae:TextEditor Margin="0"
+                       Background="WhiteSmoke"
+                       SyntaxHighlighting="XML"
+                       HorizontalScrollBarVisibility="Auto"
+                       VerticalScrollBarVisibility="Auto"
+                       FontFamily="Consolas,Menlo,Monospace"
+                       ShowLineNumbers="True"
+                       FontWeight="Normal"
+                       FontSize="14"
+                       WordWrap="False">
+          <i:Interaction.Behaviors>
+            <behaviors:DocumentTextBindingBehavior Text="{Binding Xaml, Mode=TwoWay}" />
+          </i:Interaction.Behaviors>
+        </ae:TextEditor>
+      </DockPanel>
+
+      <GridSplitter Background="LightGray">
+        <GridSplitter.Styles>
+          <Style Selector="GridSplitter.horizontal">
+            <Setter Property="ResizeBehavior" Value="PreviousAndNext" />
+            <Setter Property="ResizeDirection" Value="Columns" />
+            <Setter Property="Width" Value="6" />
+            <Setter Property="(Grid.Column)" Value="1" />
+            <Setter Property="(Grid.Row)" Value="0" />
+            <Setter Property="(Grid.RowSpan)" Value="3" />
+          </Style>
+          <Style Selector="GridSplitter.vertical">
+            <Setter Property="ResizeBehavior" Value="PreviousAndNext" />
+            <Setter Property="ResizeDirection" Value="Rows" />
+            <Setter Property="Height" Value="6" />
+            <Setter Property="(Grid.Column)" Value="0" />
+            <Setter Property="(Grid.ColumnSpan)" Value="3" />
+            <Setter Property="(Grid.Row)" Value="1" />
+          </Style>
+        </GridSplitter.Styles>
+        <i:Interaction.Behaviors>
+          <ir:AdaptiveBehavior SourceControl="{Binding #DockPanel}">
+            <ir:AdaptiveClassSetter MinWidth="0" MaxWidth="900" ClassName="vertical" />
+            <ir:AdaptiveClassSetter MinWidth="900" MaxWidth="Infinity" ClassName="horizontal" />
+          </ir:AdaptiveBehavior>
+        </i:Interaction.Behaviors>
+      </GridSplitter>
+
+      <ScrollViewer HorizontalScrollBarVisibility="Auto" 
+                    VerticalScrollBarVisibility="Auto">
+        <ScrollViewer.Styles>
+          <Style Selector="ScrollViewer.horizontal">
+            <Setter Property="(Grid.Column)" Value="2" />
+            <Setter Property="(Grid.Row)" Value="0" />
+            <Setter Property="(Grid.RowSpan)" Value="3" />
+          </Style>
+          <Style Selector="ScrollViewer.vertical">
+            <Setter Property="(Grid.Column)" Value="0" />
+            <Setter Property="(Grid.ColumnSpan)" Value="3" />
+            <Setter Property="(Grid.Row)" Value="2" />
+          </Style>
+        </ScrollViewer.Styles>
+        <i:Interaction.Behaviors>
+          <ir:AdaptiveBehavior SourceControl="{Binding #DockPanel}">
+            <ir:AdaptiveClassSetter MinWidth="0" MaxWidth="900" ClassName="vertical" />
+            <ir:AdaptiveClassSetter MinWidth="900" MaxWidth="Infinity" ClassName="horizontal" />
+          </ir:AdaptiveBehavior>
+        </i:Interaction.Behaviors>
+        <ContentControl Content="{Binding Control}" />
+      </ScrollViewer>
+
+    </Grid>
+
+  </DockPanel>
+  
 </UserControl>
