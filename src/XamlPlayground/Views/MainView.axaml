@@ -22,7 +22,7 @@
     <Grid Grid.Column="0"
           Grid.ColumnSpan="3"
           Grid.Row="0"
-          ColumnDefinitions="Auto,*,Auto"
+          ColumnDefinitions="Auto,*"
           Background="LightGray">
       <DockPanel Grid.Column="0" >
         <Image Source="/Assets/avalonia-logo.ico"
@@ -30,16 +30,19 @@
                Height="32"
                DockPanel.Dock="Left"/>
         <Label FontSize="18"
-               Margin="6,6,0,6" 
+               Margin="12,6,0,6" 
                VerticalAlignment="Center"
                Content="Xaml Playground"/>
       </DockPanel>
-      <DockPanel VerticalAlignment="Center"
-                 HorizontalAlignment="Right"
-                 LastChildFill="False"
-                 Grid.Column="1">
+      <ScrollViewer Grid.Column="1"  
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    HorizontalScrollBarVisibility="Auto"
+                    VerticalScrollBarVisibility="Disabled"
+                    Padding="0,6,0,6">
+      <StackPanel Orientation="Horizontal" Spacing="12" Margin="12,0,12,0">
         <Button DockPanel.Dock="Left"
-                Margin="0,0,10,0"
+                Margin="0,0,0,0"
                 Background="White"
                 Foreground="Black"
                 Content="Run" 
@@ -57,12 +60,12 @@
             </Style>
             <Style Selector="CheckBox:checked /template/ Border#NormalRectangle">
               <Setter Property="BorderBrush" Value="Black" />
-              <Setter Property="Background" Value="White" />
+              <Setter Property="Background" Value="Transparent" />
             </Style>
           </CheckBox.Styles>
         </CheckBox>
         <Button DockPanel.Dock="Left"
-                Margin="10,0,0,0"
+                Margin="0,0,0,0"
                 Background="White"
                 Foreground="Black"
                 Content="From Gist">
@@ -84,36 +87,39 @@
             </Flyout>
           </Button.Flyout>
         </Button>
-      </DockPanel>
-      <Menu Grid.Column="2">
-        <MenuItem Background="White"
-                  Margin="12,0,6,0"
-                  Classes="popup"
-                  Items="{Binding Samples}">
-          <MenuItem.Header>
-            <StackPanel Orientation="Horizontal">
-              <Label Content="Samples"/>
-              <Path Data="M 0 0 L 7 7 L 14 0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Stretch="None"
-                    Stroke="{DynamicResource SystemBaseHighColor}"
-                    StrokeThickness="1" 
-                    Margin="6,0,0,0"/>
-            </StackPanel>
-          </MenuItem.Header>
-          <MenuItem.Styles>
-            <Style Selector="MenuItem > MenuItem" x:DataType="vm:SampleViewModel">
-              <Setter Property="Padding" Value="12"/>
-              <Setter Property="Header" Value="{Binding Name}"/>
-              <Setter Property="Command" Value="{Binding OpenCommand}"/>
-            </Style>
-            <Style Selector="MenuItem.popup /template/ Popup#PART_Popup" x:DataType="vm:SampleViewModel">
-              <Setter Property="MaxHeight" Value="430"/>
-            </Style>
-          </MenuItem.Styles>
-        </MenuItem>
-      </Menu>
+        <Menu Height="NaN" VerticalAlignment="Center">
+          <MenuItem Background="White"
+                    Margin="0,0,0,0"
+                    CornerRadius="3"
+                    Classes="popup"
+                    Items="{Binding Samples}">
+            <MenuItem.Header>
+              <StackPanel Orientation="Horizontal"
+                          Margin="0,4,0,3">
+                <Label Content="Samples"/>
+                <Path Data="M 0 0 L 7 7 L 14 0"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Stretch="None"
+                      Stroke="{DynamicResource SystemBaseHighColor}"
+                      StrokeThickness="1" 
+                      Margin="6,0,0,0"/>
+              </StackPanel>
+            </MenuItem.Header>
+            <MenuItem.Styles>
+              <Style Selector="MenuItem > MenuItem" x:DataType="vm:SampleViewModel">
+                <Setter Property="Padding" Value="12"/>
+                <Setter Property="Header" Value="{Binding Name}"/>
+                <Setter Property="Command" Value="{Binding OpenCommand}"/>
+              </Style>
+              <Style Selector="MenuItem.popup /template/ Popup#PART_Popup" x:DataType="vm:SampleViewModel">
+                <Setter Property="MaxHeight" Value="430"/>
+              </Style>
+            </MenuItem.Styles>
+          </MenuItem>
+        </Menu>
+      </StackPanel>
+      </ScrollViewer>
     </Grid>
     <DockPanel Grid.Column="0" Grid.Row="1">
       <Label Content="{Binding LastErrorMessage}" 
