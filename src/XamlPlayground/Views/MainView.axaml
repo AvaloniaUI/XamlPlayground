@@ -20,6 +20,7 @@
     <views:HeaderView DockPanel.Dock="Top" /> 
 
     <Grid ColumnDefinitions="50*,Auto,50*" RowDefinitions="*,Auto,*">
+
       <DockPanel>
         <DockPanel.Styles>
           <Style Selector="DockPanel.horizontal">
