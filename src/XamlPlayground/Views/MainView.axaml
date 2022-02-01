@@ -54,7 +54,7 @@
                        FontFamily="Consolas,Menlo,Monospace"
                        ShowLineNumbers="True"
                        FontWeight="Normal"
-                       FontSize="14"
+                       FontSize="12"
                        WordWrap="False">
           <i:Interaction.Behaviors>
             <behaviors:DocumentTextBindingBehavior Text="{Binding Xaml, Mode=TwoWay}" />

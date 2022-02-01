@@ -19,7 +19,7 @@
              Margin="12,6,0,6" 
              VerticalAlignment="Center"
              Classes="text"
-             Content="Xaml Playground" />
+             Content="Playground" />
     </DockPanel>
     <ScrollViewer Grid.Column="1"  
                   VerticalAlignment="Center"
@@ -36,7 +36,7 @@
                 Command="{Binding RunCommand}" />
         <CheckBox DockPanel.Dock="Left"
                   Margin="0,0,0,0"
-                  Content="Live Preview" 
+                  Content="Live" 
                   IsChecked="{Binding EnableAutoRun}">
           <CheckBox.Styles>
             <Style Selector="CheckBox /template/ Path#CheckGlyph">
@@ -55,7 +55,7 @@
                 Margin="0,0,0,0"
                 Background="White"
                 Foreground="Black"
-                Content="From Gist">
+                Content="Gist">
           <Button.Flyout>
             <Flyout Placement="Bottom">
               <DockPanel Width="400">
