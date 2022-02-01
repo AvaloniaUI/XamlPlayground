@@ -11,7 +11,7 @@
     [Parameter]
     public string? Id { get; set; }
 
-    protected override void OnInitialized()
+    protected override async void OnInitialized()
     {
         if (Id is { } && !string.IsNullOrEmpty(Id))
         {
@@ -21,7 +21,7 @@
                 {
                     if (mainView.DataContext is MainViewModel vm)
                     {
-                        vm.Gist(Id);
+                        await vm.Gist(Id);
                     }
                 }
             }
