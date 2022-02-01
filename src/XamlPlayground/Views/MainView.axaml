@@ -3,9 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:XamlPlayground.ViewModels"
-             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
-             xmlns:ir="clr-namespace:Avalonia.Xaml.Interactions.Responsive;assembly=Avalonia.Xaml.Interactions"
-             xmlns:behaviors="clr-namespace:XamlPlayground.Behaviors"
+             xmlns:c="clr-namespace:XamlPlayground.Controls"
              xmlns:views="clr-namespace:XamlPlayground.Views"
              mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="450"
              x:Class="XamlPlayground.Views.MainView"
@@ -13,75 +11,15 @@
   <Design.DataContext>
     <vm:MainViewModel />
   </Design.DataContext>
-  <DockPanel Name="DockPanel">
-    <views:HeaderView DockPanel.Dock="Top" /> 
-    <Grid ColumnDefinitions="50*,Auto,50*" RowDefinitions="*,Auto,*">
-      <views:XamlView>
-        <views:XamlView.Styles>
-          <Style Selector="views|XamlView.horizontal">
-            <Setter Property="(Grid.Column)" Value="0" />
-            <Setter Property="(Grid.Row)" Value="0" />
-            <Setter Property="(Grid.RowSpan)" Value="3" />
-          </Style>
-          <Style Selector="views|XamlView.vertical">
-            <Setter Property="(Grid.Column)" Value="0" />
-            <Setter Property="(Grid.ColumnSpan)" Value="3" />
-            <Setter Property="(Grid.Row)" Value="0" />
-          </Style>
-        </views:XamlView.Styles>
-        <i:Interaction.Behaviors>
-          <ir:AdaptiveBehavior SourceControl="{Binding #DockPanel}">
-            <ir:AdaptiveClassSetter MinWidth="0" MaxWidth="900" ClassName="vertical" />
-            <ir:AdaptiveClassSetter MinWidth="900" MaxWidth="Infinity" ClassName="horizontal" />
-          </ir:AdaptiveBehavior>
-        </i:Interaction.Behaviors>
-      </views:XamlView>
-      <GridSplitter Background="LightGray">
-        <GridSplitter.Styles>
-          <Style Selector="GridSplitter.horizontal">
-            <Setter Property="ResizeBehavior" Value="PreviousAndNext" />
-            <Setter Property="ResizeDirection" Value="Columns" />
-            <Setter Property="Width" Value="6" />
-            <Setter Property="(Grid.Column)" Value="1" />
-            <Setter Property="(Grid.Row)" Value="0" />
-            <Setter Property="(Grid.RowSpan)" Value="3" />
-          </Style>
-          <Style Selector="GridSplitter.vertical">
-            <Setter Property="ResizeBehavior" Value="PreviousAndNext" />
-            <Setter Property="ResizeDirection" Value="Rows" />
-            <Setter Property="Height" Value="6" />
-            <Setter Property="(Grid.Column)" Value="0" />
-            <Setter Property="(Grid.ColumnSpan)" Value="3" />
-            <Setter Property="(Grid.Row)" Value="1" />
-          </Style>
-        </GridSplitter.Styles>
-        <i:Interaction.Behaviors>
-          <ir:AdaptiveBehavior SourceControl="{Binding #DockPanel}">
-            <ir:AdaptiveClassSetter MinWidth="0" MaxWidth="900" ClassName="vertical" />
-            <ir:AdaptiveClassSetter MinWidth="900" MaxWidth="Infinity" ClassName="horizontal" />
-          </ir:AdaptiveBehavior>
-        </i:Interaction.Behaviors>
-      </GridSplitter>
-      <views:PreviewView>
-        <views:PreviewView.Styles>
-          <Style Selector="views|PreviewView.horizontal">
-            <Setter Property="(Grid.Column)" Value="2" />
-            <Setter Property="(Grid.Row)" Value="0" />
-            <Setter Property="(Grid.RowSpan)" Value="3" />
-          </Style>
-          <Style Selector="views|PreviewView.vertical">
-            <Setter Property="(Grid.Column)" Value="0" />
-            <Setter Property="(Grid.ColumnSpan)" Value="3" />
-            <Setter Property="(Grid.Row)" Value="2" />
-          </Style>
-        </views:PreviewView.Styles>
-        <i:Interaction.Behaviors>
-          <ir:AdaptiveBehavior SourceControl="{Binding #DockPanel}">
-            <ir:AdaptiveClassSetter MinWidth="0" MaxWidth="900" ClassName="vertical" />
-            <ir:AdaptiveClassSetter MinWidth="900" MaxWidth="Infinity" ClassName="horizontal" />
-          </ir:AdaptiveBehavior>
-        </i:Interaction.Behaviors>
-      </views:PreviewView>
-    </Grid>
-  </DockPanel>
+  <c:AdaptiveControl>
+    <c:AdaptiveControl.Header>
+      <views:HeaderView />
+    </c:AdaptiveControl.Header>
+    <c:AdaptiveControl.Left>
+      <views:XamlView />
+    </c:AdaptiveControl.Left>
+    <c:AdaptiveControl.Right>
+      <views:PreviewView />
+    </c:AdaptiveControl.Right>
+  </c:AdaptiveControl>
 </UserControl>
