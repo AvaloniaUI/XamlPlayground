@@ -3,7 +3,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:XamlPlayground.ViewModels"
-             xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:ir="clr-namespace:Avalonia.Xaml.Interactions.Responsive;assembly=Avalonia.Xaml.Interactions"
              xmlns:behaviors="clr-namespace:XamlPlayground.Behaviors"
@@ -21,46 +20,26 @@
 
     <Grid ColumnDefinitions="50*,Auto,50*" RowDefinitions="*,Auto,*">
 
-      <DockPanel>
-        <DockPanel.Styles>
-          <Style Selector="DockPanel.horizontal">
+      <views:XamlView>
+        <views:XamlView.Styles>
+          <Style Selector="views|XamlView.horizontal">
             <Setter Property="(Grid.Column)" Value="0" />
             <Setter Property="(Grid.Row)" Value="0" />
             <Setter Property="(Grid.RowSpan)" Value="3" />
           </Style>
-          <Style Selector="DockPanel.vertical">
+          <Style Selector="views|XamlView.vertical">
             <Setter Property="(Grid.Column)" Value="0" />
             <Setter Property="(Grid.ColumnSpan)" Value="3" />
             <Setter Property="(Grid.Row)" Value="0" />
           </Style>
-        </DockPanel.Styles>
+        </views:XamlView.Styles>
         <i:Interaction.Behaviors>
           <ir:AdaptiveBehavior SourceControl="{Binding #DockPanel}">
             <ir:AdaptiveClassSetter MinWidth="0" MaxWidth="900" ClassName="vertical" />
             <ir:AdaptiveClassSetter MinWidth="900" MaxWidth="Infinity" ClassName="horizontal" />
           </ir:AdaptiveBehavior>
         </i:Interaction.Behaviors>
-        <Label Content="{Binding LastErrorMessage}" 
-               IsVisible="{Binding !!LastErrorMessage}"
-               Background="Red"
-               Foreground="White"
-               Classes="text"
-               DockPanel.Dock="Bottom" />
-        <ae:TextEditor Margin="0"
-                       Background="WhiteSmoke"
-                       SyntaxHighlighting="XML"
-                       HorizontalScrollBarVisibility="Auto"
-                       VerticalScrollBarVisibility="Auto"
-                       FontFamily="Consolas,Menlo,Monospace"
-                       ShowLineNumbers="True"
-                       FontWeight="Normal"
-                       FontSize="12"
-                       WordWrap="False">
-          <i:Interaction.Behaviors>
-            <behaviors:DocumentTextBindingBehavior Text="{Binding Xaml, Mode=TwoWay}" />
-          </i:Interaction.Behaviors>
-        </ae:TextEditor>
-      </DockPanel>
+      </views:XamlView>
 
       <GridSplitter Background="LightGray">
         <GridSplitter.Styles>
@@ -89,31 +68,29 @@
         </i:Interaction.Behaviors>
       </GridSplitter>
 
-      <ScrollViewer HorizontalScrollBarVisibility="Auto" 
-                    VerticalScrollBarVisibility="Auto">
-        <ScrollViewer.Styles>
-          <Style Selector="ScrollViewer.horizontal">
+      <views:PreviewView>
+        <views:PreviewView.Styles>
+          <Style Selector="views|PreviewView.horizontal">
             <Setter Property="(Grid.Column)" Value="2" />
             <Setter Property="(Grid.Row)" Value="0" />
             <Setter Property="(Grid.RowSpan)" Value="3" />
           </Style>
-          <Style Selector="ScrollViewer.vertical">
+          <Style Selector="views|PreviewView.vertical">
             <Setter Property="(Grid.Column)" Value="0" />
             <Setter Property="(Grid.ColumnSpan)" Value="3" />
             <Setter Property="(Grid.Row)" Value="2" />
           </Style>
-        </ScrollViewer.Styles>
+        </views:PreviewView.Styles>
         <i:Interaction.Behaviors>
           <ir:AdaptiveBehavior SourceControl="{Binding #DockPanel}">
             <ir:AdaptiveClassSetter MinWidth="0" MaxWidth="900" ClassName="vertical" />
             <ir:AdaptiveClassSetter MinWidth="900" MaxWidth="Infinity" ClassName="horizontal" />
           </ir:AdaptiveBehavior>
         </i:Interaction.Behaviors>
-        <ContentControl Content="{Binding Control}" />
-      </ScrollViewer>
+      </views:PreviewView>
 
     </Grid>
 
   </DockPanel>
-  
+
 </UserControl>

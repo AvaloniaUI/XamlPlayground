@@ -15,4 +15,3 @@ public class HeaderView : UserControl
         AvaloniaXamlLoader.Load(this);
     }
 }
-
