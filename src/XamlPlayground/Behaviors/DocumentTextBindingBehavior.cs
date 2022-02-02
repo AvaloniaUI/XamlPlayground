@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Xaml.Interactivity;
 using AvaloniaEdit;
+using AvaloniaEdit.Highlighting;
+using AvaloniaEdit.Indentation.CSharp;
 using AvaloniaEdit.TextMate;
 using AvaloniaEdit.TextMate.Grammars;
 
@@ -42,6 +44,10 @@ public class DocumentTextBindingBehavior : Behavior<TextEditor>
                 _registryOptions = new RegistryOptions(ThemeName.LightPlus);
                 _textMateInstallation = _textEditor.InstallTextMate(_registryOptions);
                 _textMateInstallation.SetGrammar(_registryOptions.GetScopeByLanguageId(_registryOptions.GetLanguageByExtension(".xml").Id));
+            }
+            else
+            {
+                _textEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("XML");
             }
         }
     }
