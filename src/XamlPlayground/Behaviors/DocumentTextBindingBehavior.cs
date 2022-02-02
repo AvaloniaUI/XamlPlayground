@@ -1,13 +1,18 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Xaml.Interactivity;
 using AvaloniaEdit;
+using AvaloniaEdit.TextMate;
+using AvaloniaEdit.TextMate.Grammars;
 
 namespace XamlPlayground.Behaviors;
 
 public class DocumentTextBindingBehavior : Behavior<TextEditor>
 {
     private TextEditor? _textEditor;
+    private RegistryOptions? _registryOptions;
+    private TextMate.Installation? _textMateInstallation;
 
     public static readonly StyledProperty<string?> TextProperty =
         AvaloniaProperty.Register<DocumentTextBindingBehavior, string?>(nameof(Text));
@@ -26,7 +31,18 @@ public class DocumentTextBindingBehavior : Behavior<TextEditor>
         {
             _textEditor = textEditor;
             _textEditor.TextChanged += TextChanged;
+ 
             this.GetObservable(TextProperty).Subscribe(TextPropertyChanged);
+
+            // TODO: Enable for WebAssemlby
+            // https://github.com/danipen/TextMateSharp/issues/9
+            // https://github.com/AvaloniaUI/AvaloniaEdit/issues/201
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER")))
+            {
+                _registryOptions = new RegistryOptions(ThemeName.LightPlus);
+                _textMateInstallation = _textEditor.InstallTextMate(_registryOptions);
+                _textMateInstallation.SetGrammar(_registryOptions.GetScopeByLanguageId(_registryOptions.GetLanguageByExtension(".xml").Id));
+            }
         }
     }
 

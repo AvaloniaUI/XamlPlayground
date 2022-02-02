@@ -16,6 +16,8 @@
     <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Xaml.Behaviors" Version="$(AvaloniaBehaviorsVersion)" />
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="$(AvaloniaEditVersion)" />
+    <PackageReference Include="AvaloniaEdit.TextMate" Version="$(AvaloniaEditVersion)" />
+    <PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="$(AvaloniaEditVersion)" />
     <PackageReference Include="Octokit" Version="$(OctokitVersion)" />
   </ItemGroup>
 
