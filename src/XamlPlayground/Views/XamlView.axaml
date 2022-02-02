@@ -21,7 +21,6 @@
             DockPanel.Dock="Bottom" />
     <ae:TextEditor Margin="0"
                     Background="WhiteSmoke"
-                    SyntaxHighlighting="XML"
                     HorizontalScrollBarVisibility="Auto"
                     VerticalScrollBarVisibility="Auto"
                     FontFamily="Consolas,Menlo,Monospace"
