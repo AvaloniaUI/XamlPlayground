@@ -20,16 +20,17 @@
             Classes="text"
             DockPanel.Dock="Bottom" />
     <ae:TextEditor Margin="0"
-                    Background="WhiteSmoke"
-                    HorizontalScrollBarVisibility="Auto"
-                    VerticalScrollBarVisibility="Auto"
-                    FontFamily="Consolas,Menlo,Monospace"
-                    ShowLineNumbers="True"
-                    FontWeight="Normal"
-                    FontSize="12"
-                    WordWrap="False">
+                   Document="{Binding Xaml}"
+                   Background="WhiteSmoke"
+                   HorizontalScrollBarVisibility="Auto"
+                   VerticalScrollBarVisibility="Auto"
+                   FontFamily="Consolas,Menlo,Monospace"
+                   ShowLineNumbers="True"
+                   FontWeight="Normal"
+                   FontSize="12"
+                   WordWrap="False">
       <i:Interaction.Behaviors>
-        <behaviors:DocumentTextBindingBehavior Text="{Binding Xaml, Mode=TwoWay}" />
+        <behaviors:TextEditorBehavior />
       </i:Interaction.Behaviors>
     </ae:TextEditor>
   </DockPanel>

@@ -9,13 +9,14 @@ using Avalonia.Controls;
 using ReactiveUI;
 using Avalonia.Markup.Xaml;
 using Octokit;
+using AvaloniaEdit.Document;
 
 namespace XamlPlayground.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
         private ObservableCollection<SampleViewModel> _samples;
-        private string? _xaml;
+        private TextDocument _xaml;
         private IControl? _control;
         private bool _enableAutoRun;
         private string? _lastErrorMessage;
@@ -23,8 +24,10 @@ namespace XamlPlayground.ViewModels
         public MainViewModel()
         {
             _samples = GetSamples(".xml");
-            _xaml = _samples.FirstOrDefault()?.Xaml;
             _enableAutoRun = true;
+            _xaml = new TextDocument();
+            _xaml.Text = _samples.FirstOrDefault()?.Xaml;
+            _xaml.TextChanged += (_, _) => Run();
 
             RunCommand = ReactiveCommand.Create(Run);
             
@@ -63,10 +66,9 @@ namespace XamlPlayground.ViewModels
             set => this.RaiseAndSetIfChanged(ref _control, value);
         }
 
-        public string? Xaml
+        public TextDocument Xaml
         {
             get => _xaml;
-            set => this.RaiseAndSetIfChanged(ref _xaml, value);
         }
 
         public bool EnableAutoRun
@@ -97,7 +99,7 @@ namespace XamlPlayground.ViewModels
         {
             try
             {
-                Xaml = await GetGistContent(id);
+                Xaml.Text = await GetGistContent(id);
             }
             catch (Exception e)
             {
@@ -165,7 +167,7 @@ namespace XamlPlayground.ViewModels
         {
             Control = null;
             LastErrorMessage = null;
-            Xaml = xaml;
+            Xaml.Text = xaml;
         }
  
         private void Run()
@@ -174,7 +176,7 @@ namespace XamlPlayground.ViewModels
             {
                 if (_xaml is { })
                 {
-                    var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(_xaml);
+                    var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(_xaml.Text);
                     if (control is { })
                     {
                         Control = control;
