@@ -34,7 +34,7 @@ public class DocumentTextBindingBehavior : Behavior<TextEditor>
  
             this.GetObservable(TextProperty).Subscribe(TextPropertyChanged);
 
-            // TODO: Enable for WebAssemlby
+            // TODO: Enable for WebAssembly
             // https://github.com/danipen/TextMateSharp/issues/9
             // https://github.com/AvaloniaUI/AvaloniaEdit/issues/201
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER")))
