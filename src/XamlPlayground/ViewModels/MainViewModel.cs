@@ -159,19 +159,22 @@ namespace XamlPlayground.ViewModels
 
         public ICommand GistCommand { get; }
 
-        private async Task<string> GetGistContent(string id)
+        private async Task<(string Xaml,string Code)> GetGistContent(string id)
         {
             var client = new GitHubClient(new ProductHeaderValue("XamlPlayground"));
             var gist = await client.Gist.Get(id);
-            var file = gist.Files.First(x => string.Compare(x.Key, "Main.axaml", StringComparison.OrdinalIgnoreCase) == 0).Value;
-            return file.Content;
+            var xaml = gist.Files.FirstOrDefault(x => string.Compare(x.Key, "Main.axaml", StringComparison.OrdinalIgnoreCase) == 0).Value;
+            var code = gist.Files.FirstOrDefault(x => string.Compare(x.Key, "Main.axaml.cs", StringComparison.OrdinalIgnoreCase) == 0).Value;
+            return (xaml?.Content ?? "", code?.Content ?? "");
         }
 
         public async Task Gist(string id)
         {
             try
             {
-                Xaml.Text = await GetGistContent(id);
+                var gist = await GetGistContent(id);
+                _xaml.Text = gist.Xaml;
+                _code.Text = gist.Code;
             }
             catch (Exception e)
             {
@@ -257,7 +260,7 @@ namespace XamlPlayground.ViewModels
                 {
                     try
                     {
-                        scriptAssembly = await Task.Run(() => Compiler.GetScriptAssembly(code, "XamlPlayground.Views"));
+                        scriptAssembly = await Task.Run(() => Compiler.GetScriptAssembly(code));
                     }
                     catch (Exception e)
                     {
