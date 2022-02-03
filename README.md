@@ -3,7 +3,7 @@
 [![CI](https://github.com/wieslawsoltes/XamlPlayground/actions/workflows/build.yml/badge.svg)](https://github.com/wieslawsoltes/XamlPlayground/actions/workflows/build.yml)
 [![Deploy to GitHub Pages](https://github.com/wieslawsoltes/XamlPlayground/actions/workflows/pages.yml/badge.svg)](https://github.com/wieslawsoltes/XamlPlayground/actions/workflows/pages.yml)
 
-![image](https://user-images.githubusercontent.com/2297442/151882065-98cbeba3-9bee-43b8-af8c-c9da2a4ee575.png)
+![image](https://user-images.githubusercontent.com/2297442/152438665-9e2e9e54-c461-4978-915b-31101dcaace0.png)
 
 ## Sharing Xaml
 
