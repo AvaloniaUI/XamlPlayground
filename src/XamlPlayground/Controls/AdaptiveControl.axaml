@@ -4,7 +4,17 @@
         xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
         xmlns:ir="clr-namespace:Avalonia.Xaml.Interactions.Responsive;assembly=Avalonia.Xaml.Interactions">
   <Design.PreviewWith>
-    <c:AdaptiveControl />
+    <c:AdaptiveControl Width="900" Height="500">
+      <c:AdaptiveControl.Header>
+        <Rectangle Fill="Red" />
+      </c:AdaptiveControl.Header>
+      <c:AdaptiveControl.Left>
+        <Rectangle Fill="Green" />
+      </c:AdaptiveControl.Left>
+      <c:AdaptiveControl.Right>
+        <Rectangle Fill="Blue" />
+      </c:AdaptiveControl.Right>
+    </c:AdaptiveControl>
   </Design.PreviewWith>
   <Styles.Resources>
     <x:Double x:Key="WidthTrigger">900</x:Double>
@@ -47,6 +57,19 @@
                   <Setter Property="(Grid.Column)" Value="1" />
                   <Setter Property="(Grid.Row)" Value="0" />
                   <Setter Property="(Grid.RowSpan)" Value="3" />
+                  <Setter Property="Template">
+                    <Setter.Value>
+                      <ControlTemplate>
+                        <Border Background="Transparent">
+                          <Separator Background="{DynamicResource SystemChromeAltLowColor}" 
+                                     Opacity="0.3" 
+                                     Width="0.55"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"/>
+                        </Border>
+                      </ControlTemplate>
+                    </Setter.Value>
+                  </Setter>
                 </Style>
                 <Style Selector="GridSplitter.vertical">
                   <Setter Property="ResizeBehavior" Value="PreviousAndNext" />
@@ -55,6 +78,19 @@
                   <Setter Property="(Grid.Column)" Value="0" />
                   <Setter Property="(Grid.ColumnSpan)" Value="3" />
                   <Setter Property="(Grid.Row)" Value="1" />
+                  <Setter Property="Template">
+                    <Setter.Value>
+                      <ControlTemplate>
+                        <Border Background="Transparent">
+                          <Separator Background="{DynamicResource SystemChromeAltLowColor}" 
+                                     Opacity="0.3" 
+                                     Height="0.55"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"/>
+                        </Border>
+                      </ControlTemplate>
+                    </Setter.Value>
+                  </Setter>
                 </Style>
               </GridSplitter.Styles>
               <i:Interaction.Behaviors>
