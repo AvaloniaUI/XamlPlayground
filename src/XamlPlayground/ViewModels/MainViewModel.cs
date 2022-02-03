@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
@@ -61,6 +62,7 @@ namespace XamlPlayground.ViewModels
         private bool _enableAutoRun;
         private string? _lastErrorMessage;
         private bool _update;
+        private (Assembly? Assembly, AssemblyLoadContext? Context)? _previous;
 
         public MainViewModel()
         {
@@ -249,18 +251,24 @@ namespace XamlPlayground.ViewModels
 
             _update = false;
         }
- 
+
         private async Task Run(string? xaml, string? code)
         {
             try
             {
+                _previous?.Context?.Unload();
+
                 Assembly? scriptAssembly = null;
 
                 if (code is { } && !string.IsNullOrWhiteSpace(code) && !Compiler.IsBrowser())
                 {
                     try
                     {
-                        scriptAssembly = await Task.Run(() => Compiler.GetScriptAssembly(code));
+                        _previous = await Task.Run(() => Compiler.GetScriptAssembly(code));
+                        if (_previous?.Assembly is { })
+                        {
+                            scriptAssembly = _previous?.Assembly;
+                        }
                     }
                     catch (Exception e)
                     {
