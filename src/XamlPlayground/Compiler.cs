@@ -52,7 +52,7 @@ internal static class Compiler
         return RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"));
     }
 
-    public static Assembly? GetScriptAssembly(string code, string assemblyName)
+    public static Assembly? GetScriptAssembly(string code)
     {
         if (s_references is null)
         {
@@ -63,7 +63,7 @@ internal static class Compiler
         var parseOptions = CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.Latest);
         var parsedSyntaxTree = SyntaxFactory.ParseSyntaxTree(stringText, parseOptions);
         var compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithOptimizationLevel(OptimizationLevel.Release);
-        var compilation = CSharpCompilation.Create(assemblyName, new[] { parsedSyntaxTree }, s_references, compilationOptions);
+        var compilation = CSharpCompilation.Create(Path.GetRandomFileName(), new[] { parsedSyntaxTree }, s_references, compilationOptions);
 
         using var ms = new MemoryStream();
         var result = compilation.Emit(ms);
@@ -74,6 +74,7 @@ internal static class Compiler
 
         ms.Seek(0, SeekOrigin.Begin);
         var scriptAssemblyBytes = ms.ToArray();
+
         return Assembly.Load(scriptAssemblyBytes);
     }
 }
