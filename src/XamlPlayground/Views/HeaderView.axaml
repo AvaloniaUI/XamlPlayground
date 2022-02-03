@@ -30,14 +30,47 @@
       <StackPanel Orientation="Horizontal" Spacing="6" Margin="6,0,6,0">
         <Button DockPanel.Dock="Left"
                 Margin="0,0,0,0"
+                Background="#7F8b44ac"
                 Content="Run" 
                 Command="{Binding RunCommand}" />
         <CheckBox DockPanel.Dock="Left"
                   Margin="0,0,0,0"
-                  Content="Live" 
-                  IsChecked="{Binding EnableAutoRun}" />
+                  Content="Live Preview" 
+                  IsChecked="{Binding EnableAutoRun}">
+          <CheckBox.Styles>
+            <Style Selector="CheckBox /template/ Path#CheckGlyph">
+              <Setter Property="Fill" Value="Transparent" />
+              <Setter Property="Stroke" Value="Transparent" />
+            </Style>
+            <Style Selector="CheckBox:checked /template/ Path#CheckGlyph">
+              <Setter Property="IsVisible" Value="True" />
+              <Setter Property="Fill" Value="#FF8b44ac" />
+              <Setter Property="Stroke" Value="Transparent" />
+            </Style>
+            <Style Selector="CheckBox:pointerover:checked /template/ Path#CheckGlyph">
+              <Setter Property="Fill" Value="#7F8b44ac" />
+            </Style>
+            <Style Selector="CheckBox /template/ Border#NormalRectangle">
+              <Setter Property="BorderBrush" Value="#FF8b44ac" />
+              <Setter Property="Background" Value="Transparent" />
+            </Style>
+            <Style Selector="CheckBox:pointerover /template/ Border#NormalRectangle">
+              <Setter Property="BorderBrush" Value="#7F8b44ac" />
+              <Setter Property="Background" Value="Transparent" />
+            </Style>
+            <Style Selector="CheckBox:checked /template/ Border#NormalRectangle">
+              <Setter Property="BorderBrush" Value="#FF8b44ac" />
+              <Setter Property="Background" Value="Transparent" />
+            </Style>
+            <Style Selector="CheckBox:checked:pointerover /template/ Border#NormalRectangle">
+              <Setter Property="BorderBrush" Value="#7F8b44ac" />
+              <Setter Property="Background" Value="Transparent" />
+            </Style>
+          </CheckBox.Styles>
+        </CheckBox>
         <Button DockPanel.Dock="Left"
                 Margin="0,0,0,0"
+                Background="#7F8b44ac"
                 Content="Gist">
           <Button.Flyout>
             <Flyout Placement="Bottom">
