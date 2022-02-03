@@ -269,6 +269,10 @@ namespace XamlPlayground.ViewModels
                         {
                             scriptAssembly = _previous?.Assembly;
                         }
+                        else
+                        {
+                            throw new Exception("Failed to compile code.");
+                        }
                     }
                     catch (Exception e)
                     {
