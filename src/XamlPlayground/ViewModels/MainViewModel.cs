@@ -48,11 +48,14 @@ namespace XamlPlayground.ViewModels
 
         private static string s_playground = 
             "<Grid xmlns=\"https://github.com/avaloniaui\"\n" +
-            //"      xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">\n" +
+#if ENABLE_CODE
             "      xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n" +
             "      x:Class=\"XamlPlayground.Views.SampleView\">\n" +
             "    <Button Name=\"button\" Content=\"Click Me\" HorizontalAlignment=\"Center\" />\n" +
-            //"\n" +
+#else
+            "      xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">\n" +
+            "\n" +
+#endif
             "</Grid>";
 
         private ObservableCollection<SampleViewModel> _samples;
@@ -122,6 +125,12 @@ namespace XamlPlayground.ViewModels
             }
 
         }
+   
+#if ENABLE_CODE
+        public bool EnableCode { get; } = true;
+#else
+        public bool EnableCode { get; } = false;
+#endif
 
         public ObservableCollection<SampleViewModel> Samples
         {
@@ -259,7 +268,7 @@ namespace XamlPlayground.ViewModels
                 _previous?.Context?.Unload();
 
                 Assembly? scriptAssembly = null;
-
+#if ENABLE_CODE
                 if (code is { } && !string.IsNullOrWhiteSpace(code) && !Compiler.IsBrowser())
                 {
                     try
@@ -281,7 +290,7 @@ namespace XamlPlayground.ViewModels
                         return;
                     }
                 }
-
+#endif
                 var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(xaml, scriptAssembly);
                 if (control is { })
                 {
