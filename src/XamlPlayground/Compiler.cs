@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Loader;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -52,7 +53,7 @@ internal static class Compiler
         return RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"));
     }
 
-    public static Assembly? GetScriptAssembly(string code)
+    public static (Assembly? Assembly, AssemblyLoadContext? Context) GetScriptAssembly(string code)
     {
         if (s_references is null)
         {
@@ -69,12 +70,12 @@ internal static class Compiler
         var result = compilation.Emit(ms);
         if (!result.Success)
         {
-            return null;
+            return (null, null);
         }
 
         ms.Seek(0, SeekOrigin.Begin);
-        var scriptAssemblyBytes = ms.ToArray();
 
-        return Assembly.Load(scriptAssemblyBytes);
+        var context = new AssemblyLoadContext(name: Path.GetRandomFileName(), isCollectible: true);
+        return (context.LoadFromStream(ms), context);
     }
 }
