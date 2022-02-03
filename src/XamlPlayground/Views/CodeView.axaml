@@ -20,6 +20,15 @@
            Classes="text"
            DockPanel.Dock="Bottom" />
     <TabControl TabStripPlacement="Bottom">
+      <TabControl.Styles>
+        <Style Selector="TabControl">
+          <Setter Property="Padding" Value="0" />
+        </Style>
+        <Style Selector="TabItem">
+          <Setter Property="Padding" Value="6"/>
+          <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}" />
+        </Style>
+      </TabControl.Styles>
       <TabItem Header="Xaml">
         <ae:TextEditor Margin="0"
                        Document="{Binding Xaml}"
