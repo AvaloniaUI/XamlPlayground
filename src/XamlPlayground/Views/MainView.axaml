@@ -21,7 +21,7 @@
       <views:HeaderView />
     </c:AdaptiveControl.Header>
     <c:AdaptiveControl.Left>
-      <views:XamlView />
+      <views:CodeView />
     </c:AdaptiveControl.Left>
     <c:AdaptiveControl.Right>
       <views:PreviewView />

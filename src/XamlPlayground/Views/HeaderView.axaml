@@ -19,7 +19,7 @@
              Margin="12,6,0,6" 
              VerticalAlignment="Center"
              Classes="text"
-             Content="Playground" />
+             Content="Xaml Playground" />
     </DockPanel>
     <ScrollViewer Grid.Column="1"  
                   VerticalAlignment="Center"

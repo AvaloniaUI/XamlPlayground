@@ -19,6 +19,8 @@
     <PackageReference Include="AvaloniaEdit.TextMate" Version="$(AvaloniaEditVersion)" />
     <PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="$(AvaloniaEditVersion)" />
     <PackageReference Include="Octokit" Version="$(OctokitVersion)" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.1.0-3.final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.1.0-3.final" />
   </ItemGroup>
 
   <ItemGroup>

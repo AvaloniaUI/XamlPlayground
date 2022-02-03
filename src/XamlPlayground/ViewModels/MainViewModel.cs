@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
@@ -15,41 +16,100 @@ namespace XamlPlayground.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
+        private static string s_code =
+            "using Avalonia;\n" +
+            "using Avalonia.Controls;\n" +
+            "using Avalonia.Markup.Xaml;\n" +
+            "\n" +
+            "namespace XamlPlayground.Views\n" +
+            "{\n" +
+            "    public class SampleView : UserControl\n" +
+            "    {\n" +
+            "        public SampleView()\n" +
+            "        {\n" +
+            "            InitializeComponent();\n" +
+            "        }\n" +
+            "\n" +
+            "        private void InitializeComponent()\n" +
+            "        {\n" +
+            "            // AvaloniaXamlLoader.Load(this);\n" +
+            "        }\n" +
+            "\n" +
+            "        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)\n" +
+            "        {\n" +
+            "            var count = 0;\n" +
+            "            var button = this.Find<Button>(\"button\");\n" +
+            "            button.Click += (sender, e) => button.Content = $\"Clicked: {++count}\";\n" +
+            "            base.OnAttachedToVisualTree(e);\n" +
+            "        }\n" +
+            "    }\n" +
+            "}\n";
+
+        private static string s_playground = 
+            "<Grid xmlns=\"https://github.com/avaloniaui\"\n" +
+            //"      xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">\n" +
+            "      xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n" +
+            "      x:Class=\"XamlPlayground.Views.SampleView\">\n" +
+            "    <Button Name=\"button\" Content=\"Click Me\" HorizontalAlignment=\"Center\" />\n" +
+            //"\n" +
+            "</Grid>";
+
         private ObservableCollection<SampleViewModel> _samples;
-        private TextDocument _xaml;
+        private readonly TextDocument _xaml;
+        private readonly TextDocument _code;
         private IControl? _control;
         private bool _enableAutoRun;
         private string? _lastErrorMessage;
+        private bool _update;
 
         public MainViewModel()
         {
             _samples = GetSamples(".xml");
             _enableAutoRun = true;
-            _xaml = new TextDocument();
-            _xaml.Text = _samples.FirstOrDefault()?.Xaml;
-            _xaml.TextChanged += (_, _) => Run();
 
-            RunCommand = ReactiveCommand.Create(Run);
-            
+            _xaml = new TextDocument { Text = _samples.FirstOrDefault()?.Xaml };
+            _xaml.TextChanged += (_, _) => Run(_xaml.Text, _code?.Text);
+
+            _code = new TextDocument { Text = _samples.FirstOrDefault()?.Code };
+            _code.TextChanged += (_, _) => Run(_xaml.Text, _code.Text);
+
+            RunCommand = ReactiveCommand.Create(() => Run(_xaml.Text, _code.Text));
+
             GistCommand = ReactiveCommand.CreateFromTask<string>(Gist);
 
             this.WhenAnyValue(x => x.Xaml)
                 .WhereNotNull()
                 .Subscribe(_ =>
                 {
-                    if (_enableAutoRun)
+                    if (_enableAutoRun && !_update)
                     {
-                        Run();
+                        _update = true;
+                        Run(_xaml.Text, _code.Text);
+                        _update = false;
                     }
                 });
 
+            this.WhenAnyValue(x => x.Code)
+                .WhereNotNull()
+                .Subscribe(_ =>
+                {
+                    if (_enableAutoRun && !_update)
+                    {
+                        _update = true;
+                        Run(_xaml.Text, _code.Text);
+                        _update = false;
+                    }
+                });
+            
             this.WhenAnyValue(x => x.EnableAutoRun)
                 .DistinctUntilChanged()
                 .Subscribe(x =>
                 {
-                    if (x)
+                    if (x && !_update)
                     {
-                        Run();
+                        _update = true;
+                        Run(_xaml.Text, _code.Text);
+                        _update = false;
                     }
                 });
         }
@@ -69,6 +129,11 @@ namespace XamlPlayground.ViewModels
         public TextDocument Xaml
         {
             get => _xaml;
+        }
+
+        public TextDocument Code
+        {
+            get => _code;
         }
 
         public bool EnableAutoRun
@@ -136,13 +201,7 @@ namespace XamlPlayground.ViewModels
             var assembly = typeof(MainViewModel).Assembly;
             var resourceNames = assembly.GetManifestResourceNames();
 
-            var playground = 
-                "<Grid xmlns=\"https://github.com/avaloniaui\"\n" +
-                "      xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">\n" +
-                "\n" +
-                "</Grid>";
-
-            samples.Add(new SampleViewModel("Playground", playground, Open));
+            samples.Add(new SampleViewModel("Playground", s_playground, s_code, Open));
 
             foreach (var resourceName in resourceNames)
             {
@@ -155,7 +214,7 @@ namespace XamlPlayground.ViewModels
                 {
                     if (GetSampleName(resourceName) is { } name)
                     {
-                        samples.Add(new SampleViewModel(name, xaml, Open));
+                        samples.Add(new SampleViewModel(name, xaml, string.Empty, Open));
                     }
                 }
             }
@@ -163,25 +222,49 @@ namespace XamlPlayground.ViewModels
             return samples;
         }
 
-        private void Open(string xaml)
+        private void Open(string xaml, string? code)
         {
             Control = null;
             LastErrorMessage = null;
+
+            _update = true;
+
             Xaml.Text = xaml;
+            Code.Text = code;
+
+            if (_enableAutoRun)
+            {
+                Run(_xaml.Text, _code.Text);
+            }
+
+            _update = false;
         }
  
-        private void Run()
+        private void Run(string? xaml, string? code)
         {
             try
             {
-                if (_xaml is { })
+                Assembly? scriptAssembly = null;
+
+                if (code is { } && !string.IsNullOrWhiteSpace(code) && !Compiler.IsBrowser())
                 {
-                    var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(_xaml.Text);
-                    if (control is { })
+                    try
                     {
-                        Control = control;
-                        LastErrorMessage = null;
+                        scriptAssembly = Compiler.GetScriptAssembly(code, "XamlPlayground.Views");
                     }
+                    catch (Exception e)
+                    {
+                        LastErrorMessage = e.Message;
+                        Console.WriteLine(e);
+                        return;
+                    }
+                }
+
+                var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(xaml, scriptAssembly);
+                if (control is { })
+                {
+                    Control = control;
+                    LastErrorMessage = null;
                 }
             }
             catch (Exception e)

@@ -3,9 +3,9 @@ using Avalonia.Markup.Xaml;
 
 namespace XamlPlayground.Views;
 
-public class XamlView : UserControl
+public class CodeView : UserControl
 {
-    public XamlView()
+    public CodeView()
     {
         InitializeComponent();
     }
