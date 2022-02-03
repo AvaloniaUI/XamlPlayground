@@ -68,50 +68,57 @@ namespace XamlPlayground.ViewModels
             _enableAutoRun = true;
 
             _xaml = new TextDocument { Text = _samples.FirstOrDefault()?.Xaml };
-            _xaml.TextChanged += (_, _) => Run(_xaml.Text, _code?.Text);
+            _xaml.TextChanged += async (_, _) => await Run(_xaml.Text, _code?.Text);
 
             _code = new TextDocument { Text = _samples.FirstOrDefault()?.Code };
-            _code.TextChanged += (_, _) => Run(_xaml.Text, _code.Text);
+            _code.TextChanged += async (_, _) => await Run(_xaml.Text, _code.Text);
 
-            RunCommand = ReactiveCommand.Create(() => Run(_xaml.Text, _code.Text));
+            RunCommand = ReactiveCommand.CreateFromTask(async () => await Run(_xaml.Text, _code.Text));
 
             GistCommand = ReactiveCommand.CreateFromTask<string>(Gist);
 
             this.WhenAnyValue(x => x.Xaml)
                 .WhereNotNull()
-                .Subscribe(_ =>
-                {
-                    if (_enableAutoRun && !_update)
-                    {
-                        _update = true;
-                        Run(_xaml.Text, _code.Text);
-                        _update = false;
-                    }
-                });
+                .Subscribe(XamlChanged);
 
             this.WhenAnyValue(x => x.Code)
                 .WhereNotNull()
-                .Subscribe(_ =>
-                {
-                    if (_enableAutoRun && !_update)
-                    {
-                        _update = true;
-                        Run(_xaml.Text, _code.Text);
-                        _update = false;
-                    }
-                });
-            
+                .Subscribe(CodeChanged);
+
             this.WhenAnyValue(x => x.EnableAutoRun)
                 .DistinctUntilChanged()
-                .Subscribe(x =>
+                .Subscribe(EnableAutoRunChanged);
+
+            async void XamlChanged(TextDocument _)
+            {
+                if (_enableAutoRun && !_update)
                 {
-                    if (x && !_update)
-                    {
-                        _update = true;
-                        Run(_xaml.Text, _code.Text);
-                        _update = false;
-                    }
-                });
+                    _update = true;
+                    await Run(_xaml.Text, _code.Text);
+                    _update = false;
+                }
+            }
+
+            async void CodeChanged(TextDocument _)
+            {
+                if (_enableAutoRun && !_update)
+                {
+                    _update = true;
+                    await Run(_xaml.Text, _code.Text);
+                    _update = false;
+                }
+            }
+
+            async void EnableAutoRunChanged(bool enableAutoRun)
+            {
+                if (enableAutoRun && !_update)
+                {
+                    _update = true;
+                    await Run(_xaml.Text, _code.Text);
+                    _update = false;
+                }
+            }
+
         }
 
         public ObservableCollection<SampleViewModel> Samples
@@ -222,7 +229,7 @@ namespace XamlPlayground.ViewModels
             return samples;
         }
 
-        private void Open(string xaml, string? code)
+        private async Task Open(string xaml, string? code)
         {
             Control = null;
             LastErrorMessage = null;
@@ -234,13 +241,13 @@ namespace XamlPlayground.ViewModels
 
             if (_enableAutoRun)
             {
-                Run(_xaml.Text, _code.Text);
+                await Run(_xaml.Text, _code.Text);
             }
 
             _update = false;
         }
  
-        private void Run(string? xaml, string? code)
+        private async Task Run(string? xaml, string? code)
         {
             try
             {
@@ -250,7 +257,7 @@ namespace XamlPlayground.ViewModels
                 {
                     try
                     {
-                        scriptAssembly = Compiler.GetScriptAssembly(code, "XamlPlayground.Views");
+                        scriptAssembly = await Task.Run(() => Compiler.GetScriptAssembly(code, "XamlPlayground.Views"));
                     }
                     catch (Exception e)
                     {
