@@ -1,8 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>XamlPlayground</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--<DefineConstants>$(DefineConstants);ENABLE_CODE</DefineConstants>-->
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +23,8 @@
     <PackageReference Include="AvaloniaEdit.TextMate" Version="$(AvaloniaEditVersion)" />
     <PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="$(AvaloniaEditVersion)" />
     <PackageReference Include="Octokit" Version="$(OctokitVersion)" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.1.0-3.final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.1.0-3.final" />
   </ItemGroup>
 
   <ItemGroup>

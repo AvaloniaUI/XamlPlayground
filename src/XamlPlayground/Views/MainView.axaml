@@ -12,16 +12,11 @@
     <vm:MainViewModel />
   </Design.DataContext>
   <c:AdaptiveControl>
-    <c:AdaptiveControl.Styles>
-      <Style Selector="c|AdaptiveControl /template/ GridSplitter#PART_GridSplitter">
-        <Setter Property="Background" Value="LightGray" />
-      </Style>
-    </c:AdaptiveControl.Styles>
     <c:AdaptiveControl.Header>
       <views:HeaderView />
     </c:AdaptiveControl.Header>
     <c:AdaptiveControl.Left>
-      <views:XamlView />
+      <views:CodeView />
     </c:AdaptiveControl.Left>
     <c:AdaptiveControl.Right>
       <views:PreviewView />

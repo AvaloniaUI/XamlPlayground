@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Reflection;
+using System.Runtime.Loader;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
@@ -15,44 +17,120 @@ namespace XamlPlayground.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
+        private static string s_code =
+            "using Avalonia;\n" +
+            "using Avalonia.Controls;\n" +
+            "using Avalonia.Markup.Xaml;\n" +
+            "\n" +
+            "namespace XamlPlayground.Views\n" +
+            "{\n" +
+            "    public class SampleView : UserControl\n" +
+            "    {\n" +
+            "        public SampleView()\n" +
+            "        {\n" +
+            "            InitializeComponent();\n" +
+            "        }\n" +
+            "\n" +
+            "        private void InitializeComponent()\n" +
+            "        {\n" +
+            "            // AvaloniaXamlLoader.Load(this);\n" +
+            "        }\n" +
+            "\n" +
+            "        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)\n" +
+            "        {\n" +
+            "            var count = 0;\n" +
+            "            var button = this.Find<Button>(\"button\");\n" +
+            "            button.Click += (sender, e) => button.Content = $\"Clicked: {++count}\";\n" +
+            "            base.OnAttachedToVisualTree(e);\n" +
+            "        }\n" +
+            "    }\n" +
+            "}\n";
+
+        private static string s_playground = 
+            "<Grid xmlns=\"https://github.com/avaloniaui\"\n" +
+#if ENABLE_CODE
+            "      xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n" +
+            "      x:Class=\"XamlPlayground.Views.SampleView\">\n" +
+            "    <Button Name=\"button\" Content=\"Click Me\" HorizontalAlignment=\"Center\" />\n" +
+#else
+            "      xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">\n" +
+            "\n" +
+#endif
+            "</Grid>";
+
         private ObservableCollection<SampleViewModel> _samples;
-        private TextDocument _xaml;
+        private readonly TextDocument _xaml;
+        private readonly TextDocument _code;
         private IControl? _control;
         private bool _enableAutoRun;
         private string? _lastErrorMessage;
+        private bool _update;
+        private (Assembly? Assembly, AssemblyLoadContext? Context)? _previous;
 
         public MainViewModel()
         {
             _samples = GetSamples(".xml");
             _enableAutoRun = true;
-            _xaml = new TextDocument();
-            _xaml.Text = _samples.FirstOrDefault()?.Xaml;
-            _xaml.TextChanged += (_, _) => Run();
 
-            RunCommand = ReactiveCommand.Create(Run);
-            
+            _xaml = new TextDocument { Text = _samples.FirstOrDefault()?.Xaml };
+            _xaml.TextChanged += async (_, _) => await Run(_xaml.Text, _code?.Text);
+
+            _code = new TextDocument { Text = _samples.FirstOrDefault()?.Code };
+            _code.TextChanged += async (_, _) => await Run(_xaml.Text, _code.Text);
+
+            RunCommand = ReactiveCommand.CreateFromTask(async () => await Run(_xaml.Text, _code.Text));
+
             GistCommand = ReactiveCommand.CreateFromTask<string>(Gist);
 
             this.WhenAnyValue(x => x.Xaml)
                 .WhereNotNull()
-                .Subscribe(_ =>
-                {
-                    if (_enableAutoRun)
-                    {
-                        Run();
-                    }
-                });
+                .Subscribe(XamlChanged);
+
+            this.WhenAnyValue(x => x.Code)
+                .WhereNotNull()
+                .Subscribe(CodeChanged);
 
             this.WhenAnyValue(x => x.EnableAutoRun)
                 .DistinctUntilChanged()
-                .Subscribe(x =>
+                .Subscribe(EnableAutoRunChanged);
+
+            async void XamlChanged(TextDocument _)
+            {
+                if (_enableAutoRun && !_update)
                 {
-                    if (x)
-                    {
-                        Run();
-                    }
-                });
+                    _update = true;
+                    await Run(_xaml.Text, _code.Text);
+                    _update = false;
+                }
+            }
+
+            async void CodeChanged(TextDocument _)
+            {
+                if (_enableAutoRun && !_update)
+                {
+                    _update = true;
+                    await Run(_xaml.Text, _code.Text);
+                    _update = false;
+                }
+            }
+
+            async void EnableAutoRunChanged(bool enableAutoRun)
+            {
+                if (enableAutoRun && !_update)
+                {
+                    _update = true;
+                    await Run(_xaml.Text, _code.Text);
+                    _update = false;
+                }
+            }
+
         }
+   
+#if ENABLE_CODE
+        public bool EnableCode { get; } = true;
+#else
+        public bool EnableCode { get; } = false;
+#endif
 
         public ObservableCollection<SampleViewModel> Samples
         {
@@ -71,6 +149,11 @@ namespace XamlPlayground.ViewModels
             get => _xaml;
         }
 
+        public TextDocument Code
+        {
+            get => _code;
+        }
+
         public bool EnableAutoRun
         {
             get => _enableAutoRun;
@@ -87,19 +170,22 @@ namespace XamlPlayground.ViewModels
 
         public ICommand GistCommand { get; }
 
-        private async Task<string> GetGistContent(string id)
+        private async Task<(string Xaml,string Code)> GetGistContent(string id)
         {
             var client = new GitHubClient(new ProductHeaderValue("XamlPlayground"));
             var gist = await client.Gist.Get(id);
-            var file = gist.Files.First(x => string.Compare(x.Key, "Main.axaml", StringComparison.OrdinalIgnoreCase) == 0).Value;
-            return file.Content;
+            var xaml = gist.Files.FirstOrDefault(x => string.Compare(x.Key, "Main.axaml", StringComparison.OrdinalIgnoreCase) == 0).Value;
+            var code = gist.Files.FirstOrDefault(x => string.Compare(x.Key, "Main.axaml.cs", StringComparison.OrdinalIgnoreCase) == 0).Value;
+            return (xaml?.Content ?? "", code?.Content ?? "");
         }
 
         public async Task Gist(string id)
         {
             try
             {
-                Xaml.Text = await GetGistContent(id);
+                var gist = await GetGistContent(id);
+                _xaml.Text = gist.Xaml;
+                _code.Text = gist.Code;
             }
             catch (Exception e)
             {
@@ -136,13 +222,7 @@ namespace XamlPlayground.ViewModels
             var assembly = typeof(MainViewModel).Assembly;
             var resourceNames = assembly.GetManifestResourceNames();
 
-            var playground = 
-                "<Grid xmlns=\"https://github.com/avaloniaui\"\n" +
-                "      xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">\n" +
-                "\n" +
-                "</Grid>";
-
-            samples.Add(new SampleViewModel("Playground", playground, Open));
+            samples.Add(new SampleViewModel("Playground", s_playground, s_code, Open));
 
             foreach (var resourceName in resourceNames)
             {
@@ -155,7 +235,7 @@ namespace XamlPlayground.ViewModels
                 {
                     if (GetSampleName(resourceName) is { } name)
                     {
-                        samples.Add(new SampleViewModel(name, xaml, Open));
+                        samples.Add(new SampleViewModel(name, xaml, string.Empty, Open));
                     }
                 }
             }
@@ -163,25 +243,59 @@ namespace XamlPlayground.ViewModels
             return samples;
         }
 
-        private void Open(string xaml)
+        private async Task Open(string xaml, string? code)
         {
             Control = null;
             LastErrorMessage = null;
+
+            _update = true;
+
             Xaml.Text = xaml;
+            Code.Text = code;
+
+            if (_enableAutoRun)
+            {
+                await Run(_xaml.Text, _code.Text);
+            }
+
+            _update = false;
         }
- 
-        private void Run()
+
+        private async Task Run(string? xaml, string? code)
         {
             try
             {
-                if (_xaml is { })
+                _previous?.Context?.Unload();
+
+                Assembly? scriptAssembly = null;
+#if ENABLE_CODE
+                if (code is { } && !string.IsNullOrWhiteSpace(code) && !Compiler.IsBrowser())
                 {
-                    var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(_xaml.Text);
-                    if (control is { })
+                    try
                     {
-                        Control = control;
-                        LastErrorMessage = null;
+                        _previous = await Task.Run(() => Compiler.GetScriptAssembly(code));
+                        if (_previous?.Assembly is { })
+                        {
+                            scriptAssembly = _previous?.Assembly;
+                        }
+                        else
+                        {
+                            throw new Exception("Failed to compile code.");
+                        }
                     }
+                    catch (Exception e)
+                    {
+                        LastErrorMessage = e.Message;
+                        Console.WriteLine(e);
+                        return;
+                    }
+                }
+#endif
+                var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(xaml, scriptAssembly);
+                if (control is { })
+                {
+                    Control = control;
+                    LastErrorMessage = null;
                 }
             }
             catch (Exception e)

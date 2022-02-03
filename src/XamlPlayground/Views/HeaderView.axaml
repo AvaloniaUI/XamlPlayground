@@ -9,52 +9,35 @@
   <Design.DataContext>
     <vm:MainViewModel />
   </Design.DataContext>
-  <Grid ColumnDefinitions="Auto,*" Background="LightGray">
-    <DockPanel Grid.Column="0" >
+  <Grid ColumnDefinitions="Auto,*" RowDefinitions="*,Auto">
+    <DockPanel Grid.Row="0" Grid.Column="0">
       <Image Source="/Assets/avalonia-logo.ico"
-             Margin="16,6,0,6" 
+             Margin="6,6,6,6" 
              Height="32"
              DockPanel.Dock="Left"/>
       <Label FontSize="18"
-             Margin="12,6,0,6" 
+             Margin="0,6,0,6" 
              VerticalAlignment="Center"
              Classes="text"
-             Content="Playground" />
+             Content="Xaml Playground" />
     </DockPanel>
-    <ScrollViewer Grid.Column="1"  
+    <ScrollViewer Grid.Row="0" Grid.Column="1"  
                   VerticalAlignment="Center"
                   HorizontalAlignment="Right"
                   HorizontalScrollBarVisibility="Auto"
                   VerticalScrollBarVisibility="Disabled"
                   Padding="0,6,0,6">
-      <StackPanel Orientation="Horizontal" Spacing="12" Margin="12,0,12,0">
+      <StackPanel Orientation="Horizontal" Spacing="6" Margin="6,0,6,0">
         <Button DockPanel.Dock="Left"
                 Margin="0,0,0,0"
-                Background="White"
-                Foreground="Black"
                 Content="Run" 
                 Command="{Binding RunCommand}" />
         <CheckBox DockPanel.Dock="Left"
                   Margin="0,0,0,0"
                   Content="Live" 
-                  IsChecked="{Binding EnableAutoRun}">
-          <CheckBox.Styles>
-            <Style Selector="CheckBox /template/ Path#CheckGlyph">
-              <Setter Property="Fill" Value="White" />
-            </Style>
-            <Style Selector="CheckBox:checked /template/ Path#CheckGlyph">
-              <Setter Property="Fill" Value="Black" />
-            </Style>
-            <Style Selector="CheckBox:checked /template/ Border#NormalRectangle">
-              <Setter Property="BorderBrush" Value="Black" />
-              <Setter Property="Background" Value="Transparent" />
-            </Style>
-          </CheckBox.Styles>
-        </CheckBox>
+                  IsChecked="{Binding EnableAutoRun}" />
         <Button DockPanel.Dock="Left"
                 Margin="0,0,0,0"
-                Background="White"
-                Foreground="Black"
                 Content="Gist">
           <Button.Flyout>
             <Flyout Placement="Bottom">
@@ -79,8 +62,7 @@
           </Button.Flyout>
         </Button>
         <Menu Height="NaN" VerticalAlignment="Center">
-          <MenuItem Background="White"
-                    Margin="0,0,0,0"
+          <MenuItem Margin="0,0,0,0"
                     CornerRadius="3"
                     Classes="popup"
                     Items="{Binding Samples}">
@@ -100,7 +82,7 @@
             </MenuItem.Header>
             <MenuItem.Styles>
               <Style Selector="MenuItem > MenuItem" x:DataType="vm:SampleViewModel">
-                <Setter Property="Padding" Value="12"/>
+                <Setter Property="Padding" Value="6"/>
                 <Setter Property="Header" Value="{Binding Name}"/>
                 <Setter Property="Command" Value="{Binding OpenCommand}"/>
               </Style>
@@ -112,6 +94,10 @@
         </Menu>
       </StackPanel>
     </ScrollViewer>
+    <Separator Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+               Background="{DynamicResource SystemChromeAltLowColor}" 
+               Opacity="0.3" 
+               Height="0.55"/>
   </Grid>
 </UserControl>
 

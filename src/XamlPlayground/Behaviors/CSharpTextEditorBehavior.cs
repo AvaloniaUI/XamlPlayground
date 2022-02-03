@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Avalonia.Xaml.Interactivity;
+﻿using Avalonia.Xaml.Interactivity;
 using AvaloniaEdit;
 using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.TextMate;
@@ -7,7 +6,7 @@ using AvaloniaEdit.TextMate.Grammars;
 
 namespace XamlPlayground.Behaviors;
 
-public class TextEditorBehavior : Behavior<TextEditor>
+public class CSharpTextEditorBehavior : Behavior<TextEditor>
 {
     private TextEditor? _textEditor;
     private RegistryOptions? _registryOptions;
@@ -24,15 +23,15 @@ public class TextEditorBehavior : Behavior<TextEditor>
             // TODO: Enable for WebAssembly
             // https://github.com/danipen/TextMateSharp/issues/9
             // https://github.com/AvaloniaUI/AvaloniaEdit/issues/201
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER")))
+            if (!Compiler.IsBrowser())
             {
                 _registryOptions = new RegistryOptions(ThemeName.LightPlus);
                 _textMateInstallation = _textEditor.InstallTextMate(_registryOptions);
-                _textMateInstallation.SetGrammar(_registryOptions.GetScopeByLanguageId(_registryOptions.GetLanguageByExtension(".xml").Id));
+                _textMateInstallation.SetGrammar(_registryOptions.GetScopeByLanguageId(_registryOptions.GetLanguageByExtension(".cs").Id));
             }
             else
             {
-                _textEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("XML");
+                _textEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
             }
         }
     }
