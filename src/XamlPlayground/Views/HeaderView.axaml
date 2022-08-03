@@ -128,6 +128,7 @@
       </StackPanel>
     </ScrollViewer>
     <Separator Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+               Margin="0,0,0,0"
                Background="{DynamicResource SystemChromeAltLowColor}" 
                Opacity="0.3" 
                Height="0.55"/>
