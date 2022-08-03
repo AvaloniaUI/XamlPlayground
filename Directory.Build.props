@@ -5,10 +5,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup>
-    <AvaloniaVersion>0.10.14</AvaloniaVersion>
-    <AvaloniaBehaviorsVersion>0.10.14</AvaloniaBehaviorsVersion>
-    <AvaloniaEditVersion>0.10.12.2</AvaloniaEditVersion>
-    <AvaloniaEditTextMateGrammarsVersion>0.10.12</AvaloniaEditTextMateGrammarsVersion>
+    <AvaloniaVersion>0.10.999-cibuild0022780-beta</AvaloniaVersion>
+    <!--<AvaloniaBehaviorsVersion>0.10.14</AvaloniaBehaviorsVersion>-->
+    <!--<AvaloniaEditVersion>0.10.12.2</AvaloniaEditVersion>-->
+    <!--<AvaloniaEditTextMateGrammarsVersion>0.10.12</AvaloniaEditTextMateGrammarsVersion>-->
     <OctokitVersion>0.51.0</OctokitVersion>
   </PropertyGroup>
 </Project>

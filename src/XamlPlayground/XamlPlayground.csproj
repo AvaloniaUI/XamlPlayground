@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>XamlPlayground</RootNamespace>
   </PropertyGroup>
 
@@ -15,13 +15,14 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.Xaml.Behaviors" Version="$(AvaloniaBehaviorsVersion)" />
-    <PackageReference Include="Avalonia.AvaloniaEdit" Version="$(AvaloniaEditVersion)" />
-    <PackageReference Include="AvaloniaEdit.TextMate" Version="$(AvaloniaEditVersion)" />
-    <PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="$(AvaloniaEditTextMateGrammarsVersion)" />
+    <!--<PackageReference Include="Avalonia.Xaml.Behaviors" Version="$(AvaloniaBehaviorsVersion)" />-->
+    <!--<PackageReference Include="Avalonia.AvaloniaEdit" Version="$(AvaloniaEditVersion)" />-->
+    <!--<PackageReference Include="AvaloniaEdit.TextMate" Version="$(AvaloniaEditVersion)" />-->
+    <!--<PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="$(AvaloniaEditTextMateGrammarsVersion)" />-->
     <PackageReference Include="Octokit" Version="$(OctokitVersion)" />
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.1.0-3.final" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.1.0-3.final" />
@@ -29,6 +30,13 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Samples\*.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\modules\AvaloniaBehaviors\src\Avalonia.Xaml.Interactions\Avalonia.Xaml.Interactions.csproj" />
+    <ProjectReference Include="..\..\modules\AvaloniaBehaviors\src\Avalonia.Xaml.Interactivity\Avalonia.Xaml.Interactivity.csproj" />
+    <ProjectReference Include="..\..\modules\AvaloniaEdit\src\AvaloniaEdit.TextMate\AvaloniaEdit.TextMate.csproj" />
+    <ProjectReference Include="..\..\modules\AvaloniaEdit\src\AvaloniaEdit\AvaloniaEdit.csproj" />
   </ItemGroup>
 
 </Project>
