@@ -62,6 +62,7 @@
                       <ControlTemplate>
                         <Border Background="Transparent">
                           <Separator Background="{DynamicResource SystemChromeAltLowColor}" 
+                                     Margin="0,0,0,0"
                                      Opacity="0.3" 
                                      Width="0.55"
                                      HorizontalAlignment="Stretch"
@@ -83,6 +84,7 @@
                       <ControlTemplate>
                         <Border Background="Transparent">
                           <Separator Background="{DynamicResource SystemChromeAltLowColor}" 
+                                     Margin="0,0,0,0"
                                      Opacity="0.3" 
                                      Height="0.55"
                                      HorizontalAlignment="Stretch"
