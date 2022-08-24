@@ -78,6 +78,7 @@ namespace XamlPlayground.ViewModels
             _code = new TextDocument { Text = _samples.FirstOrDefault()?.Code };
             _code.TextChanged += async (_, _) => await Run(_xaml.Text, _code.Text);
 
+            OpenFileCommand = ReactiveCommand.CreateFromTask(async () => await OpenFile());
             RunCommand = ReactiveCommand.CreateFromTask(async () => await Run(_xaml.Text, _code.Text));
 
             GistCommand = ReactiveCommand.CreateFromTask<string>(Gist);
@@ -166,6 +167,7 @@ namespace XamlPlayground.ViewModels
             set => this.RaiseAndSetIfChanged(ref _lastErrorMessage, value);
         }
 
+        public ICommand OpenFileCommand { get; }
         public ICommand RunCommand { get; }
 
         public ICommand GistCommand { get; }
@@ -259,6 +261,18 @@ namespace XamlPlayground.ViewModels
             }
 
             _update = false;
+        }
+
+        private async Task OpenFile()
+        {
+            var ofd = new OpenFileDialog();
+            var result = await ofd.ShowAsync(new Window());
+            if (result is not null)
+            {
+                string filePath = String.Join("", result);
+                var fileContent = File.ReadLines(filePath);
+                await Open(String.Join("\n", fileContent), "File");
+            }
         }
 
         private async Task Run(string? xaml, string? code)
