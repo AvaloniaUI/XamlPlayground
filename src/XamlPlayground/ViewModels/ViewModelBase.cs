@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ReactiveUI;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace XamlPlayground.ViewModels
 {
-    public class ViewModelBase : ReactiveObject
+    [ObservableObject]
+    public partial class ViewModelBase
     {
     }
 }
