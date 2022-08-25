@@ -58,6 +58,7 @@ namespace XamlPlayground.ViewModels
 #endif
             "</Grid>";
 
+        private int _editorFontSize;
         private ObservableCollection<SampleViewModel> _samples;
         private readonly TextDocument _xaml;
         private readonly TextDocument _code;
@@ -69,6 +70,7 @@ namespace XamlPlayground.ViewModels
 
         public MainViewModel()
         {
+            _editorFontSize = 12;
             _samples = GetSamples(".xml");
             _enableAutoRun = true;
 
@@ -137,6 +139,12 @@ namespace XamlPlayground.ViewModels
         {
             get => _samples;
             set => this.RaiseAndSetIfChanged(ref _samples, value);
+        }
+
+        public int EditorFontSize
+        {
+            get => _editorFontSize;
+            set => this.RaiseAndSetIfChanged(ref _editorFontSize, value);
         }
 
         public IControl? Control
