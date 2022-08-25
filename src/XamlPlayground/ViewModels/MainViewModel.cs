@@ -8,62 +8,23 @@ using System.Runtime.Loader;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
-using ReactiveUI;
 using Avalonia.Markup.Xaml;
 using Octokit;
 using AvaloniaEdit.Document;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using ReactiveMarbles.PropertyChanged;
 
 namespace XamlPlayground.ViewModels
 {
-    public class MainViewModel : ViewModelBase
+    public partial class MainViewModel : ViewModelBase
     {
-        private static string s_code =
-            "using Avalonia;\n" +
-            "using Avalonia.Controls;\n" +
-            "using Avalonia.Markup.Xaml;\n" +
-            "\n" +
-            "namespace XamlPlayground.Views\n" +
-            "{\n" +
-            "    public class SampleView : UserControl\n" +
-            "    {\n" +
-            "        public SampleView()\n" +
-            "        {\n" +
-            "            InitializeComponent();\n" +
-            "        }\n" +
-            "\n" +
-            "        private void InitializeComponent()\n" +
-            "        {\n" +
-            "            // AvaloniaXamlLoader.Load(this);\n" +
-            "        }\n" +
-            "\n" +
-            "        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)\n" +
-            "        {\n" +
-            "            var count = 0;\n" +
-            "            var button = this.Find<Button>(\"button\");\n" +
-            "            button.Click += (sender, e) => button.Content = $\"Clicked: {++count}\";\n" +
-            "            base.OnAttachedToVisualTree(e);\n" +
-            "        }\n" +
-            "    }\n" +
-            "}\n";
-
-        private static string s_playground = 
-            "<Grid xmlns=\"https://github.com/avaloniaui\"\n" +
-#if ENABLE_CODE
-            "      xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n" +
-            "      x:Class=\"XamlPlayground.Views.SampleView\">\n" +
-            "    <Button Name=\"button\" Content=\"Click Me\" HorizontalAlignment=\"Center\" />\n" +
-#else
-            "      xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">\n" +
-            "\n" +
-#endif
-            "</Grid>";
-
-        private ObservableCollection<SampleViewModel> _samples;
-        private readonly TextDocument _xaml;
-        private readonly TextDocument _code;
-        private IControl? _control;
-        private bool _enableAutoRun;
-        private string? _lastErrorMessage;
+        [ObservableProperty] private ObservableCollection<SampleViewModel> _samples;
+        [ObservableProperty] private TextDocument _xaml;
+        [ObservableProperty] private TextDocument _code;
+        [ObservableProperty] private IControl? _control;
+        [ObservableProperty] private bool _enableAutoRun;
+        [ObservableProperty] private string? _lastErrorMessage;
         private bool _update;
         private (Assembly? Assembly, AssemblyLoadContext? Context)? _previous;
 
@@ -78,19 +39,21 @@ namespace XamlPlayground.ViewModels
             _code = new TextDocument { Text = _samples.FirstOrDefault()?.Code };
             _code.TextChanged += async (_, _) => await Run(_xaml.Text, _code.Text);
 
-            RunCommand = ReactiveCommand.CreateFromTask(async () => await Run(_xaml.Text, _code.Text));
+            RunCommand = new AsyncRelayCommand(async () => await Run(_xaml.Text, _code.Text));
 
-            GistCommand = ReactiveCommand.CreateFromTask<string>(Gist);
+            GistCommand = new AsyncRelayCommand<string>(Gist);
 
-            this.WhenAnyValue(x => x.Xaml)
-                .WhereNotNull()
+            this.WhenChanged(x => x.Xaml)
+                .DistinctUntilChanged()
+                .Where(x => x is not  null)
                 .Subscribe(XamlChanged);
 
-            this.WhenAnyValue(x => x.Code)
-                .WhereNotNull()
+            this.WhenChanged(x => x.Code)
+                .DistinctUntilChanged()
+                .Where(x => x is not  null)
                 .Subscribe(CodeChanged);
 
-            this.WhenAnyValue(x => x.EnableAutoRun)
+            this.WhenChanged(x => x.EnableAutoRun)
                 .DistinctUntilChanged()
                 .Subscribe(EnableAutoRunChanged);
 
@@ -131,40 +94,6 @@ namespace XamlPlayground.ViewModels
 #else
         public bool EnableCode { get; } = false;
 #endif
-
-        public ObservableCollection<SampleViewModel> Samples
-        {
-            get => _samples;
-            set => this.RaiseAndSetIfChanged(ref _samples, value);
-        }
-
-        public IControl? Control
-        {
-            get => _control;
-            set => this.RaiseAndSetIfChanged(ref _control, value);
-        }
-
-        public TextDocument Xaml
-        {
-            get => _xaml;
-        }
-
-        public TextDocument Code
-        {
-            get => _code;
-        }
-
-        public bool EnableAutoRun
-        {
-            get => _enableAutoRun;
-            set => this.RaiseAndSetIfChanged(ref _enableAutoRun, value);
-        }
-
-        public string? LastErrorMessage
-        {
-            get => _lastErrorMessage;
-            set => this.RaiseAndSetIfChanged(ref _lastErrorMessage, value);
-        }
 
         public ICommand RunCommand { get; }
 
@@ -222,7 +151,7 @@ namespace XamlPlayground.ViewModels
             var assembly = typeof(MainViewModel).Assembly;
             var resourceNames = assembly.GetManifestResourceNames();
 
-            samples.Add(new SampleViewModel("Playground", s_playground, s_code, Open));
+            samples.Add(new SampleViewModel("Playground", Templates.s_playground, Templates.s_code, Open));
 
             foreach (var resourceName in resourceNames)
             {

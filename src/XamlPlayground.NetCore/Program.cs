@@ -1,6 +1,5 @@
 ﻿using System;
 using Avalonia;
-using Avalonia.ReactiveUI;
 
 namespace XamlPlayground.NetCore
 {
@@ -20,7 +19,6 @@ namespace XamlPlayground.NetCore
                 .With(new Win32PlatformOptions { UseCompositor = true })
                 .With(new X11PlatformOptions { UseCompositor = true })
                 .With(new AvaloniaNativePlatformOptions { UseCompositor = true })
-                .LogToTrace()
-                .UseReactiveUI();
+                .LogToTrace();
     }
 }
