@@ -41,7 +41,7 @@
                        FontFamily="Consolas,Menlo,Monospace"
                        ShowLineNumbers="True"
                        FontWeight="Normal"
-                       FontSize="12"
+                       FontSize="{Binding EditorFontSize}"
                        WordWrap="False">
           <i:Interaction.Behaviors>
             <behaviors:XamlTextEditorBehavior />

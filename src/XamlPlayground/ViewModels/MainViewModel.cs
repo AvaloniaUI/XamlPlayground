@@ -25,11 +25,13 @@ namespace XamlPlayground.ViewModels
         [ObservableProperty] private IControl? _control;
         [ObservableProperty] private bool _enableAutoRun;
         [ObservableProperty] private string? _lastErrorMessage;
+        [ObservableProperty] private int _editorFontSize;
         private bool _update;
         private (Assembly? Assembly, AssemblyLoadContext? Context)? _previous;
 
         public MainViewModel()
         {
+            _editorFontSize = 12;
             _samples = GetSamples(".xml");
             _enableAutoRun = true;
 
