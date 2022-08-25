@@ -134,9 +134,9 @@ namespace XamlPlayground.ViewModels
                 _xaml.Text = gist.Xaml;
                 _code.Text = gist.Code;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(exception);
             }
         }
 
@@ -240,10 +240,10 @@ namespace XamlPlayground.ViewModels
                             throw new Exception("Failed to compile code.");
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception exception)
                     {
-                        LastErrorMessage = e.Message;
-                        Console.WriteLine(e);
+                        LastErrorMessage = exception.Message;
+                        Console.WriteLine(exception);
                         return;
                     }
                 }
@@ -255,10 +255,10 @@ namespace XamlPlayground.ViewModels
                     LastErrorMessage = null;
                 }
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LastErrorMessage = e.Message;
-                Console.WriteLine(e);
+                LastErrorMessage = exception.Message;
+                Console.WriteLine(exception);
             }
         }
 
@@ -291,10 +291,9 @@ namespace XamlPlayground.ViewModels
                         await Open(fileContent, "");
                         reader.Dispose();
                     }
-                    catch (Exception ex)
+                    catch (Exception exception)
                     {
-                        Debug.WriteLine(ex.Message);
-                        Debug.WriteLine(ex.StackTrace);
+                        Console.WriteLine(exception);
                     }
                 }
             }
@@ -330,10 +329,9 @@ namespace XamlPlayground.ViewModels
                             await using var writer = new StreamWriter(stream);
                             await writer.WriteAsync(_xaml.Text);
                         }
-                        catch (Exception ex)
+                        catch (Exception exception)
                         {
-                            Debug.WriteLine(ex.Message);
-                            Debug.WriteLine(ex.StackTrace);
+                            Console.WriteLine(exception);
                         }
                     }
                 }
