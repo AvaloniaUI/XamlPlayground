@@ -12,6 +12,7 @@ using ReactiveUI;
 using Avalonia.Markup.Xaml;
 using Octokit;
 using AvaloniaEdit.Document;
+using System.Collections.Generic;
 
 namespace XamlPlayground.ViewModels
 {
@@ -46,7 +47,7 @@ namespace XamlPlayground.ViewModels
             "    }\n" +
             "}\n";
 
-        private static string s_playground = 
+        private static string s_playground =
             "<Grid xmlns=\"https://github.com/avaloniaui\"\n" +
 #if ENABLE_CODE
             "      xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n" +
@@ -58,8 +59,9 @@ namespace XamlPlayground.ViewModels
 #endif
             "</Grid>";
 
-        private int _editorFontSize;
         private ObservableCollection<SampleViewModel> _samples;
+        private int _editorFontSize;
+        private string? _filePath;
         private readonly TextDocument _xaml;
         private readonly TextDocument _code;
         private IControl? _control;
@@ -81,6 +83,9 @@ namespace XamlPlayground.ViewModels
             _code.TextChanged += async (_, _) => await Run(_xaml.Text, _code.Text);
 
             OpenFileCommand = ReactiveCommand.CreateFromTask(async () => await OpenFile());
+
+            SaveFileCommand = ReactiveCommand.CreateFromTask(async () => await SaveFile());
+
             RunCommand = ReactiveCommand.CreateFromTask(async () => await Run(_xaml.Text, _code.Text));
 
             GistCommand = ReactiveCommand.CreateFromTask<string>(Gist);
@@ -128,7 +133,7 @@ namespace XamlPlayground.ViewModels
             }
 
         }
-   
+
 #if ENABLE_CODE
         public bool EnableCode { get; } = true;
 #else
@@ -176,11 +181,12 @@ namespace XamlPlayground.ViewModels
         }
 
         public ICommand OpenFileCommand { get; }
+        public ICommand SaveFileCommand { get; }
         public ICommand RunCommand { get; }
 
         public ICommand GistCommand { get; }
 
-        private async Task<(string Xaml,string Code)> GetGistContent(string id)
+        private async Task<(string Xaml, string Code)> GetGistContent(string id)
         {
             var client = new GitHubClient(new ProductHeaderValue("XamlPlayground"));
             var gist = await client.Gist.Get(id);
@@ -275,11 +281,30 @@ namespace XamlPlayground.ViewModels
         {
             var ofd = new OpenFileDialog();
             var result = await ofd.ShowAsync(new Window());
-            if (result is not null)
+            if (result is not null && result.Length != 0)
             {
-                string filePath = String.Join("", result);
-                var fileContent = File.ReadLines(filePath);
-                await Open(String.Join("\n", fileContent), "File");
+                _filePath = String.Join("", result);
+                var fileContent = await File.ReadAllTextAsync(_filePath);
+                await Open(fileContent, _filePath);
+            }
+        }
+
+        private async Task SaveFile()
+        {
+            if (_filePath is null)
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.DefaultExtension = "axaml";
+                string? result = await sfd.ShowAsync(new Window());
+                if (result is not null)
+                {
+                    _filePath = result;
+                    await File.WriteAllTextAsync(_filePath, _xaml.Text);
+                }
+            }
+            else
+            {
+                await File.WriteAllTextAsync(_filePath, _xaml.Text);
             }
         }
 
