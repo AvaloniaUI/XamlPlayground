@@ -51,7 +51,7 @@ namespace XamlPlayground.ViewModels
 
             RunCommand = new AsyncRelayCommand(async () => await Run(_xaml.Text, _code.Text));
 
-            GistCommand = new AsyncRelayCommand<string>(Gist);
+            GistCommand = new AsyncRelayCommand<string?>(Gist);
 
             this.WhenChanged(x => x.Xaml)
                 .DistinctUntilChanged()
@@ -122,8 +122,12 @@ namespace XamlPlayground.ViewModels
             return (xaml?.Content ?? "", code?.Content ?? "");
         }
 
-        public async Task Gist(string id)
+        public async Task Gist(string? id)
         {
+            if (id is null)
+            {
+                return;
+            }
             try
             {
                 var gist = await GetGistContent(id);
