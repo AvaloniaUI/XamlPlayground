@@ -8,7 +8,7 @@
     <AvaloniaVersion>11.0.0-preview1</AvaloniaVersion>
     <AvaloniaBehaviorsVersion>11.0.0-preview1</AvaloniaBehaviorsVersion>
     <AvaloniaEditVersion>11.0.0-preview1</AvaloniaEditVersion>
-    <AvaloniaEditTextMateGrammarsVersion>11.0.0-preview1</AvaloniaEditTextMateGrammarsVersion>
+    <AvaloniaEditTextMateGrammarsVersion>0.10.12</AvaloniaEditTextMateGrammarsVersion>
     <OctokitVersion>2.0.1</OctokitVersion>
     <CommunityToolkitMvvmVersion>8.0.0</CommunityToolkitMvvmVersion>
     <ReactiveMarblesPropertyChangedVersion>2.0.27</ReactiveMarblesPropertyChangedVersion>
