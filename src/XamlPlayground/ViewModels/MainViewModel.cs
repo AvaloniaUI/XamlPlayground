@@ -13,6 +13,9 @@ using Avalonia.Markup.Xaml;
 using Octokit;
 using AvaloniaEdit.Document;
 using System.Collections.Generic;
+using Avalonia.Platform.Storage;
+using System.Diagnostics;
+using System.Text;
 
 namespace XamlPlayground.ViewModels
 {
@@ -59,9 +62,19 @@ namespace XamlPlayground.ViewModels
 #endif
             "</Grid>";
 
+        private static List<FilePickerFileType> GetFileTypes()
+        {
+            return new List<FilePickerFileType>
+            {
+                StorageService.Axaml,
+                StorageService.Xaml,
+                StorageService.All
+            };
+        }
+
         private ObservableCollection<SampleViewModel> _samples;
         private int _editorFontSize;
-        private string? _filePath;
+        private IStorageFile? _openFile;
         private readonly TextDocument _xaml;
         private readonly TextDocument _code;
         private IControl? _control;
@@ -279,32 +292,86 @@ namespace XamlPlayground.ViewModels
 
         private async Task OpenFile()
         {
-            var ofd = new OpenFileDialog();
-            var result = await ofd.ShowAsync(new Window());
-            if (result is not null && result.Length != 0)
+            var storageProvider = StorageService.GetStorageProvider();
+            if (storageProvider is null)
             {
-                _filePath = String.Join("", result);
-                var fileContent = await File.ReadAllTextAsync(_filePath);
-                await Open(fileContent, _filePath);
+                return;
+            }
+
+            var result = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
+                Title = "Open project",
+                FileTypeFilter = GetFileTypes(),
+                AllowMultiple = false
+            });
+
+            var file = result.FirstOrDefault();
+
+            if (file is not null)
+            {
+                _openFile = file;
+                if (_openFile.CanOpenRead)
+                {
+                    try
+                    {
+                        await using var stream = await _openFile.OpenReadAsync();
+                        using var reader = new StreamReader(stream);
+                        var fileContent = await reader.ReadToEndAsync();
+                        await Open(fileContent, "");
+                        reader.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                        Debug.WriteLine(ex.StackTrace);
+                    }
+                }
             }
         }
 
         private async Task SaveFile()
         {
-            if (_filePath is null)
+            if (_openFile is null)
             {
-                SaveFileDialog sfd = new SaveFileDialog();
-                sfd.DefaultExtension = "axaml";
-                string? result = await sfd.ShowAsync(new Window());
-                if (result is not null)
+                var storageProvider = StorageService.GetStorageProvider();
+                if (storageProvider is null)
                 {
-                    _filePath = result;
-                    await File.WriteAllTextAsync(_filePath, _xaml.Text);
+                    return;
+                }
+
+                var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+                {
+                    Title = "Save project",
+                    FileTypeChoices = GetFileTypes(),
+                    SuggestedFileName = Path.GetFileNameWithoutExtension("project"),
+                    DefaultExtension = "axaml",
+                    ShowOverwritePrompt = true
+                });
+
+                if (file is not null)
+                {
+                    _openFile = file;
+                    if (_openFile.CanOpenWrite)
+                    {
+                        try
+                        {
+                            await using var stream = await _openFile.OpenWriteAsync();
+                            await using var writer = new StreamWriter(stream);
+                            await writer.WriteAsync(_xaml.Text);
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine(ex.Message);
+                            Debug.WriteLine(ex.StackTrace);
+                        }
+                    }
                 }
             }
-            else
+            else if (_openFile.CanOpenWrite)
             {
-                await File.WriteAllTextAsync(_filePath, _xaml.Text);
+                await using var stream = await _openFile.OpenWriteAsync();
+                await using var writer = new StreamWriter(stream);
+                await writer.WriteAsync(_xaml.Text);
             }
         }
 
