@@ -19,9 +19,9 @@
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Xaml.Behaviors" Version="$(AvaloniaBehaviorsVersion)" />
-    <!--<PackageReference Include="Avalonia.AvaloniaEdit" Version="$(AvaloniaEditVersion)" />-->
-    <!--<PackageReference Include="AvaloniaEdit.TextMate" Version="$(AvaloniaEditVersion)" />-->
-    <!--<PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="$(AvaloniaEditTextMateGrammarsVersion)" />-->
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="$(AvaloniaEditVersion)" />
+    <PackageReference Include="AvaloniaEdit.TextMate" Version="$(AvaloniaEditVersion)" />
+    <PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="$(AvaloniaEditTextMateGrammarsVersion)" />
     <PackageReference Include="Octokit" Version="$(OctokitVersion)" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="$(CommunityToolkitMvvmVersion)" />
     <PackageReference Include="ReactiveMarbles.PropertyChanged" Version="$(ReactiveMarblesPropertyChangedVersion)" />
@@ -31,11 +31,6 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Samples\*.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\modules\AvaloniaEdit\src\AvaloniaEdit.TextMate\AvaloniaEdit.TextMate.csproj" />
-    <ProjectReference Include="..\..\modules\AvaloniaEdit\src\AvaloniaEdit\AvaloniaEdit.csproj" />
   </ItemGroup>
 
 </Project>
