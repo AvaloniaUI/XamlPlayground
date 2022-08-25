@@ -14,6 +14,9 @@ using AvaloniaEdit.Document;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ReactiveMarbles.PropertyChanged;
+using Avalonia.Platform.Storage;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace XamlPlayground.ViewModels
 {
@@ -28,6 +31,7 @@ namespace XamlPlayground.ViewModels
         [ObservableProperty] private int _editorFontSize;
         private bool _update;
         private (Assembly? Assembly, AssemblyLoadContext? Context)? _previous;
+        private IStorageFile? _openFile;
 
         public MainViewModel()
         {
@@ -41,11 +45,11 @@ namespace XamlPlayground.ViewModels
             _code = new TextDocument { Text = _samples.FirstOrDefault()?.Code };
             _code.TextChanged += async (_, _) => await Run(_xaml.Text, _code.Text);
 
-            OpenFileCommand = ReactiveCommand.CreateFromTask(async () => await OpenFile());
+            OpenFileCommand = new AsyncRelayCommand(async () => await OpenFile());
 
-            SaveFileCommand = ReactiveCommand.CreateFromTask(async () => await SaveFile());
+            SaveFileCommand = new AsyncRelayCommand(async () => await SaveFile());
 
-            RunCommand = ReactiveCommand.CreateFromTask(async () => await Run(_xaml.Text, _code.Text));
+            RunCommand = new AsyncRelayCommand(async () => await Run(_xaml.Text, _code.Text));
 
             GistCommand = new AsyncRelayCommand<string>(Gist);
 
@@ -104,6 +108,10 @@ namespace XamlPlayground.ViewModels
         public ICommand RunCommand { get; }
 
         public ICommand GistCommand { get; }
+
+        public ICommand OpenFileCommand { get; }
+
+        public ICommand SaveFileCommand { get; }
 
         private async Task<(string Xaml, string Code)> GetGistContent(string id)
         {
@@ -196,89 +204,14 @@ namespace XamlPlayground.ViewModels
             _update = false;
         }
 
-        private async Task OpenFile()
+        private static List<FilePickerFileType> GetFileTypes()
         {
-            var storageProvider = StorageService.GetStorageProvider();
-            if (storageProvider is null)
+            return new List<FilePickerFileType>
             {
-                return;
-            }
-
-            var result = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
-            {
-                Title = "Open project",
-                FileTypeFilter = GetFileTypes(),
-                AllowMultiple = false
-            });
-
-            var file = result.FirstOrDefault();
-
-            if (file is not null)
-            {
-                _openFile = file;
-                if (_openFile.CanOpenRead)
-                {
-                    try
-                    {
-                        await using var stream = await _openFile.OpenReadAsync();
-                        using var reader = new StreamReader(stream);
-                        var fileContent = await reader.ReadToEndAsync();
-                        await Open(fileContent, "");
-                        reader.Dispose();
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(ex.Message);
-                        Debug.WriteLine(ex.StackTrace);
-                    }
-                }
-            }
-        }
-
-        private async Task SaveFile()
-        {
-            if (_openFile is null)
-            {
-                var storageProvider = StorageService.GetStorageProvider();
-                if (storageProvider is null)
-                {
-                    return;
-                }
-
-                var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
-                {
-                    Title = "Save project",
-                    FileTypeChoices = GetFileTypes(),
-                    SuggestedFileName = Path.GetFileNameWithoutExtension("project"),
-                    DefaultExtension = "axaml",
-                    ShowOverwritePrompt = true
-                });
-
-                if (file is not null)
-                {
-                    _openFile = file;
-                    if (_openFile.CanOpenWrite)
-                    {
-                        try
-                        {
-                            await using var stream = await _openFile.OpenWriteAsync();
-                            await using var writer = new StreamWriter(stream);
-                            await writer.WriteAsync(_xaml.Text);
-                        }
-                        catch (Exception ex)
-                        {
-                            Debug.WriteLine(ex.Message);
-                            Debug.WriteLine(ex.StackTrace);
-                        }
-                    }
-                }
-            }
-            else if (_openFile.CanOpenWrite)
-            {
-                await using var stream = await _openFile.OpenWriteAsync();
-                await using var writer = new StreamWriter(stream);
-                await writer.WriteAsync(_xaml.Text);
-            }
+                StorageService.Axaml,
+                StorageService.Xaml,
+                StorageService.All
+            };
         }
 
         private async Task Run(string? xaml, string? code)
@@ -322,6 +255,90 @@ namespace XamlPlayground.ViewModels
             {
                 LastErrorMessage = e.Message;
                 Console.WriteLine(e);
+            }
+        }
+
+        private async Task OpenFile()
+        {
+            var storageProvider = StorageService.GetStorageProvider();
+            if (storageProvider is null)
+            {
+                return;
+            }
+
+            var result = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
+                Title = "Open xaml",
+                FileTypeFilter = GetFileTypes(),
+                AllowMultiple = false
+            });
+
+            var file = result.FirstOrDefault();
+            if (file is not null)
+            {
+                if (file.CanOpenRead)
+                {
+                    try
+                    {
+                        _openFile = file;
+                        await using var stream = await _openFile.OpenReadAsync();
+                        using var reader = new StreamReader(stream);
+                        var fileContent = await reader.ReadToEndAsync();
+                        await Open(fileContent, "");
+                        reader.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                        Debug.WriteLine(ex.StackTrace);
+                    }
+                }
+            }
+        }
+
+        private async Task SaveFile()
+        {
+            if (_openFile is null)
+            {
+                var storageProvider = StorageService.GetStorageProvider();
+                if (storageProvider is null)
+                {
+                    return;
+                }
+
+                var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+                {
+                    Title = "Save xaml",
+                    FileTypeChoices = GetFileTypes(),
+                    SuggestedFileName = Path.GetFileNameWithoutExtension("playground"),
+                    DefaultExtension = "axaml",
+                    ShowOverwritePrompt = true
+                });
+
+                if (file is not null)
+                {
+                    if (file.CanOpenWrite)
+                    {
+                        try
+                        {
+                            _openFile = file;
+                            await using var stream = await _openFile.OpenWriteAsync();
+                            await using var writer = new StreamWriter(stream);
+                            await writer.WriteAsync(_xaml.Text);
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine(ex.Message);
+                            Debug.WriteLine(ex.StackTrace);
+                        }
+                    }
+                }
+            }
+            else if (_openFile.CanOpenWrite)
+            {
+                await using var stream = await _openFile.OpenWriteAsync();
+                await using var writer = new StreamWriter(stream);
+                await writer.WriteAsync(_xaml.Text);
             }
         }
     }
