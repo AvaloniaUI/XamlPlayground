@@ -16,12 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{2629EA9C
 		nuget.config = nuget.config
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{B33B8B01-7C6B-4D9E-8683-EB7F73C4EF00}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaEdit", "modules\AvaloniaEdit\src\AvaloniaEdit\AvaloniaEdit.csproj", "{16A10D87-6A64-4F23-A2E8-53087A430A4B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaEdit.TextMate", "modules\AvaloniaEdit\src\AvaloniaEdit.TextMate\AvaloniaEdit.TextMate.csproj", "{4A9B7725-867E-43D6-86D1-4862E5BA0796}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,20 +34,10 @@ Global
 		{5E83BE38-4F45-4966-8821-761B91C532C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E83BE38-4F45-4966-8821-761B91C532C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E83BE38-4F45-4966-8821-761B91C532C0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{16A10D87-6A64-4F23-A2E8-53087A430A4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16A10D87-6A64-4F23-A2E8-53087A430A4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{16A10D87-6A64-4F23-A2E8-53087A430A4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{16A10D87-6A64-4F23-A2E8-53087A430A4B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4A9B7725-867E-43D6-86D1-4862E5BA0796}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4A9B7725-867E-43D6-86D1-4862E5BA0796}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4A9B7725-867E-43D6-86D1-4862E5BA0796}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4A9B7725-867E-43D6-86D1-4862E5BA0796}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4E84133A-4280-41FC-A4E1-34463403CA8A} = {9CF0A712-DEA1-42BC-AB3A-ED8E6DAE523C}
 		{5B0621D6-B7D4-49EF-8C24-FD81823D56AF} = {9CF0A712-DEA1-42BC-AB3A-ED8E6DAE523C}
 		{5E83BE38-4F45-4966-8821-761B91C532C0} = {9CF0A712-DEA1-42BC-AB3A-ED8E6DAE523C}
-		{16A10D87-6A64-4F23-A2E8-53087A430A4B} = {B33B8B01-7C6B-4D9E-8683-EB7F73C4EF00}
-		{4A9B7725-867E-43D6-86D1-4862E5BA0796} = {B33B8B01-7C6B-4D9E-8683-EB7F73C4EF00}
 	EndGlobalSection
 EndGlobal
