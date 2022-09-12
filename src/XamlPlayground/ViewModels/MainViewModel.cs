@@ -18,213 +18,213 @@ using Avalonia.Platform.Storage;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace XamlPlayground.ViewModels
+namespace XamlPlayground.ViewModels;
+
+public partial class MainViewModel : ViewModelBase
 {
-    public partial class MainViewModel : ViewModelBase
+    [ObservableProperty] private ObservableCollection<SampleViewModel> _samples;
+    [ObservableProperty] private TextDocument _xaml;
+    [ObservableProperty] private TextDocument _code;
+    [ObservableProperty] private IControl? _control;
+    [ObservableProperty] private bool _enableAutoRun;
+    [ObservableProperty] private string? _lastErrorMessage;
+    [ObservableProperty] private int _editorFontSize;
+    private bool _update;
+    private (Assembly? Assembly, AssemblyLoadContext? Context)? _previous;
+    private IStorageFile? _openFile;
+
+    public MainViewModel()
     {
-        [ObservableProperty] private ObservableCollection<SampleViewModel> _samples;
-        [ObservableProperty] private TextDocument _xaml;
-        [ObservableProperty] private TextDocument _code;
-        [ObservableProperty] private IControl? _control;
-        [ObservableProperty] private bool _enableAutoRun;
-        [ObservableProperty] private string? _lastErrorMessage;
-        [ObservableProperty] private int _editorFontSize;
-        private bool _update;
-        private (Assembly? Assembly, AssemblyLoadContext? Context)? _previous;
-        private IStorageFile? _openFile;
+        _editorFontSize = 12;
+        _samples = GetSamples(".xml");
+        _enableAutoRun = true;
 
-        public MainViewModel()
+        _xaml = new TextDocument { Text = _samples.FirstOrDefault()?.Xaml };
+        _xaml.TextChanged += async (_, _) => await Run(_xaml.Text, _code?.Text);
+
+        _code = new TextDocument { Text = _samples.FirstOrDefault()?.Code };
+        _code.TextChanged += async (_, _) => await Run(_xaml.Text, _code.Text);
+
+        OpenFileCommand = new AsyncRelayCommand(async () => await OpenFile());
+
+        SaveFileCommand = new AsyncRelayCommand(async () => await SaveFile());
+
+        RunCommand = new AsyncRelayCommand(async () => await Run(_xaml.Text, _code.Text));
+
+        GistCommand = new AsyncRelayCommand<string?>(Gist);
+
+        this.WhenChanged(x => x.Xaml)
+            .DistinctUntilChanged()
+            .Where(x => x is not  null)
+            .Subscribe(XamlChanged);
+
+        this.WhenChanged(x => x.Code)
+            .DistinctUntilChanged()
+            .Where(x => x is not  null)
+            .Subscribe(CodeChanged);
+
+        this.WhenChanged(x => x.EnableAutoRun)
+            .DistinctUntilChanged()
+            .Subscribe(EnableAutoRunChanged);
+
+        async void XamlChanged(TextDocument _)
         {
-            _editorFontSize = 12;
-            _samples = GetSamples(".xml");
-            _enableAutoRun = true;
-
-            _xaml = new TextDocument { Text = _samples.FirstOrDefault()?.Xaml };
-            _xaml.TextChanged += async (_, _) => await Run(_xaml.Text, _code?.Text);
-
-            _code = new TextDocument { Text = _samples.FirstOrDefault()?.Code };
-            _code.TextChanged += async (_, _) => await Run(_xaml.Text, _code.Text);
-
-            OpenFileCommand = new AsyncRelayCommand(async () => await OpenFile());
-
-            SaveFileCommand = new AsyncRelayCommand(async () => await SaveFile());
-
-            RunCommand = new AsyncRelayCommand(async () => await Run(_xaml.Text, _code.Text));
-
-            GistCommand = new AsyncRelayCommand<string?>(Gist);
-
-            this.WhenChanged(x => x.Xaml)
-                .DistinctUntilChanged()
-                .Where(x => x is not  null)
-                .Subscribe(XamlChanged);
-
-            this.WhenChanged(x => x.Code)
-                .DistinctUntilChanged()
-                .Where(x => x is not  null)
-                .Subscribe(CodeChanged);
-
-            this.WhenChanged(x => x.EnableAutoRun)
-                .DistinctUntilChanged()
-                .Subscribe(EnableAutoRunChanged);
-
-            async void XamlChanged(TextDocument _)
+            if (_enableAutoRun && !_update)
             {
-                if (_enableAutoRun && !_update)
-                {
-                    _update = true;
-                    await Run(_xaml.Text, _code.Text);
-                    _update = false;
-                }
+                _update = true;
+                await Run(_xaml.Text, _code.Text);
+                _update = false;
             }
-
-            async void CodeChanged(TextDocument _)
-            {
-                if (_enableAutoRun && !_update)
-                {
-                    _update = true;
-                    await Run(_xaml.Text, _code.Text);
-                    _update = false;
-                }
-            }
-
-            async void EnableAutoRunChanged(bool enableAutoRun)
-            {
-                if (enableAutoRun && !_update)
-                {
-                    _update = true;
-                    await Run(_xaml.Text, _code.Text);
-                    _update = false;
-                }
-            }
-
         }
+
+        async void CodeChanged(TextDocument _)
+        {
+            if (_enableAutoRun && !_update)
+            {
+                _update = true;
+                await Run(_xaml.Text, _code.Text);
+                _update = false;
+            }
+        }
+
+        async void EnableAutoRunChanged(bool enableAutoRun)
+        {
+            if (enableAutoRun && !_update)
+            {
+                _update = true;
+                await Run(_xaml.Text, _code.Text);
+                _update = false;
+            }
+        }
+
+    }
 
 #if ENABLE_CODE
         public bool EnableCode { get; } = true;
 #else
-        public bool EnableCode { get; } = false;
+    public bool EnableCode { get; } = false;
 #endif
 
-        public ICommand RunCommand { get; }
+    public ICommand RunCommand { get; }
 
-        public ICommand GistCommand { get; }
+    public ICommand GistCommand { get; }
 
-        public ICommand OpenFileCommand { get; }
+    public ICommand OpenFileCommand { get; }
 
-        public ICommand SaveFileCommand { get; }
+    public ICommand SaveFileCommand { get; }
 
-        private async Task<(string Xaml, string Code)> GetGistContent(string id)
+    private async Task<(string Xaml, string Code)> GetGistContent(string id)
+    {
+        var client = new GitHubClient(new ProductHeaderValue("XamlPlayground"));
+        var gist = await client.Gist.Get(id);
+        var xaml = gist.Files.FirstOrDefault(x => string.Compare(x.Key, "Main.axaml", StringComparison.OrdinalIgnoreCase) == 0).Value;
+        var code = gist.Files.FirstOrDefault(x => string.Compare(x.Key, "Main.axaml.cs", StringComparison.OrdinalIgnoreCase) == 0).Value;
+        return (xaml?.Content ?? "", code?.Content ?? "");
+    }
+
+    public async Task Gist(string? id)
+    {
+        if (id is null)
         {
-            var client = new GitHubClient(new ProductHeaderValue("XamlPlayground"));
-            var gist = await client.Gist.Get(id);
-            var xaml = gist.Files.FirstOrDefault(x => string.Compare(x.Key, "Main.axaml", StringComparison.OrdinalIgnoreCase) == 0).Value;
-            var code = gist.Files.FirstOrDefault(x => string.Compare(x.Key, "Main.axaml.cs", StringComparison.OrdinalIgnoreCase) == 0).Value;
-            return (xaml?.Content ?? "", code?.Content ?? "");
+            return;
+        }
+        try
+        {
+            var gist = await GetGistContent(id);
+            _xaml.Text = gist.Xaml;
+            _code.Text = gist.Code;
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+        }
+    }
+
+    private string? GetSampleName(string resourceName)
+    {
+        var parts = resourceName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length >= 2)
+        {
+            return $"{parts[parts.Length - 2]}";
         }
 
-        public async Task Gist(string? id)
-        {
-            if (id is null)
-            {
-                return;
-            }
-            try
-            {
-                var gist = await GetGistContent(id);
-                _xaml.Text = gist.Xaml;
-                _code.Text = gist.Code;
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-            }
-        }
+        return null;
+    }
 
-        private string? GetSampleName(string resourceName)
+    private string? LoadResourceString(string name)
+    {
+        var assembly = typeof(MainViewModel).Assembly;
+        using var stream = assembly.GetManifestResourceStream(name);
+        if (stream == null)
         {
-            var parts = resourceName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length >= 2)
-            {
-                return $"{parts[parts.Length - 2]}";
-            }
-
             return null;
         }
+        using var reader = new StreamReader(stream);
+        return reader.ReadToEnd();
+    }
 
-        private string? LoadResourceString(string name)
+    private ObservableCollection<SampleViewModel> GetSamples(string sampleExtension)
+    {
+        var samples = new ObservableCollection<SampleViewModel>();
+        var assembly = typeof(MainViewModel).Assembly;
+        var resourceNames = assembly.GetManifestResourceNames();
+
+        samples.Add(new SampleViewModel("Playground", Templates.s_playground, Templates.s_code, Open));
+
+        foreach (var resourceName in resourceNames)
         {
-            var assembly = typeof(MainViewModel).Assembly;
-            using var stream = assembly.GetManifestResourceStream(name);
-            if (stream == null)
+            if (!resourceName.EndsWith(sampleExtension, StringComparison.OrdinalIgnoreCase))
             {
-                return null;
+                continue;
             }
-            using var reader = new StreamReader(stream);
-            return reader.ReadToEnd();
-        }
 
-        private ObservableCollection<SampleViewModel> GetSamples(string sampleExtension)
-        {
-            var samples = new ObservableCollection<SampleViewModel>();
-            var assembly = typeof(MainViewModel).Assembly;
-            var resourceNames = assembly.GetManifestResourceNames();
-
-            samples.Add(new SampleViewModel("Playground", Templates.s_playground, Templates.s_code, Open));
-
-            foreach (var resourceName in resourceNames)
+            if (LoadResourceString(resourceName) is { } xaml)
             {
-                if (!resourceName.EndsWith(sampleExtension, StringComparison.OrdinalIgnoreCase))
+                if (GetSampleName(resourceName) is { } name)
                 {
-                    continue;
-                }
-
-                if (LoadResourceString(resourceName) is { } xaml)
-                {
-                    if (GetSampleName(resourceName) is { } name)
-                    {
-                        samples.Add(new SampleViewModel(name, xaml, string.Empty, Open));
-                    }
+                    samples.Add(new SampleViewModel(name, xaml, string.Empty, Open));
                 }
             }
-
-            return samples;
         }
 
-        private async Task Open(string xaml, string? code)
+        return samples;
+    }
+
+    private async Task Open(string xaml, string? code)
+    {
+        Control = null;
+        LastErrorMessage = null;
+
+        _update = true;
+
+        Xaml.Text = xaml;
+        Code.Text = code;
+
+        if (_enableAutoRun)
         {
-            Control = null;
-            LastErrorMessage = null;
-
-            _update = true;
-
-            Xaml.Text = xaml;
-            Code.Text = code;
-
-            if (_enableAutoRun)
-            {
-                await Run(_xaml.Text, _code.Text);
-            }
-
-            _update = false;
+            await Run(_xaml.Text, _code.Text);
         }
 
-        private static List<FilePickerFileType> GetFileTypes()
-        {
-            return new List<FilePickerFileType>
-            {
-                StorageService.Axaml,
-                StorageService.Xaml,
-                StorageService.All
-            };
-        }
+        _update = false;
+    }
 
-        private async Task Run(string? xaml, string? code)
+    private static List<FilePickerFileType> GetFileTypes()
+    {
+        return new List<FilePickerFileType>
         {
-            try
-            {
-                _previous?.Context?.Unload();
+            StorageService.Axaml,
+            StorageService.Xaml,
+            StorageService.All
+        };
+    }
 
-                Assembly? scriptAssembly = null;
+    private async Task Run(string? xaml, string? code)
+    {
+        try
+        {
+            _previous?.Context?.Unload();
+
+            Assembly? scriptAssembly = null;
 #if ENABLE_CODE
                 if (code is { } && !string.IsNullOrWhiteSpace(code) && !Compiler.IsBrowser())
                 {
@@ -248,21 +248,60 @@ namespace XamlPlayground.ViewModels
                     }
                 }
 #endif
-                var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(xaml, scriptAssembly);
-                if (control is { })
-                {
-                    Control = control;
-                    LastErrorMessage = null;
-                }
-            }
-            catch (Exception exception)
+            var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(xaml, scriptAssembly);
+            if (control is { })
             {
-                LastErrorMessage = exception.Message;
-                Console.WriteLine(exception);
+                Control = control;
+                LastErrorMessage = null;
             }
         }
+        catch (Exception exception)
+        {
+            LastErrorMessage = exception.Message;
+            Console.WriteLine(exception);
+        }
+    }
 
-        private async Task OpenFile()
+    private async Task OpenFile()
+    {
+        var storageProvider = StorageService.GetStorageProvider();
+        if (storageProvider is null)
+        {
+            return;
+        }
+
+        var result = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            Title = "Open xaml",
+            FileTypeFilter = GetFileTypes(),
+            AllowMultiple = false
+        });
+
+        var file = result.FirstOrDefault();
+        if (file is not null)
+        {
+            if (file.CanOpenRead)
+            {
+                try
+                {
+                    _openFile = file;
+                    await using var stream = await _openFile.OpenReadAsync();
+                    using var reader = new StreamReader(stream);
+                    var fileContent = await reader.ReadToEndAsync();
+                    await Open(fileContent, "");
+                    reader.Dispose();
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                }
+            }
+        }
+    }
+
+    private async Task SaveFile()
+    {
+        if (_openFile is null)
         {
             var storageProvider = StorageService.GetStorageProvider();
             if (storageProvider is null)
@@ -270,26 +309,25 @@ namespace XamlPlayground.ViewModels
                 return;
             }
 
-            var result = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
             {
-                Title = "Open xaml",
-                FileTypeFilter = GetFileTypes(),
-                AllowMultiple = false
+                Title = "Save xaml",
+                FileTypeChoices = GetFileTypes(),
+                SuggestedFileName = Path.GetFileNameWithoutExtension("playground"),
+                DefaultExtension = "axaml",
+                ShowOverwritePrompt = true
             });
 
-            var file = result.FirstOrDefault();
             if (file is not null)
             {
-                if (file.CanOpenRead)
+                if (file.CanOpenWrite)
                 {
                     try
                     {
                         _openFile = file;
-                        await using var stream = await _openFile.OpenReadAsync();
-                        using var reader = new StreamReader(stream);
-                        var fileContent = await reader.ReadToEndAsync();
-                        await Open(fileContent, "");
-                        reader.Dispose();
+                        await using var stream = await _openFile.OpenWriteAsync();
+                        await using var writer = new StreamWriter(stream);
+                        await writer.WriteAsync(_xaml.Text);
                     }
                     catch (Exception exception)
                     {
@@ -298,50 +336,11 @@ namespace XamlPlayground.ViewModels
                 }
             }
         }
-
-        private async Task SaveFile()
+        else if (_openFile.CanOpenWrite)
         {
-            if (_openFile is null)
-            {
-                var storageProvider = StorageService.GetStorageProvider();
-                if (storageProvider is null)
-                {
-                    return;
-                }
-
-                var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
-                {
-                    Title = "Save xaml",
-                    FileTypeChoices = GetFileTypes(),
-                    SuggestedFileName = Path.GetFileNameWithoutExtension("playground"),
-                    DefaultExtension = "axaml",
-                    ShowOverwritePrompt = true
-                });
-
-                if (file is not null)
-                {
-                    if (file.CanOpenWrite)
-                    {
-                        try
-                        {
-                            _openFile = file;
-                            await using var stream = await _openFile.OpenWriteAsync();
-                            await using var writer = new StreamWriter(stream);
-                            await writer.WriteAsync(_xaml.Text);
-                        }
-                        catch (Exception exception)
-                        {
-                            Console.WriteLine(exception);
-                        }
-                    }
-                }
-            }
-            else if (_openFile.CanOpenWrite)
-            {
-                await using var stream = await _openFile.OpenWriteAsync();
-                await using var writer = new StreamWriter(stream);
-                await writer.WriteAsync(_xaml.Text);
-            }
+            await using var stream = await _openFile.OpenWriteAsync();
+            await using var writer = new StreamWriter(stream);
+            await writer.WriteAsync(_xaml.Text);
         }
     }
 }
