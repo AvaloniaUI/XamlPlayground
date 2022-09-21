@@ -16,6 +16,9 @@
     {
         Compiler.BaseUri = NavigationManager.BaseUri;
 
+        Console.WriteLine($"Uri: {NavigationManager.Uri}");
+        Console.WriteLine($"BaseUri: {NavigationManager.BaseUri}");
+
         if (Id is { } && !string.IsNullOrEmpty(Id))
         {
             if (Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime single)
