@@ -23,7 +23,7 @@ public class CSharpTextEditorBehavior : Behavior<TextEditor>
             // TODO: Enable for WebAssembly
             // https://github.com/danipen/TextMateSharp/issues/9
             // https://github.com/AvaloniaUI/AvaloniaEdit/issues/201
-            if (!Compiler.IsBrowser())
+            if (!Utilities.IsBrowser())
             {
                 _registryOptions = new RegistryOptions(ThemeName.LightPlus);
                 _textMateInstallation = _textEditor.InstallTextMate(_registryOptions);

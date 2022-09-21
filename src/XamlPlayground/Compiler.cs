@@ -24,7 +24,7 @@ public static class Compiler
     {
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-        if (IsBrowser())
+        if (Utilities.IsBrowser())
         {
             if (BaseUri is null)
             {
@@ -66,11 +66,6 @@ public static class Compiler
 
             s_references = appDomainReferences.ToArray();
         }
-    }
-
-    public static bool IsBrowser()
-    {
-        return RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"));
     }
 
     public static async Task<(Assembly? Assembly, AssemblyLoadContext? Context)> GetScriptAssembly(string code)
