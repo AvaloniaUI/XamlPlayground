@@ -7,30 +7,50 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
 namespace XamlPlayground;
 
-internal static class Compiler
+public static class Compiler
 {
     private static PortableExecutableReference[]? s_references;
 
-    private static void LoadReferences()
+    public static string? BaseUri { get; set; }
+
+    private static async Task LoadReferences()
     {
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
         if (IsBrowser())
         {
-            var appDomainReferences = new List<PortableExecutableReference>();
-            var client = new HttpClient();
-
-            foreach(var reference in assemblies.Where(x => !x.IsDynamic && !string.IsNullOrWhiteSpace(x.Location)))
+            if (BaseUri is null)
             {
-                Console.WriteLine(reference.Location);
-                var stream = client.GetStreamAsync("/_framework/_bin/" + reference.Location).Result;
-                appDomainReferences.Add(MetadataReference.CreateFromStream(stream));
+                return;
+            }
+            
+            var appDomainReferences = new List<PortableExecutableReference>();
+            var client = new HttpClient 
+            {
+                BaseAddress = new Uri(BaseUri)
+            };
+
+            foreach(var reference in assemblies.Where(x => !x.IsDynamic))
+            {
+                try
+                {
+                    var name = reference.GetName().Name;
+                    var requestUri = new Uri($"/_framework/{name}.dll", UriKind.Relative);
+                    Console.WriteLine($"Loading reference requestUri: {requestUri}, FullName: {reference.FullName}");
+                    var stream = await client.GetStreamAsync(requestUri);
+                    appDomainReferences.Add(MetadataReference.CreateFromStream(stream));
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                }
             }
 
             s_references = appDomainReferences.ToArray();
@@ -53,11 +73,11 @@ internal static class Compiler
         return RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"));
     }
 
-    public static (Assembly? Assembly, AssemblyLoadContext? Context) GetScriptAssembly(string code)
+    public static async Task<(Assembly? Assembly, AssemblyLoadContext? Context)> GetScriptAssembly(string code)
     {
         if (s_references is null)
         {
-            LoadReferences();
+            await LoadReferences();
         }
 
         var stringText = SourceText.From(code, Encoding.UTF8);

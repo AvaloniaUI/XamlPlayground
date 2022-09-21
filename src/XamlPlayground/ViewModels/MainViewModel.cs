@@ -226,14 +226,15 @@ public partial class MainViewModel : ViewModelBase
 
             Assembly? scriptAssembly = null;
 #if ENABLE_CODE
-                if (code is { } && !string.IsNullOrWhiteSpace(code) && !Compiler.IsBrowser())
+                if (code is { } && !string.IsNullOrWhiteSpace(code))
                 {
                     try
                     {
-                        _previous = await Task.Run(() => Compiler.GetScriptAssembly(code));
+                        _previous = await Task.Run(async () => await Compiler.GetScriptAssembly(code));
                         if (_previous?.Assembly is { })
                         {
                             scriptAssembly = _previous?.Assembly;
+                            Console.WriteLine($"Compiled assembly: {scriptAssembly?.Location}");
                         }
                         else
                         {
