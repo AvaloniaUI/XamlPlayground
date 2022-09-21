@@ -226,28 +226,28 @@ public partial class MainViewModel : ViewModelBase
 
             Assembly? scriptAssembly = null;
 #if ENABLE_CODE
-                if (code is { } && !string.IsNullOrWhiteSpace(code))
+            if (code is { } && !string.IsNullOrWhiteSpace(code))
+            {
+                try
                 {
-                    try
+                    _previous = await Task.Run(async () => await Compiler.GetScriptAssembly(code));
+                    if (_previous?.Assembly is { })
                     {
-                        _previous = await Task.Run(async () => await Compiler.GetScriptAssembly(code));
-                        if (_previous?.Assembly is { })
-                        {
-                            scriptAssembly = _previous?.Assembly;
-                            Console.WriteLine($"Compiled assembly: {scriptAssembly?.Location}");
-                        }
-                        else
-                        {
-                            throw new Exception("Failed to compile code.");
-                        }
+                        scriptAssembly = _previous?.Assembly;
+                        Console.WriteLine($"Compiled assembly: {scriptAssembly?.Location}");
                     }
-                    catch (Exception exception)
+                    else
                     {
-                        LastErrorMessage = exception.Message;
-                        Console.WriteLine(exception);
-                        return;
+                        throw new Exception("Failed to compile code.");
                     }
                 }
+                catch (Exception exception)
+                {
+                    LastErrorMessage = exception.Message;
+                    Console.WriteLine(exception);
+                    return;
+                }
+            }
 #endif
             var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(xaml, scriptAssembly);
             if (control is { })
