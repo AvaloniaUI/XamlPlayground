@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <!--<DefineConstants>$(DefineConstants);ENABLE_CODE</DefineConstants>-->
+    <DefineConstants>$(DefineConstants);ENABLE_CODE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
