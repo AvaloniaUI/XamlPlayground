@@ -37,12 +37,14 @@ public static class Compiler
                 BaseAddress = new Uri(BaseUri)
             };
 
+            Console.WriteLine($"Loading references BaseUri: {BaseUri}");
+
             foreach(var reference in assemblies.Where(x => !x.IsDynamic))
             {
                 try
                 {
                     var name = reference.GetName().Name;
-                    var requestUri = new Uri($"/_framework/{name}.dll", UriKind.Relative);
+                    var requestUri = $"/_framework/{name}.dll";
                     Console.WriteLine($"Loading reference requestUri: {requestUri}, FullName: {reference.FullName}");
                     var stream = await client.GetStreamAsync(requestUri);
                     appDomainReferences.Add(MetadataReference.CreateFromStream(stream));
