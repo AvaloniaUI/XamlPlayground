@@ -34,7 +34,7 @@ public static class Compiler
             var appDomainReferences = new List<PortableExecutableReference>();
             var client = new HttpClient 
             {
-                BaseAddress = new Uri(BaseUri)
+                // BaseAddress = new Uri(BaseUri)
             };
 
             Console.WriteLine($"Loading references BaseUri: {BaseUri}");
@@ -44,7 +44,7 @@ public static class Compiler
                 try
                 {
                     var name = reference.GetName().Name;
-                    var requestUri = $"/_framework/{name}.dll";
+                    var requestUri = $"{BaseUri}_framework/{name}.dll";
                     Console.WriteLine($"Loading reference requestUri: {requestUri}, FullName: {reference.FullName}");
                     var stream = await client.GetStreamAsync(requestUri);
                     appDomainReferences.Add(MetadataReference.CreateFromStream(stream));
