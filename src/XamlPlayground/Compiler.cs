@@ -68,8 +68,14 @@ internal static class Compiler
 
         using var ms = new MemoryStream();
         var result = compilation.Emit(ms);
+        var errors = result.Diagnostics.Where(x => x.Severity == DiagnosticSeverity.Error);
         if (!result.Success)
         {
+            foreach (var error in errors)
+            {
+                Console.WriteLine(error);
+            }
+
             return (null, null);
         }
 
