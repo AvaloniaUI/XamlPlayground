@@ -27,6 +27,7 @@
     <PackageReference Include="ReactiveMarbles.PropertyChanged" Version="$(ReactiveMarblesPropertyChangedVersion)" />
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="$(MicrosoftCodeAnalysisVersion)" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(MicrosoftCodeAnalysisVersion)" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="$(MicrosoftCodeAnalysisVersion)" />
   </ItemGroup>
 
   <ItemGroup>
