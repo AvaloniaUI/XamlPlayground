@@ -222,7 +222,8 @@ public partial class MainViewModel : ViewModelBase
     {
         try
         {
-            _previous?.Context?.Unload();
+            // TODO: Unload previously loaded assembly.
+            // _previous?.Context?.Unload();
 
             Assembly? scriptAssembly = null;
 #if ENABLE_CODE
