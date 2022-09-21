@@ -81,7 +81,7 @@
       "System.Linq.Expressions.dll": "sha256-3ulZzGnEOf4icXkSKH3IuRywWqNkpY6wKkQz38NMQPg=",
       "System.Linq.Queryable.dll": "sha256-T93+MXIiqJY9nAXTtFsl+eyVENjU0CQ\/jsM+kxUPFps=",
       "System.Memory.dll": "sha256-2TgMUUzDqKHdMopnpUCE3dzfDkwufk4Jxpb1wL0eYTg=",
-      "System.Net.Http.dll": "sha256-V4yZMtdxzfmsVTB\/zV1DduDK22nw8u2PkCMquoISDZ0=",
+      "System.Net.Http.dll": "sha256-uw6kg8P4QLQXAv3qnuczA+EHNJzuJDBaYB9Ltnqrlow=",
       "System.Net.NameResolution.dll": "sha256-CzYXSbwO\/yZQaYnr\/cpOa5+bQVrKz64\/vCdgyxlZluA=",
       "System.Net.Primitives.dll": "sha256-6C362zkg3KyxCdqhd3tttb+F5jxFypnUIxs65Fvdrec=",
       "System.Net.Sockets.dll": "sha256-uigvsmxSwedfVixxUt7dCx0fAgq0xQFkkVsZx91VCdA=",
@@ -127,7 +127,7 @@
       "System.Xml.XPath.XDocument.dll": "sha256-W6F0xP\/sSV0LuXCrpImxW\/qyP1W7UxX6S1aQkiBYiUc=",
       "TextMateSharp.dll": "sha256-a\/ApaOkHBxfwR9CLSXkKxUX8eRAJ+1gbVuUEiACDiBI=",
       "TextMateSharp.Grammars.dll": "sha256-OMHIUZgpNtXzgEMbFbbZ9UmFuxMuI+ybVhq+BOt98o8=",
-      "XamlPlayground.dll": "sha256-7RMmt9DjcRRoMYIZt+MnmzKN4HUFzdlN0qk31tOXD04=",
+      "XamlPlayground.dll": "sha256-9CkqOuAntjzA0M42OEXElI3IwpefrqMhZpZtW6XxCn4=",
       "XamlPlayground.Web.dll": "sha256-M7Ira\/VLhexwRMhFdq0FPXCRSISQZHdB538Sw8wcPp4="
     },
     "extensions": null,
