@@ -127,8 +127,8 @@
       "System.Xml.XPath.XDocument.dll": "sha256-W6F0xP\/sSV0LuXCrpImxW\/qyP1W7UxX6S1aQkiBYiUc=",
       "TextMateSharp.dll": "sha256-a\/ApaOkHBxfwR9CLSXkKxUX8eRAJ+1gbVuUEiACDiBI=",
       "TextMateSharp.Grammars.dll": "sha256-OMHIUZgpNtXzgEMbFbbZ9UmFuxMuI+ybVhq+BOt98o8=",
-      "XamlPlayground.dll": "sha256-y1jtxkQJpv86YEaTozxRF0Bt+js1UNlE8SM3885neW8=",
-      "XamlPlayground.Web.dll": "sha256-P09oCdkeUjgTsqZg0\/E6SXYk68cxN07ESZ6tP+izg8s="
+      "XamlPlayground.dll": "sha256-7RMmt9DjcRRoMYIZt+MnmzKN4HUFzdlN0qk31tOXD04=",
+      "XamlPlayground.Web.dll": "sha256-Yxn27mvp+U+GJxMYBV44lgRLnfJ7KsyDX5Y07PWNUEc="
     },
     "extensions": null,
     "lazyAssembly": null,
