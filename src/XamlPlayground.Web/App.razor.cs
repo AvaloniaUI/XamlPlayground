@@ -10,7 +10,10 @@ public partial class App
         base.OnParametersSet();
 
         WebAppBuilder.Configure<XamlPlayground.App>()
-            .With( new SkiaOptions { CustomGpuFactory = null }) // Disable GPU
+            .With(new SkiaOptions
+            {
+                CustomGpuFactory = null // Disable GPU
+            })
             .SetupWithSingleViewLifetime();
     }
 }
