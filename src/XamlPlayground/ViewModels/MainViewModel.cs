@@ -235,7 +235,7 @@ public partial class MainViewModel : ViewModelBase
                     if (_previous?.Assembly is { })
                     {
                         scriptAssembly = _previous?.Assembly;
-                        Console.WriteLine($"Compiled assembly: {scriptAssembly?.Location}");
+                        Console.WriteLine($"Compiled assembly: {scriptAssembly?.GetName().Name}");
                     }
                     else
                     {
