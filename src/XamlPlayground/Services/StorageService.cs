@@ -4,7 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 
-namespace XamlPlayground.ViewModels;
+namespace XamlPlayground.Services;
 
 internal static class StorageService
 {

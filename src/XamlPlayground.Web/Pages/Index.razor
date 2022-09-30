@@ -3,6 +3,7 @@
 @page "/{Id}"
 @using Avalonia
 @using Avalonia.Controls.ApplicationLifetimes
+@using XamlPlayground.Services
 @using XamlPlayground.ViewModels
 @using XamlPlayground.Views
 
@@ -14,7 +15,7 @@
 
     protected override async void OnInitialized()
     {
-        Compiler.BaseUri = NavigationManager.BaseUri;
+        CompilerService.BaseUri = NavigationManager.BaseUri;
 
         Console.WriteLine($"Uri: {NavigationManager.Uri}");
         Console.WriteLine($"BaseUri: {NavigationManager.BaseUri}");

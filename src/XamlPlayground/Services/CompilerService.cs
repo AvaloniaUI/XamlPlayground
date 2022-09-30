@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,9 +11,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
-namespace XamlPlayground;
+namespace XamlPlayground.Services;
 
-public static class Compiler
+public static class CompilerService
 {
     private static PortableExecutableReference[]? s_references;
 

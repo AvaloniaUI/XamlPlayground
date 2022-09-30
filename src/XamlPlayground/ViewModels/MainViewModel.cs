@@ -17,6 +17,7 @@ using ReactiveMarbles.PropertyChanged;
 using Avalonia.Platform.Storage;
 using System.Collections.Generic;
 using System.Diagnostics;
+using XamlPlayground.Services;
 
 namespace XamlPlayground.ViewModels;
 
@@ -231,7 +232,7 @@ public partial class MainViewModel : ViewModelBase
             {
                 try
                 {
-                    _previous = await Task.Run(async () => await Compiler.GetScriptAssembly(code));
+                    _previous = await Task.Run(async () => await CompilerService.GetScriptAssembly(code));
                     if (_previous?.Assembly is { })
                     {
                         scriptAssembly = _previous?.Assembly;
