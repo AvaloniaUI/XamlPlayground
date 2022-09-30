@@ -5,10 +5,6 @@
     <RootNamespace>XamlPlayground</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <DefineConstants>$(DefineConstants);ENABLE_CODE</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
