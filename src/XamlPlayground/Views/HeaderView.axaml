@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:XamlPlayground.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="48"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="48"
              x:Class="XamlPlayground.Views.HeaderView"
              x:CompileBindings="True" x:DataType="vm:MainViewModel">
   <Design.DataContext>
@@ -36,13 +36,23 @@
         <Button DockPanel.Dock="Left"
                 Margin="0,0,0,0"
                 Background="#7F8b44ac"
-                Content="Open"
-                Command="{Binding OpenFileCommand}" />
+                Content="Open Xaml"
+                Command="{Binding OpenXamlFileCommand}" />
         <Button DockPanel.Dock="Left"
                 Margin="0,0,0,0"
                 Background="#7F8b44ac"
-                Content="Save"
-                 Command="{Binding SaveFileCommand}" />
+                Content="Save Xaml"
+                Command="{Binding SaveXamlFileCommand}" />
+        <Button DockPanel.Dock="Left"
+                Margin="0,0,0,0"
+                Background="#7F8b44ac"
+                Content="Open Code"
+                Command="{Binding OpenCodeFileCommand}" />
+        <Button DockPanel.Dock="Left"
+                Margin="0,0,0,0"
+                Background="#7F8b44ac"
+                Content="Save Code"
+                Command="{Binding SaveCodeFileCommand}" />
         <Button DockPanel.Dock="Left"
                 Margin="0,0,0,0"
                 Background="#7F8b44ac"

@@ -32,7 +32,8 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private int _editorFontSize;
     private bool _update;
     private (Assembly? Assembly, AssemblyLoadContext? Context)? _previous;
-    private IStorageFile? _openFile;
+    private IStorageFile? _openXamlFile;
+    private IStorageFile? _openCodeFile;
 
     public MainViewModel()
     {
@@ -46,9 +47,13 @@ public partial class MainViewModel : ViewModelBase
         _code = new TextDocument { Text = _samples.FirstOrDefault()?.Code };
         _code.TextChanged += async (_, _) => await Run(_xaml.Text, _code.Text);
 
-        OpenFileCommand = new AsyncRelayCommand(async () => await OpenFile());
+        OpenXamlFileCommand = new AsyncRelayCommand(async () => await OpenXamlFile());
 
-        SaveFileCommand = new AsyncRelayCommand(async () => await SaveFile());
+        SaveXamlFileCommand = new AsyncRelayCommand(async () => await SaveXamlFile());
+
+        OpenCodeFileCommand = new AsyncRelayCommand(async () => await OpenCodeFile());
+
+        SaveCodeFileCommand = new AsyncRelayCommand(async () => await SaveCodeFile());
 
         RunCommand = new AsyncRelayCommand(async () => await Run(_xaml.Text, _code.Text));
 
@@ -104,9 +109,13 @@ public partial class MainViewModel : ViewModelBase
 
     public ICommand GistCommand { get; }
 
-    public ICommand OpenFileCommand { get; }
+    public ICommand OpenXamlFileCommand { get; }
 
-    public ICommand SaveFileCommand { get; }
+    public ICommand SaveXamlFileCommand { get; }
+
+    public ICommand OpenCodeFileCommand { get; }
+
+    public ICommand SaveCodeFileCommand { get; }
 
     private async Task<(string Xaml, string Code)> GetGistContent(string id)
     {
@@ -164,7 +173,7 @@ public partial class MainViewModel : ViewModelBase
         var assembly = typeof(MainViewModel).Assembly;
         var resourceNames = assembly.GetManifestResourceNames();
 
-        samples.Add(new SampleViewModel("Playground", Templates.s_xaml, Templates.s_code, Open));
+        samples.Add(new SampleViewModel("Code", Templates.s_xaml, Templates.s_code, Open));
 
         foreach (var resourceName in resourceNames)
         {
@@ -203,12 +212,21 @@ public partial class MainViewModel : ViewModelBase
         _update = false;
     }
 
-    private static List<FilePickerFileType> GetFileTypes()
+    private static List<FilePickerFileType> GetXamlFileTypes()
     {
         return new List<FilePickerFileType>
         {
             StorageService.Axaml,
             StorageService.Xaml,
+            StorageService.All
+        };
+    }
+
+    private static List<FilePickerFileType> GetCodeFileTypes()
+    {
+        return new List<FilePickerFileType>
+        {
+            StorageService.CSharp,
             StorageService.All
         };
     }
@@ -221,7 +239,7 @@ public partial class MainViewModel : ViewModelBase
             // _previous?.Context?.Unload();
 
             Assembly? scriptAssembly = null;
-#if ENABLE_CODE
+
             if (code is { } && !string.IsNullOrWhiteSpace(code))
             {
                 try
@@ -244,7 +262,7 @@ public partial class MainViewModel : ViewModelBase
                     return;
                 }
             }
-#endif
+
             var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(xaml, scriptAssembly);
             if (control is { })
             {
@@ -259,7 +277,7 @@ public partial class MainViewModel : ViewModelBase
         }
     }
 
-    private async Task OpenFile()
+    private async Task OpenXamlFile()
     {
         var storageProvider = StorageService.GetStorageProvider();
         if (storageProvider is null)
@@ -270,7 +288,7 @@ public partial class MainViewModel : ViewModelBase
         var result = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
             Title = "Open xaml",
-            FileTypeFilter = GetFileTypes(),
+            FileTypeFilter = GetXamlFileTypes(),
             AllowMultiple = false
         });
 
@@ -281,11 +299,11 @@ public partial class MainViewModel : ViewModelBase
             {
                 try
                 {
-                    _openFile = file;
-                    await using var stream = await _openFile.OpenReadAsync();
+                    _openXamlFile = file;
+                    await using var stream = await _openXamlFile.OpenReadAsync();
                     using var reader = new StreamReader(stream);
                     var fileContent = await reader.ReadToEndAsync();
-                    await Open(fileContent, "");
+                    await Open(fileContent, _code.Text);
                     reader.Dispose();
                 }
                 catch (Exception exception)
@@ -296,9 +314,9 @@ public partial class MainViewModel : ViewModelBase
         }
     }
 
-    private async Task SaveFile()
+    private async Task SaveXamlFile()
     {
-        if (_openFile is null)
+        if (_openXamlFile is null)
         {
             var storageProvider = StorageService.GetStorageProvider();
             if (storageProvider is null)
@@ -309,7 +327,7 @@ public partial class MainViewModel : ViewModelBase
             var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
             {
                 Title = "Save xaml",
-                FileTypeChoices = GetFileTypes(),
+                FileTypeChoices = GetXamlFileTypes(),
                 SuggestedFileName = Path.GetFileNameWithoutExtension("playground"),
                 DefaultExtension = "axaml",
                 ShowOverwritePrompt = true
@@ -321,8 +339,8 @@ public partial class MainViewModel : ViewModelBase
                 {
                     try
                     {
-                        _openFile = file;
-                        await using var stream = await _openFile.OpenWriteAsync();
+                        _openXamlFile = file;
+                        await using var stream = await _openXamlFile.OpenWriteAsync();
                         await using var writer = new StreamWriter(stream);
                         await writer.WriteAsync(_xaml.Text);
                     }
@@ -333,11 +351,93 @@ public partial class MainViewModel : ViewModelBase
                 }
             }
         }
-        else if (_openFile.CanOpenWrite)
+        else if (_openXamlFile.CanOpenWrite)
         {
-            await using var stream = await _openFile.OpenWriteAsync();
+            await using var stream = await _openXamlFile.OpenWriteAsync();
             await using var writer = new StreamWriter(stream);
             await writer.WriteAsync(_xaml.Text);
+        }
+    }
+
+    private async Task OpenCodeFile()
+    {
+        var storageProvider = StorageService.GetStorageProvider();
+        if (storageProvider is null)
+        {
+            return;
+        }
+
+        var result = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            Title = "Open code",
+            FileTypeFilter = GetCodeFileTypes(),
+            AllowMultiple = false
+        });
+
+        var file = result.FirstOrDefault();
+        if (file is not null)
+        {
+            if (file.CanOpenRead)
+            {
+                try
+                {
+                    _openCodeFile = file;
+                    await using var stream = await _openCodeFile.OpenReadAsync();
+                    using var reader = new StreamReader(stream);
+                    var fileContent = await reader.ReadToEndAsync();
+                    await Open(_xaml.Text, fileContent);
+                    reader.Dispose();
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                }
+            }
+        }
+    }
+
+    private async Task SaveCodeFile()
+    {
+        if (_openCodeFile is null)
+        {
+            var storageProvider = StorageService.GetStorageProvider();
+            if (storageProvider is null)
+            {
+                return;
+            }
+
+            var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+            {
+                Title = "Save code",
+                FileTypeChoices = GetCodeFileTypes(),
+                SuggestedFileName = Path.GetFileNameWithoutExtension("playground"),
+                DefaultExtension = "cs",
+                ShowOverwritePrompt = true
+            });
+
+            if (file is not null)
+            {
+                if (file.CanOpenWrite)
+                {
+                    try
+                    {
+                        _openCodeFile = file;
+                        await using var stream = await _openCodeFile.OpenWriteAsync();
+                        await using var writer = new StreamWriter(stream);
+                        await writer.WriteAsync(_code.Text);
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine(exception);
+                    }
+                }
+            }
+        }
+        else if (_openCodeFile.CanOpenWrite)
+        {
+            await using var stream = await _openCodeFile.OpenWriteAsync();
+            await using var writer = new StreamWriter(stream);
+            await writer.WriteAsync(_code.Text);
         }
     }
 }
