@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
 using System.Threading.Tasks;
@@ -10,13 +9,12 @@ using System.Windows.Input;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Octokit;
-using AvaloniaEdit.Document;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ReactiveMarbles.PropertyChanged;
 using Avalonia.Platform.Storage;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Reactive.Linq;
+using ReactiveMarbles.PropertyChanged;
 using XamlPlayground.Services;
 
 namespace XamlPlayground.ViewModels;
@@ -24,8 +22,7 @@ namespace XamlPlayground.ViewModels;
 public partial class MainViewModel : ViewModelBase
 {
     [ObservableProperty] private ObservableCollection<SampleViewModel> _samples;
-    [ObservableProperty] private TextDocument _xaml;
-    [ObservableProperty] private TextDocument _code;
+    [ObservableProperty] private SampleViewModel? _currentSample;
     [ObservableProperty] private IControl? _control;
     [ObservableProperty] private bool _enableAutoRun;
     [ObservableProperty] private string? _lastErrorMessage;
@@ -41,68 +38,18 @@ public partial class MainViewModel : ViewModelBase
         _samples = GetSamples(".xml");
         _enableAutoRun = true;
 
-        _xaml = new TextDocument { Text = _samples.FirstOrDefault()?.Xaml };
-        _xaml.TextChanged += async (_, _) => await Run(_xaml.Text, _code?.Text);
-
-        _code = new TextDocument { Text = _samples.FirstOrDefault()?.Code };
-        _code.TextChanged += async (_, _) => await Run(_xaml.Text, _code.Text);
-
         OpenXamlFileCommand = new AsyncRelayCommand(async () => await OpenXamlFile());
-
         SaveXamlFileCommand = new AsyncRelayCommand(async () => await SaveXamlFile());
-
         OpenCodeFileCommand = new AsyncRelayCommand(async () => await OpenCodeFile());
-
         SaveCodeFileCommand = new AsyncRelayCommand(async () => await SaveCodeFile());
-
-        RunCommand = new AsyncRelayCommand(async () => await Run(_xaml.Text, _code.Text));
-
+        RunCommand = new AsyncRelayCommand(async () => await Run(_currentSample?.Xaml.Text, _currentSample?.Code.Text));
         GistCommand = new AsyncRelayCommand<string?>(Gist);
 
-        this.WhenChanged(x => x.Xaml)
+        this.WhenChanged(x => x.CurrentSample)
             .DistinctUntilChanged()
-            .Where(x => x is not  null)
-            .Subscribe(XamlChanged);
+            .Subscribe(CurrentSampleChanged);
 
-        this.WhenChanged(x => x.Code)
-            .DistinctUntilChanged()
-            .Where(x => x is not  null)
-            .Subscribe(CodeChanged);
-
-        this.WhenChanged(x => x.EnableAutoRun)
-            .DistinctUntilChanged()
-            .Subscribe(EnableAutoRunChanged);
-
-        async void XamlChanged(TextDocument _)
-        {
-            if (_enableAutoRun && !_update)
-            {
-                _update = true;
-                await Run(_xaml.Text, _code.Text);
-                _update = false;
-            }
-        }
-
-        async void CodeChanged(TextDocument _)
-        {
-            if (_enableAutoRun && !_update)
-            {
-                _update = true;
-                await Run(_xaml.Text, _code.Text);
-                _update = false;
-            }
-        }
-
-        async void EnableAutoRunChanged(bool enableAutoRun)
-        {
-            if (enableAutoRun && !_update)
-            {
-                _update = true;
-                await Run(_xaml.Text, _code.Text);
-                _update = false;
-            }
-        }
-
+        CurrentSample = _samples.FirstOrDefault();
     }
 
     public ICommand RunCommand { get; }
@@ -117,12 +64,24 @@ public partial class MainViewModel : ViewModelBase
 
     public ICommand SaveCodeFileCommand { get; }
 
+    private async void CurrentSampleChanged(SampleViewModel? sampleViewModel)
+    {
+        if (sampleViewModel is { })
+        {
+            await Open(sampleViewModel);
+        }
+    }
+
     private async Task<(string Xaml, string Code)> GetGistContent(string id)
     {
         var client = new GitHubClient(new ProductHeaderValue("XamlPlayground"));
         var gist = await client.Gist.Get(id);
-        var xaml = gist.Files.FirstOrDefault(x => string.Compare(x.Key, "Main.axaml", StringComparison.OrdinalIgnoreCase) == 0).Value;
-        var code = gist.Files.FirstOrDefault(x => string.Compare(x.Key, "Main.axaml.cs", StringComparison.OrdinalIgnoreCase) == 0).Value;
+        var xaml = gist.Files
+            .FirstOrDefault(x => string.Compare(x.Key, "Main.axaml", StringComparison.OrdinalIgnoreCase) == 0)
+            .Value;
+        var code = gist.Files
+            .FirstOrDefault(x => string.Compare(x.Key, "Main.axaml.cs", StringComparison.OrdinalIgnoreCase) == 0)
+            .Value;
         return (xaml?.Content ?? "", code?.Content ?? "");
     }
 
@@ -135,8 +94,10 @@ public partial class MainViewModel : ViewModelBase
         try
         {
             var (xaml, code) = await GetGistContent(id);
-            _xaml.Text = xaml;
-            _code.Text = code;
+            var sample = new SampleViewModel("Gist", xaml, code, Open, AutoRun);
+            _samples.Insert(0, sample);
+            CurrentSample = sample;
+            await AutoRun(CurrentSample);
         }
         catch (Exception exception)
         {
@@ -147,12 +108,7 @@ public partial class MainViewModel : ViewModelBase
     private string? GetSampleName(string resourceName)
     {
         var parts = resourceName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-        if (parts.Length >= 2)
-        {
-            return $"{parts[parts.Length - 2]}";
-        }
-
-        return null;
+        return parts.Length >= 2 ? $"{parts[^2]}" : null;
     }
 
     private string? LoadResourceString(string name)
@@ -173,7 +129,7 @@ public partial class MainViewModel : ViewModelBase
         var assembly = typeof(MainViewModel).Assembly;
         var resourceNames = assembly.GetManifestResourceNames();
 
-        samples.Add(new SampleViewModel("Code", Templates.s_xaml, Templates.s_code, Open));
+        samples.Add(new SampleViewModel("Code", Templates.s_xaml, Templates.s_code, Open, AutoRun));
 
         foreach (var resourceName in resourceNames)
         {
@@ -186,7 +142,7 @@ public partial class MainViewModel : ViewModelBase
             {
                 if (GetSampleName(resourceName) is { } name)
                 {
-                    samples.Add(new SampleViewModel(name, xaml, string.Empty, Open));
+                    samples.Add(new SampleViewModel(name, xaml, string.Empty, Open, AutoRun));
                 }
             }
         }
@@ -194,19 +150,18 @@ public partial class MainViewModel : ViewModelBase
         return samples;
     }
 
-    private async Task Open(string xaml, string? code)
+    private async Task Open(SampleViewModel sampleViewModel)
     {
         Control = null;
         LastErrorMessage = null;
 
         _update = true;
 
-        Xaml.Text = xaml;
-        Code.Text = code;
+        CurrentSample = sampleViewModel;
 
         if (_enableAutoRun)
         {
-            await Run(_xaml.Text, _code.Text);
+            await Run(sampleViewModel.Xaml.Text, sampleViewModel.Code.Text);
         }
 
         _update = false;
@@ -229,6 +184,16 @@ public partial class MainViewModel : ViewModelBase
             StorageService.CSharp,
             StorageService.All
         };
+    }
+
+    private async Task AutoRun(SampleViewModel sampleViewModel)
+    {
+        if (EnableAutoRun && !_update)
+        {
+            _update = true;
+            await Run(sampleViewModel.Xaml.Text, sampleViewModel.Code.Text);
+            _update = false;
+        }
     }
 
     private async Task Run(string? xaml, string? code)
@@ -279,6 +244,11 @@ public partial class MainViewModel : ViewModelBase
 
     private async Task OpenXamlFile()
     {
+        if (CurrentSample is null)
+        {
+            return;
+        }
+
         var storageProvider = StorageService.GetStorageProvider();
         if (storageProvider is null)
         {
@@ -303,7 +273,8 @@ public partial class MainViewModel : ViewModelBase
                     await using var stream = await _openXamlFile.OpenReadAsync();
                     using var reader = new StreamReader(stream);
                     var fileContent = await reader.ReadToEndAsync();
-                    await Open(fileContent, _code.Text);
+                    CurrentSample.Xaml.Text = fileContent;
+                    await AutoRun(CurrentSample);
                     reader.Dispose();
                 }
                 catch (Exception exception)
@@ -316,6 +287,11 @@ public partial class MainViewModel : ViewModelBase
 
     private async Task SaveXamlFile()
     {
+        if (CurrentSample is null)
+        {
+            return;
+        }
+
         if (_openXamlFile is null)
         {
             var storageProvider = StorageService.GetStorageProvider();
@@ -342,7 +318,7 @@ public partial class MainViewModel : ViewModelBase
                         _openXamlFile = file;
                         await using var stream = await _openXamlFile.OpenWriteAsync();
                         await using var writer = new StreamWriter(stream);
-                        await writer.WriteAsync(_xaml.Text);
+                        await writer.WriteAsync(CurrentSample.Xaml.Text);
                     }
                     catch (Exception exception)
                     {
@@ -355,12 +331,17 @@ public partial class MainViewModel : ViewModelBase
         {
             await using var stream = await _openXamlFile.OpenWriteAsync();
             await using var writer = new StreamWriter(stream);
-            await writer.WriteAsync(_xaml.Text);
+            await writer.WriteAsync(CurrentSample.Xaml.Text);
         }
     }
 
     private async Task OpenCodeFile()
     {
+        if (CurrentSample is null)
+        {
+            return;
+        }
+
         var storageProvider = StorageService.GetStorageProvider();
         if (storageProvider is null)
         {
@@ -385,7 +366,8 @@ public partial class MainViewModel : ViewModelBase
                     await using var stream = await _openCodeFile.OpenReadAsync();
                     using var reader = new StreamReader(stream);
                     var fileContent = await reader.ReadToEndAsync();
-                    await Open(_xaml.Text, fileContent);
+                    CurrentSample.Code.Text = fileContent;
+                    await AutoRun(CurrentSample);
                     reader.Dispose();
                 }
                 catch (Exception exception)
@@ -398,6 +380,11 @@ public partial class MainViewModel : ViewModelBase
 
     private async Task SaveCodeFile()
     {
+        if (CurrentSample is null)
+        {
+            return;
+        }
+
         if (_openCodeFile is null)
         {
             var storageProvider = StorageService.GetStorageProvider();
@@ -424,7 +411,7 @@ public partial class MainViewModel : ViewModelBase
                         _openCodeFile = file;
                         await using var stream = await _openCodeFile.OpenWriteAsync();
                         await using var writer = new StreamWriter(stream);
-                        await writer.WriteAsync(_code.Text);
+                        await writer.WriteAsync(CurrentSample.Code.Text);
                     }
                     catch (Exception exception)
                     {
@@ -437,7 +424,7 @@ public partial class MainViewModel : ViewModelBase
         {
             await using var stream = await _openCodeFile.OpenWriteAsync();
             await using var writer = new StreamWriter(stream);
-            await writer.WriteAsync(_code.Text);
+            await writer.WriteAsync(CurrentSample.Code.Text);
         }
     }
 }

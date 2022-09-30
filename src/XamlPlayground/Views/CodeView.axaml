@@ -45,7 +45,7 @@
       </TabControl.Styles>
       <TabItem Header="Xaml">
         <ae:TextEditor Margin="0"
-                       Document="{Binding Xaml}"
+                       Document="{Binding CurrentSample.Xaml}"
                        Background="WhiteSmoke"
                        HorizontalScrollBarVisibility="Auto"
                        VerticalScrollBarVisibility="Auto"
@@ -61,7 +61,7 @@
       </TabItem>
       <TabItem Header="Code">
         <ae:TextEditor Margin="0"
-                       Document="{Binding Code}"
+                       Document="{Binding CurrentSample.Code}"
                        Background="WhiteSmoke"
                        HorizontalScrollBarVisibility="Auto"
                        VerticalScrollBarVisibility="Auto"
