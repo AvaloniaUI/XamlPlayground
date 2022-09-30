@@ -9,10 +9,11 @@
 
 XamlPlayground uses GitHub [gists](https://gist.github.com/) to publicly share your creations.
 
-The gist must contain a file named *Main.axaml*. 
+The gist must contain a file named *Main.axaml* and optional *Main.axaml.cs* with code behind. 
 
 To share a xaml with others you should do the following:
 * Create a gist with *Main.xaml*.
+* Create an optional gist with *Main.axaml.cs*
 * Append the gist ID to XamlPlayground URL. For example, to view [gist.github.com/6b6f586cecb37ada37da24c8e1fe408b](https://gist.github.com/6b6f586cecb37ada37da24c8e1fe408b) in XamlPlayground, use the URL [wieslawsoltes.github.io/XamlPlayground/6b6f586cecb37ada37da24c8e1fe408b](https://wieslawsoltes.github.io/XamlPlayground//6b6f586cecb37ada37da24c8e1fe408b).
 
 Example gists:
