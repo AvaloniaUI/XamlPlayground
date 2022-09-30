@@ -28,6 +28,13 @@ internal static class StorageService
         MimeTypes = new[] { "application/axaml" }
     };
 
+    public static FilePickerFileType CSharp { get; } = new("C#")
+    {
+        Patterns = new[] { "*.cs" },
+        AppleUniformTypeIdentifiers = new[] { "public.csharp-source" },
+        MimeTypes = new[] { "text/plain" }
+    };
+
     public static IStorageProvider? GetStorageProvider()
     {
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } window })
