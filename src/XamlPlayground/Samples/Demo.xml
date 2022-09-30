@@ -1,0 +1,92 @@
+﻿<Grid
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Grid>
+    <StackPanel Margin="10,10,-10,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <StackPanel Orientation="Horizontal">
+        <StackPanel>
+          <TextBlock Text="Default Button" FontSize="18" TextAlignment="Center" Margin="0,0,0,10"/>
+          <Button Content="Enabled"/>
+          <Button Content="Disabled" IsEnabled="False" Margin="0,5,0,0"/>
+        </StackPanel>
+        <StackPanel Margin="20,0">
+          <TextBlock Text="Toggle Button" FontSize="18" TextAlignment="Center" Margin="0,0,0,10"/>
+          <ToggleButton Content="Enabled"/>
+          <ToggleButton Content="Checked" IsChecked="True" Margin="0,5,0,0"/>
+          <ToggleButton Content="Disabled" IsEnabled="False" Margin="0,5,0,0"/>
+          <ToggleButton Content="Checked" IsChecked="True" IsEnabled="False" Margin="0,5,0,0"/>
+        </StackPanel>
+        <StackPanel>
+          <TextBlock Text="Toggle Switch" FontSize="18" TextAlignment="Center" Margin="0,0,0,10"/>
+          <ToggleSwitch Content="Enabled"/>
+          <ToggleSwitch Content="Checked" IsChecked="True" Margin="0,5,0,0"/>
+          <ToggleSwitch Content="Disabled" IsEnabled="False" Margin="0,5,0,0"/>
+          <ToggleSwitch Content="Checked" IsChecked="True" IsEnabled="False" Margin="0,5,0,0"/>
+        </StackPanel>
+        <StackPanel Margin="20,0">
+          <TextBlock Text="CheckBox" FontSize="18" TextAlignment="Center" Margin="0,0,0,10"/>
+          <CheckBox Content="Enabled"/>
+          <CheckBox Content="Checked" IsChecked="True" Margin="0,5,0,0"/>
+          <CheckBox Content="3-State" IsChecked="{x:Null}" IsThreeState="True" Margin="0,5,0,0"/>
+          <CheckBox Content="Disabled" IsEnabled="False" Margin="0,5,0,0"/>
+          <CheckBox Content="Checked" IsChecked="True" IsEnabled="False" Margin="0,5,0,0"/>
+          <CheckBox Content="3-State" IsChecked="{x:Null}" IsThreeState="True" IsEnabled="False" Margin="0,5,0,0"/>
+        </StackPanel>
+        <StackPanel Margin="20,0">
+          <TextBlock Text="RadioButton" FontSize="18" TextAlignment="Center" Margin="0,0,0,10"/>
+          <StackPanel>
+            <RadioButton Content="Enabled"/>
+            <RadioButton Content="Checked" IsChecked="True" Margin="0,5,0,0"/>
+          </StackPanel>
+          <StackPanel>
+            <RadioButton Content="Disabled" IsEnabled="False" Margin="0,5,0,0"/>
+            <RadioButton Content="Checked" IsChecked="True" IsEnabled="False" Margin="0,5,0,0"/>
+          </StackPanel>
+        </StackPanel>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+        <StackPanel>
+          <TextBlock Text="TextBox" FontSize="18" TextAlignment="Center" Margin="0,0,0,10"/>
+          <TextBox Text="Enabled"/>
+          <TextBox Watermark="Placeholder" Margin="0,5,0,0"/>
+          <TextBox Text="Disabled" IsEnabled="False" Margin="0,5,0,0"/>
+        </StackPanel>
+        <StackPanel Margin="20,0">
+          <TextBlock Text="PasswordBox" FontSize="18" TextAlignment="Center" Margin="0,0,0,10"/>
+          <TextBox PasswordChar="*" Text="Enabled"/>
+          <TextBox PasswordChar="*" Watermark="Placeholder" Margin="0,5,0,0"/>
+          <TextBox PasswordChar="*" Text="Disabled" IsEnabled="False" Margin="0,5,0,0"/>
+        </StackPanel>
+        <StackPanel>
+          <TextBlock Text="Slider" FontSize="18" TextAlignment="Center" Margin="0,0,0,10"/>
+          <Slider Value="0" MinWidth="120"/>
+          <Slider Value="1" TickPlacement="Outside" Margin="0,5,0,0"/>
+          <Slider Value="2" IsDirectionReversed="True" TickPlacement="BottomRight" Margin="0,5,0,0"/>
+          <Slider Value="5" IsEnabled="False" Margin="0,5,0,0"/>
+        </StackPanel>
+        <StackPanel Margin="20,0">
+          <TextBlock Text="ListBox" FontSize="18" TextAlignment="Center" Margin="0,0,0,10"/>
+          <ListBox BorderThickness="1">
+            <ListBoxItem Content="Unselected"/>
+            <ListBoxItem Content="Selected"/>
+            <ListBoxItem Content="Disabled" IsEnabled="False"/>
+          </ListBox>
+        </StackPanel>
+        <StackPanel>
+          <TextBlock Text="TreeView" FontSize="18" TextAlignment="Center" Margin="0,0,0,10"/>
+          <TreeView BorderThickness="1">
+            <TreeViewItem Header="Expanded" IsExpanded="True">
+              <TreeViewItem Header="Child"/>
+            </TreeViewItem>
+            <TreeViewItem Header="Collapsed">
+              <TreeViewItem Header="Child"/>
+            </TreeViewItem>
+            <TreeViewItem Header="Disabled" IsEnabled="False">
+              <TreeViewItem Header="Child"/>
+            </TreeViewItem>
+          </TreeView>
+        </StackPanel>
+      </StackPanel>
+    </StackPanel>
+  </Grid>
+</Grid>
