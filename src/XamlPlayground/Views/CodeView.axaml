@@ -38,9 +38,6 @@
         <Style Selector="TabControl">
           <Setter Property="Padding" Value="0" />
         </Style>
-        <Style Selector="TabControl /template/ ItemsPresenter#PART_ItemsPresenter">
-          <Setter Property="IsVisible" Value="{Binding EnableCode}" />
-        </Style>
         <Style Selector="TabItem">
           <Setter Property="Padding" Value="6"/>
           <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}" />
@@ -62,7 +59,7 @@
           </i:Interaction.Behaviors>
         </ae:TextEditor>
       </TabItem>
-      <TabItem Header="Code" IsVisible="{Binding EnableCode}">
+      <TabItem Header="Code">
         <ae:TextEditor Margin="0"
                        Document="{Binding Code}"
                        Background="WhiteSmoke"

@@ -100,12 +100,6 @@ public partial class MainViewModel : ViewModelBase
 
     }
 
-#if ENABLE_CODE
-        public bool EnableCode { get; } = true;
-#else
-    public bool EnableCode { get; } = false;
-#endif
-
     public ICommand RunCommand { get; }
 
     public ICommand GistCommand { get; }
