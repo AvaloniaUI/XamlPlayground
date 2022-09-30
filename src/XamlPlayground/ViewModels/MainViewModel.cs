@@ -125,9 +125,9 @@ public partial class MainViewModel : ViewModelBase
         }
         try
         {
-            var gist = await GetGistContent(id);
-            _xaml.Text = gist.Xaml;
-            _code.Text = gist.Code;
+            var (xaml, code) = await GetGistContent(id);
+            _xaml.Text = xaml;
+            _code.Text = code;
         }
         catch (Exception exception)
         {
