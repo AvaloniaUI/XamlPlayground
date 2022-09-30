@@ -31,15 +31,10 @@ internal static class Templates
         "    }\n" +
         "}\n";
 
-    public static string s_playground = 
-        "<Grid xmlns=\"https://github.com/avaloniaui\"\n" +
-#if ENABLE_CODE
-            "      xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n" +
-            "      x:Class=\"XamlPlayground.Views.SampleView\">\n" +
-            "    <Button Name=\"button\" Content=\"Click Me\" HorizontalAlignment=\"Center\" />\n" +
-#else
-        "      xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">\n" +
-        "\n" +
-#endif
-        "</Grid>";
+    public static string s_xaml = 
+        "<UserControl xmlns=\"https://github.com/avaloniaui\"\n" +
+        "             xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n" +
+        "             x:Class=\"XamlPlayground.Views.SampleView\">\n" +
+        "    <Button Name=\"button\" Content=\"Click Me\" HorizontalAlignment=\"Center\" />\n" +
+        "</UserControl>";
 }

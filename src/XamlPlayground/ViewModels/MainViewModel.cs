@@ -164,7 +164,7 @@ public partial class MainViewModel : ViewModelBase
         var assembly = typeof(MainViewModel).Assembly;
         var resourceNames = assembly.GetManifestResourceNames();
 
-        samples.Add(new SampleViewModel("Playground", Templates.s_playground, Templates.s_code, Open));
+        samples.Add(new SampleViewModel("Playground", Templates.s_xaml, Templates.s_code, Open));
 
         foreach (var resourceName in resourceNames)
         {
