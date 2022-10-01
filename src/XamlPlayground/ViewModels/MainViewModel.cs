@@ -209,11 +209,12 @@ public partial class MainViewModel : ViewModelBase
                 {
                     _previous?.Context?.Unload();
                     _previous = null;
+
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
                 }
             }
  
-            Assembly? scriptAssembly = null;
-
             if (code is { } && !string.IsNullOrWhiteSpace(code))
             {
                 try
@@ -221,8 +222,7 @@ public partial class MainViewModel : ViewModelBase
                     _previous = await Task.Run(async () => await CompilerService.GetScriptAssembly(code));
                     if (_previous?.Assembly is { })
                     {
-                        scriptAssembly = _previous?.Assembly;
-                        Console.WriteLine($"Compiled assembly: {scriptAssembly?.GetName().Name}");
+                        Console.WriteLine($"Compiled assembly: {_previous?.Assembly?.GetName().Name}");
                     }
                     else
                     {
@@ -237,7 +237,7 @@ public partial class MainViewModel : ViewModelBase
                 }
             }
 
-            var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(xaml, scriptAssembly);
+            var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(xaml);
             if (control is { })
             {
                 Control = control;
