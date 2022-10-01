@@ -215,6 +215,8 @@ public partial class MainViewModel : ViewModelBase
                 }
             }
  
+            Assembly? scriptAssembly = null;
+
             if (code is { } && !string.IsNullOrWhiteSpace(code))
             {
                 try
@@ -222,7 +224,8 @@ public partial class MainViewModel : ViewModelBase
                     _previous = await Task.Run(async () => await CompilerService.GetScriptAssembly(code));
                     if (_previous?.Assembly is { })
                     {
-                        Console.WriteLine($"Compiled assembly: {_previous?.Assembly?.GetName().Name}");
+                        scriptAssembly = _previous?.Assembly;
+                        Console.WriteLine($"Compiled assembly: {scriptAssembly?.GetName().Name}");
                     }
                     else
                     {
@@ -237,7 +240,7 @@ public partial class MainViewModel : ViewModelBase
                 }
             }
 
-            var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(xaml);
+            var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(xaml, scriptAssembly);
             if (control is { })
             {
                 Control = control;
