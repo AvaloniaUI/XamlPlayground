@@ -204,6 +204,7 @@ public partial class MainViewModel : ViewModelBase
 
             if (!Utilities.IsBrowser())
             {
+                // TODO: Unload previously loaded assembly.
                 if (_previous is { })
                 {
                     _previous?.Context?.Unload();
