@@ -200,9 +200,17 @@ public partial class MainViewModel : ViewModelBase
     {
         try
         {
-            // TODO: Unload previously loaded assembly.
-            // _previous?.Context?.Unload();
+            Control = null;
 
+            if (!Utilities.IsBrowser())
+            {
+                if (_previous is { })
+                {
+                    _previous?.Context?.Unload();
+                    _previous = null;
+                }
+            }
+ 
             Assembly? scriptAssembly = null;
 
             if (code is { } && !string.IsNullOrWhiteSpace(code))
