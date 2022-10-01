@@ -35,21 +35,23 @@ public class TextEditorBehavior : Behavior<TextEditor>
     {
         base.OnAttached();
 
-        if (AssociatedObject is { } textEditor)
+        if (AssociatedObject is not { } textEditor)
         {
-            _textEditor = textEditor;
+            return;
+        }
 
-            if (UseTextMate)
-            {
-                _registryOptions = new RegistryOptions(ThemeName.LightPlus);
-                _textMateInstallation = _textEditor.InstallTextMate(_registryOptions);
-                _textMateInstallation.SetGrammar(
-                    _registryOptions.GetScopeByLanguageId(_registryOptions.GetLanguageByExtension(Extension).Id));
-            }
-            else
-            {
-                _textEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(Extension);
-            }
+        _textEditor = textEditor;
+
+        if (UseTextMate)
+        {
+            _registryOptions = new RegistryOptions(ThemeName.LightPlus);
+            _textMateInstallation = _textEditor.InstallTextMate(_registryOptions);
+            _textMateInstallation.SetGrammar(
+                _registryOptions.GetScopeByLanguageId(_registryOptions.GetLanguageByExtension(Extension).Id));
+        }
+        else
+        {
+            _textEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(Extension);
         }
     }
 }
