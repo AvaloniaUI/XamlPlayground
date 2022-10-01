@@ -98,6 +98,8 @@ public static class CompilerService
         ms.Seek(0, SeekOrigin.Begin);
 
         var context = new AssemblyLoadContext(name: Path.GetRandomFileName(), isCollectible: true);
-        return (context.LoadFromStream(ms), context);
+        var assembly = context.LoadFromStream(ms);
+
+        return (assembly, context);
     }
 }
