@@ -23,8 +23,8 @@
       "Avalonia.Web.Blazor.dll": "sha256-0aj3HTF2MueOio6lluP8hMx01fdS+FYMH5LQJ6ga+8A=",
       "Avalonia.Xaml.Interactions.dll": "sha256-n1uzLFtXqliw5P\/SIA9PhRXDlt5kC9TnLgO8YuSu0mQ=",
       "Avalonia.Xaml.Interactivity.dll": "sha256-3OruS37QLpNP8hyupqQsLDm1rSkxjCLhEAq8UOCWleI=",
-      "AvaloniaEdit.dll": "sha256-cOmgEqK9ncExJMHli1mGEkhMEi3XTE3l2WAWLJG1vK0=",
-      "AvaloniaEdit.TextMate.dll": "sha256-bfmT0ulAofz212pERYDfJaLSVKYnZA5O407RGXL6ego=",
+      "AvaloniaEdit.dll": "sha256-QGOV\/5Os9ZaAUIf8MQvR1RXDn+2CykzOj\/0YlT9Uxfk=",
+      "AvaloniaEdit.TextMate.dll": "sha256-q4KDQaGjcoGjrTI2EcHyldy30azSbS6g\/8kdXbEbkpg=",
       "AvaloniaEdit.TextMate.Grammars.dll": "sha256-vWC8VtNFEBiSVAw90HEeJITJcGSa4uxvtd0NFV4k\/Xs=",
       "CommunityToolkit.Mvvm.dll": "sha256-VFeRvTNr314OyxcZWJAndI7SkXTF5iBo9SUTyg+R+qM=",
       "HarfBuzzSharp.dll": "sha256-BKwKZ75Glsxd\/Qan8zv1EMsd4uiTwQXDthC3D7Y0r0s=",
@@ -125,8 +125,8 @@
       "System.Xml.XPath.XDocument.dll": "sha256-jFrAFodo2lERmKGV4Qm3nMN87FIj9bi1JbRtU3PYaV8=",
       "TextMateSharp.dll": "sha256-a\/ApaOkHBxfwR9CLSXkKxUX8eRAJ+1gbVuUEiACDiBI=",
       "TextMateSharp.Grammars.dll": "sha256-OMHIUZgpNtXzgEMbFbbZ9UmFuxMuI+ybVhq+BOt98o8=",
-      "XamlPlayground.dll": "sha256-g+khwe4Z2w16w22OORMSCjThlSKkDfF4jef79W6P1ho=",
-      "XamlPlayground.Web.dll": "sha256-AI8wdJqQIFTRIDt5k50A4PG2u\/IqYrgLh0Bi21W5RjY="
+      "XamlPlayground.dll": "sha256-Saci1MhA+4MbXp+ahY547BKd2+RGrA6CZwiUGyUjiFk=",
+      "XamlPlayground.Web.dll": "sha256-D6181MOmJX+am1a\/5k47giHqB3bQrvFEci4y0\/+mk0I="
     },
     "extensions": null,
     "lazyAssembly": null,
