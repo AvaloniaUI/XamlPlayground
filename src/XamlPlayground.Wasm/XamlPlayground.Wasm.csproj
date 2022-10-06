@@ -37,6 +37,10 @@
     <NativeFileReference Include="libEmscripten.c" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <EmccExtraLDFlags>$(EmccExtraLDFlags) --js-library="$(MSBuildThisFileDirectory)\interop.js"</EmccExtraLDFlags>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Avalonia.Web" Version="$(AvaloniaVersion)" />
   </ItemGroup>
