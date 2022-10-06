@@ -16,6 +16,8 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using ReactiveMarbles.PropertyChanged;
 using XamlPlayground.Services;
+using System.Reactive.Subjects;
+using Avalonia.Threading;
 
 namespace XamlPlayground.ViewModels;
 
@@ -31,9 +33,11 @@ public partial class MainViewModel : ViewModelBase
     private (Assembly? Assembly, AssemblyLoadContext? Context)? _previous;
     private IStorageFile? _openXamlFile;
     private IStorageFile? _openCodeFile;
+    private Subject<(string xaml, string code)> _sample;
 
     public MainViewModel()
     {
+        _sample = new Subject<(string xaml, string code)>();
         _editorFontSize = 12;
         _samples = GetSamples(".xml");
         _enableAutoRun = true;
@@ -50,6 +54,13 @@ public partial class MainViewModel : ViewModelBase
             .Subscribe(CurrentSampleChanged);
 
         CurrentSample = _samples.FirstOrDefault();
+
+        _sample.AsObservable().Throttle(TimeSpan.FromMilliseconds(400))
+            .ObserveOn(AvaloniaScheduler.Instance)
+            .Subscribe(async x =>
+            {
+                await RunInternal(x.xaml, x.code);
+            });
     }
 
     public ICommand RunCommand { get; }
@@ -155,16 +166,12 @@ public partial class MainViewModel : ViewModelBase
         Control = null;
         LastErrorMessage = null;
 
-        _update = true;
-
         CurrentSample = sampleViewModel;
 
         if (_enableAutoRun)
         {
             await Run(sampleViewModel.Xaml.Text, sampleViewModel.Code.Text);
         }
-
-        _update = false;
     }
 
     private static List<FilePickerFileType> GetXamlFileTypes()
@@ -188,16 +195,23 @@ public partial class MainViewModel : ViewModelBase
 
     private async Task AutoRun(SampleViewModel sampleViewModel)
     {
-        if (EnableAutoRun && !_update)
+        if (EnableAutoRun)
         {
-            _update = true;
             await Run(sampleViewModel.Xaml.Text, sampleViewModel.Code.Text);
-            _update = false;
         }
     }
 
     private async Task Run(string? xaml, string? code)
     {
+        _sample.OnNext((xaml, code));
+    }
+
+    private async Task RunInternal(string? xaml, string? code)
+    {
+        if (_update)
+            return;
+
+        _update = true;
         try
         {
             Control = null;
@@ -251,6 +265,10 @@ public partial class MainViewModel : ViewModelBase
         {
             LastErrorMessage = exception.Message;
             Console.WriteLine(exception);
+        }
+        finally
+        {
+            _update = false;
         }
     }
 
