@@ -29,19 +29,7 @@
     <WasmExtraFilesToDeploy Include="favicon.ico" />
     <WasmExtraFilesToDeploy Include="Logo.svg" />
     <WasmExtraFilesToDeploy Include="app.css" />
-    <WasmExtraFilesToDeploy Include="avalonia.js" />
-    <WasmExtraFilesToDeploy Include="avalonia.js.map" />
-    <WasmExtraFilesToDeploy Include="storage.js" />
-    <WasmExtraFilesToDeploy Include="storage.js.map" />
   </ItemGroup>
-
-  <ItemGroup>
-    <NativeFileReference Include="libEmscripten.c" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <EmccExtraLDFlags>$(EmccExtraLDFlags) --js-library="$(MSBuildThisFileDirectory)\interop.js"</EmccExtraLDFlags>
-  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Web" Version="$(AvaloniaVersion)" />
