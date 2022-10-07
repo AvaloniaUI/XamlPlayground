@@ -16,10 +16,10 @@ jobs:
       uses: actions/setup-dotnet@v1.9.0
 
     - name: Install wasm-tools
-      run: dotnet workload install wasm-tools
+      run: dotnet workload install wasm-tools wasm-experimental
 
     - name: Publish .NET Project
-      run: dotnet publish src/XamlPlayground.Web/XamlPlayground.Web.csproj -c Release -o release --nologo
+      run: dotnet publish src/XamlPlayground.Wasm/XamlPlayground.Wasm.csproj -c Release -o release --nologo
 
     - name: Change base-tag in index.html from / to XamlPlayground
       run: sed -i 's/<base href="\/" \/>/<base href="\/XamlPlayground\/" \/>/g' release/wwwroot/index.html
