@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Media;
 using Avalonia.Xaml.Interactivity;
 using AvaloniaEdit;
 using AvaloniaEdit.Highlighting;
@@ -44,7 +45,7 @@ public class TextEditorBehavior : Behavior<TextEditor>
 
         if (UseTextMate)
         {
-            _registryOptions = new RegistryOptions(ThemeName.LightPlus);
+            _registryOptions = new RegistryOptions(ThemeName.DarkPlus);
             _textMateInstallation = _textEditor.InstallTextMate(_registryOptions);
             _textMateInstallation.SetGrammar(
                 _registryOptions.GetScopeByLanguageId(_registryOptions.GetLanguageByExtension(Extension).Id));
@@ -52,6 +53,7 @@ public class TextEditorBehavior : Behavior<TextEditor>
         else
         {
             _textEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(Extension);
+            // TODO: _textEditor.TextArea.Background = new SolidColorBrush(Color.Parse("#292929"));
         }
     }
 }
