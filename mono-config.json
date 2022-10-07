@@ -529,11 +529,6 @@
       "name": "supportFiles/0_runtimeconfig.bin"
     },
     {
-      "virtualPath": "dotnet.js.symbols",
-      "behavior": "vfs",
-      "name": "supportFiles/1_dotnet.js.symbols"
-    },
-    {
       "virtualPath": "/usr/share/zoneinfo/",
       "behavior": "vfs",
       "name": "dotnet.timezones.blat"
