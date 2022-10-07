@@ -33,11 +33,11 @@ public partial class MainViewModel : ViewModelBase
     private (Assembly? Assembly, AssemblyLoadContext? Context)? _previous;
     private IStorageFile? _openXamlFile;
     private IStorageFile? _openCodeFile;
-    private Subject<(string xaml, string code)> _sample;
+    private readonly Subject<(string? xaml, string? code)> _sample;
 
     public MainViewModel()
     {
-        _sample = new Subject<(string xaml, string code)>();
+        _sample = new Subject<(string? xaml, string? code)>();
         _editorFontSize = 12;
         _samples = GetSamples(".xml");
         _enableAutoRun = true;
@@ -46,7 +46,7 @@ public partial class MainViewModel : ViewModelBase
         SaveXamlFileCommand = new AsyncRelayCommand(async () => await SaveXamlFile());
         OpenCodeFileCommand = new AsyncRelayCommand(async () => await OpenCodeFile());
         SaveCodeFileCommand = new AsyncRelayCommand(async () => await SaveCodeFile());
-        RunCommand = new AsyncRelayCommand(async () => await Run(_currentSample?.Xaml.Text, _currentSample?.Code.Text));
+        RunCommand = new RelayCommand(() => Run(_currentSample?.Xaml.Text, _currentSample?.Code.Text));
         GistCommand = new AsyncRelayCommand<string?>(Gist);
 
         this.WhenChanged(x => x.CurrentSample)
@@ -57,10 +57,12 @@ public partial class MainViewModel : ViewModelBase
 
         _sample.AsObservable().Throttle(TimeSpan.FromMilliseconds(400))
             .ObserveOn(AvaloniaScheduler.Instance)
-            .Subscribe(async x =>
-            {
-                await RunInternal(x.xaml, x.code);
-            });
+            .Subscribe(OnRun);
+
+        async void OnRun((string? xaml, string? code) x)
+        {
+            await RunInternal(x.xaml, x.code);
+        }
     }
 
     public ICommand RunCommand { get; }
@@ -75,11 +77,11 @@ public partial class MainViewModel : ViewModelBase
 
     public ICommand SaveCodeFileCommand { get; }
 
-    private async void CurrentSampleChanged(SampleViewModel? sampleViewModel)
+    private void CurrentSampleChanged(SampleViewModel? sampleViewModel)
     {
         if (sampleViewModel is { })
         {
-            await Open(sampleViewModel);
+            Open(sampleViewModel);
         }
     }
 
@@ -107,8 +109,8 @@ public partial class MainViewModel : ViewModelBase
             var (xaml, code) = await GetGistContent(id);
             var sample = new SampleViewModel("Gist", xaml, code, Open, AutoRun);
             _samples.Insert(0, sample);
-            CurrentSample = sample;
-            await AutoRun(CurrentSample);
+            CurrentSample = sample; 
+            AutoRun(CurrentSample);
         }
         catch (Exception exception)
         {
@@ -161,7 +163,7 @@ public partial class MainViewModel : ViewModelBase
         return samples;
     }
 
-    private async Task Open(SampleViewModel sampleViewModel)
+    private void Open(SampleViewModel sampleViewModel)
     {
         Control = null;
         LastErrorMessage = null;
@@ -169,8 +171,8 @@ public partial class MainViewModel : ViewModelBase
         CurrentSample = sampleViewModel;
 
         if (_enableAutoRun)
-        {
-            await Run(sampleViewModel.Xaml.Text, sampleViewModel.Code.Text);
+        { 
+            Run(sampleViewModel.Xaml.Text, sampleViewModel.Code.Text);
         }
     }
 
@@ -193,15 +195,15 @@ public partial class MainViewModel : ViewModelBase
         };
     }
 
-    private async Task AutoRun(SampleViewModel sampleViewModel)
+    private void AutoRun(SampleViewModel sampleViewModel)
     {
         if (EnableAutoRun)
-        {
-            await Run(sampleViewModel.Xaml.Text, sampleViewModel.Code.Text);
+        { 
+            Run(sampleViewModel.Xaml.Text, sampleViewModel.Code.Text);
         }
     }
 
-    private async Task Run(string? xaml, string? code)
+    private void Run(string? xaml, string? code)
     {
         _sample.OnNext((xaml, code));
     }
@@ -303,8 +305,8 @@ public partial class MainViewModel : ViewModelBase
                     await using var stream = await _openXamlFile.OpenReadAsync();
                     using var reader = new StreamReader(stream);
                     var fileContent = await reader.ReadToEndAsync();
-                    CurrentSample.Xaml.Text = fileContent;
-                    await AutoRun(CurrentSample);
+                    CurrentSample.Xaml.Text = fileContent; 
+                    AutoRun(CurrentSample);
                     reader.Dispose();
                 }
                 catch (Exception exception)
@@ -397,7 +399,7 @@ public partial class MainViewModel : ViewModelBase
                     using var reader = new StreamReader(stream);
                     var fileContent = await reader.ReadToEndAsync();
                     CurrentSample.Code.Text = fileContent;
-                    await AutoRun(CurrentSample);
+                    AutoRun(CurrentSample);
                     reader.Dispose();
                 }
                 catch (Exception exception)
