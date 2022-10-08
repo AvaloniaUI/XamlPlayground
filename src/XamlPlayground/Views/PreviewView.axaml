@@ -8,9 +8,9 @@
              x:CompileBindings="True" x:DataType="vm:MainViewModel">
   <Design.DataContext>
     <vm:MainViewModel />
-  </Design.DataContext>
+  </Design.DataContext> 
   <ScrollViewer HorizontalScrollBarVisibility="Auto" 
                 VerticalScrollBarVisibility="Auto">
     <ContentControl Content="{Binding Control}" />
-  </ScrollViewer>
+  </ScrollViewer> 
 </UserControl>
