@@ -1,7 +1,7 @@
 # Avalonia Xaml Playground
 
-[![CI](https://github.com/wieslawsoltes/XamlPlayground/actions/workflows/build.yml/badge.svg)](https://github.com/wieslawsoltes/XamlPlayground/actions/workflows/build.yml)
-[![Deploy to GitHub Pages](https://github.com/wieslawsoltes/XamlPlayground/actions/workflows/pages.yml/badge.svg)](https://github.com/wieslawsoltes/XamlPlayground/actions/workflows/pages.yml)
+[![CI](https://github.com/AvaloniaUI/XamlPlayground/actions/workflows/build.yml/badge.svg)](https://github.com/AvaloniaUI/XamlPlayground/actions/workflows/build.yml)
+[![Deploy to GitHub Pages](https://github.com/AvaloniaUI/XamlPlayground/actions/workflows/pages.yml/badge.svg)](https://github.com/AvaloniaUI/XamlPlayground/actions/workflows/pages.yml)
 
 ![image](https://user-images.githubusercontent.com/2297442/152438665-9e2e9e54-c461-4978-915b-31101dcaace0.png)
 
@@ -22,7 +22,7 @@ Example gists:
 
 ## Resources
 
-* [GitHub source code repository.](https://github.com/wieslawsoltes/XamlPlayground)
+* [GitHub source code repository.](https://github.com/AvaloniaUI/XamlPlayground)
 
 ## License
 
