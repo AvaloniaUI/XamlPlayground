@@ -1,0 +1,5 @@
+<linker>
+  <assembly fullname="XamlPlayground" preserve="All" />
+  <assembly fullname="XamlPlayground.Wasm" preserve="All" />
+  <assembly fullname="Avalonia.Themes.Fluent" preserve="All" />
+</linker>
