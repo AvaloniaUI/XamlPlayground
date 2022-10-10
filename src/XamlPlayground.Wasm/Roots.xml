@@ -13,7 +13,9 @@
   <assembly fullname="Avalonia.Markup.Xaml" preserve="All" />
   <assembly fullname="Avalonia.Markup.Xaml.Loader" preserve="All" />
   <assembly fullname="Avalonia.MicroCom" preserve="All" />
+  <assembly fullname="Avalonia.OpenGL" preserve="All" />
   <assembly fullname="Avalonia.Skia" preserve="All" />
+  <assembly fullname="Avalonia.Web" preserve="All" />
   <assembly fullname="Avalonia.Themes.Fluent" preserve="All" />
   <assembly fullname="Avalonia.Themes.Simple" preserve="All" />
   <assembly fullname="Avalonia.Xaml.Interactions" preserve="All" />
