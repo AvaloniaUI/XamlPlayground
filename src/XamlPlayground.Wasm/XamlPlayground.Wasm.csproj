@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
-    <WasmMainJSPath>main.js</WasmMainJSPath>
+    <WasmMainJSPath>AppBundle\main.js</WasmMainJSPath>
     <OutputType>Exe</OutputType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <MSBuildEnableWorkloadResolver>true</MSBuildEnableWorkloadResolver>
@@ -27,11 +27,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <WasmExtraFilesToDeploy Include="index.html" />
-    <WasmExtraFilesToDeploy Include="main.js" />
-    <WasmExtraFilesToDeploy Include="favicon.ico" />
-    <WasmExtraFilesToDeploy Include="Logo.svg" />
-    <WasmExtraFilesToDeploy Include="app.css" />
+    <WasmExtraFilesToDeploy Include="AppBundle\app.css" />
+    <WasmExtraFilesToDeploy Include="AppBundle\favicon.ico" />
+    <WasmExtraFilesToDeploy Include="AppBundle\index.html" />
+    <WasmExtraFilesToDeploy Include="AppBundle\Logo.svg" />
+    <WasmExtraFilesToDeploy Include="AppBundle\main.js" />
   </ItemGroup>
 
   <ItemGroup>
