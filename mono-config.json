@@ -17,6 +17,10 @@
     },
     {
       "behavior": "assembly",
+      "name": "Avalonia.dll"
+    },
+    {
+      "behavior": "assembly",
       "name": "Avalonia.Markup.dll"
     },
     {
@@ -29,7 +33,15 @@
     },
     {
       "behavior": "assembly",
+      "name": "Avalonia.MicroCom.dll"
+    },
+    {
+      "behavior": "assembly",
       "name": "Avalonia.OpenGL.dll"
+    },
+    {
+      "behavior": "assembly",
+      "name": "Avalonia.Remote.Protocol.dll"
     },
     {
       "behavior": "assembly",
