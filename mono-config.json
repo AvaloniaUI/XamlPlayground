@@ -13,6 +13,10 @@
     },
     {
       "behavior": "assembly",
+      "name": "Avalonia.Dialogs.dll"
+    },
+    {
+      "behavior": "assembly",
       "name": "Avalonia.Markup.dll"
     },
     {
@@ -38,6 +42,10 @@
     {
       "behavior": "assembly",
       "name": "Avalonia.Web.dll"
+    },
+    {
+      "behavior": "assembly",
+      "name": "Avalonia.Xaml.Interactions.dll"
     },
     {
       "behavior": "assembly",
