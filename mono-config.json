@@ -201,6 +201,10 @@
     },
     {
       "behavior": "assembly",
+      "name": "System.Private.DataContractSerialization.dll"
+    },
+    {
+      "behavior": "assembly",
       "name": "System.Private.Uri.dll"
     },
     {
