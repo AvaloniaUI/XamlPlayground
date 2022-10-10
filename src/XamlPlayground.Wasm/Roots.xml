@@ -3,4 +3,5 @@
   <assembly fullname="XamlPlayground.Wasm" preserve="All" />
   <assembly fullname="Avalonia.Themes.Fluent" preserve="All" />
   <assembly fullname="AvaloniaEdit" preserve="All" />
+  <assembly fullname="Avalonia.Base" preserve="All" />
 </linker>
