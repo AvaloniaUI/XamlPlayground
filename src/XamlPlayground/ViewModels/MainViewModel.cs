@@ -257,11 +257,36 @@ public partial class MainViewModel : ViewModelBase
                 }
             }
 
-            var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(xaml, scriptAssembly);
-            if (control is { })
+            if (scriptAssembly is { })
             {
-                Control = control;
-                LastErrorMessage = null;
+                var types = scriptAssembly.GetTypes();
+                var type = types.FirstOrDefault(x => x.Name == "SampleView");
+                if (type != null)
+                {
+                    var rootInstance = Activator.CreateInstance(type);
+
+                    using var stream = new MemoryStream();
+                    var writer = new StreamWriter(stream);
+                    writer.Write(xaml);
+                    writer.Flush();
+                    stream.Position = 0;
+
+                    var control = AvaloniaRuntimeXamlLoader.Load(stream, scriptAssembly, rootInstance);
+                    if (control is { })
+                    {
+                        Control = (Control)control;
+                        LastErrorMessage = null;
+                    }
+                }
+            }
+            else
+            {
+                var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(xaml, null);
+                if (control is { })
+                {
+                    Control = control;
+                    LastErrorMessage = null;
+                }
             }
         }
         catch (Exception exception)
