@@ -53,8 +53,6 @@ public partial class MainViewModel : ViewModelBase
             .DistinctUntilChanged()
             .Subscribe(CurrentSampleChanged);
 
-        CurrentSample = _samples.FirstOrDefault();
-
         _runSubject.AsObservable()
             .Throttle(TimeSpan.FromMilliseconds(400))
             .ObserveOn(AvaloniaScheduler.Instance)
@@ -64,6 +62,8 @@ public partial class MainViewModel : ViewModelBase
         {
             await RunInternal(x.xaml, x.code);
         }
+
+        CurrentSample = _samples.FirstOrDefault();
     }
 
     public ICommand RunCommand { get; }
