@@ -32,6 +32,7 @@
     <WasmExtraFilesToDeploy Include="AppBundle\index.html" />
     <WasmExtraFilesToDeploy Include="AppBundle\Logo.svg" />
     <WasmExtraFilesToDeploy Include="AppBundle\main.js" />
+    <WasmExtraFilesToDeploy Include="AppBundle\interop.js" />
   </ItemGroup>
 
   <ItemGroup>
