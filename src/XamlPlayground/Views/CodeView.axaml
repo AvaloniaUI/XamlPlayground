@@ -70,7 +70,7 @@
                        Foreground="Black"
                        ShowLineNumbers="True"
                        FontWeight="Normal"
-                       FontSize="12"
+                       FontSize="{Binding EditorFontSize}"
                        WordWrap="False">
           <i:Interaction.Behaviors>
             <behaviors:TextEditorBehavior Extension=".cs" UseTextMate="False" />
