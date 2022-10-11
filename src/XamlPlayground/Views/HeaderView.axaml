@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:XamlPlayground.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="48"
+             mc:Ignorable="d" d:DesignWidth="412" d:DesignHeight="48"
              x:Class="XamlPlayground.Views.HeaderView"
              x:CompileBindings="True" x:DataType="vm:MainViewModel">
   <Design.DataContext>
@@ -28,36 +28,39 @@
                   VerticalScrollBarVisibility="Disabled"
                   Padding="0,0,0,0">
       <StackPanel Orientation="Horizontal" Spacing="6" Margin="6,0,6,0">
-        <NumericUpDown Value="{Binding EditorFontSize, Mode=TwoWay}"
-                       Increment="1"
-                       Minimum="1"
-                       Watermark="Font size"
-                       MinWidth="120"/>
-        <Button DockPanel.Dock="Left"
-                Margin="0,0,0,0"
-                Background="#7F8b44ac"
-                Content="Open Xaml"
-                Command="{Binding OpenXamlFileCommand}" />
-        <Button DockPanel.Dock="Left"
-                Margin="0,0,0,0"
-                Background="#7F8b44ac"
-                Content="Save Xaml"
-                Command="{Binding SaveXamlFileCommand}" />
-        <Button DockPanel.Dock="Left"
-                Margin="0,0,0,0"
-                Background="#7F8b44ac"
-                Content="Open Code"
-                Command="{Binding OpenCodeFileCommand}" />
-        <Button DockPanel.Dock="Left"
-                Margin="0,0,0,0"
-                Background="#7F8b44ac"
-                Content="Save Code"
-                Command="{Binding SaveCodeFileCommand}" />
-        <Button DockPanel.Dock="Left"
-                Margin="0,0,0,0"
-                Background="#7F8b44ac"
-                Content="Run" 
-                Command="{Binding RunCommand}" />
+
+        <Menu Height="NaN" VerticalAlignment="Center">
+          <MenuItem Margin="0,0,0,0"
+                    CornerRadius="3"
+                    Classes="popup"
+                    Items="{Binding Samples}">
+            <MenuItem.Header>
+              <StackPanel Orientation="Horizontal"
+                          Margin="0,4,0,3">
+                <Label Content="Samples"
+                       Classes="text" />
+                <Path Data="M 0 0 L 7 7 L 14 0"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Stretch="None"
+                      Stroke="{DynamicResource SystemBaseHighColor}"
+                      StrokeThickness="1" 
+                      Margin="6,0,0,0"/>
+              </StackPanel>
+            </MenuItem.Header>
+            <MenuItem.Styles>
+              <Style Selector="MenuItem > MenuItem" x:DataType="vm:SampleViewModel">
+                <Setter Property="Padding" Value="6"/>
+                <Setter Property="Header" Value="{Binding Name}"/>
+                <Setter Property="Command" Value="{Binding OpenCommand}"/>
+              </Style>
+              <Style Selector="MenuItem.popup /template/ Popup#PART_Popup" x:DataType="vm:SampleViewModel">
+                <Setter Property="MaxHeight" Value="430"/>
+              </Style>
+            </MenuItem.Styles>
+          </MenuItem>
+        </Menu>
+
         <CheckBox DockPanel.Dock="Left"
                   Margin="0,0,0,0"
                   Content="Live Preview" 
@@ -93,6 +96,18 @@
             </Style>
           </CheckBox.Styles>
         </CheckBox>
+
+        <NumericUpDown Value="{Binding EditorFontSize, Mode=TwoWay}"
+                       Increment="1"
+                       Minimum="1"
+                       Watermark="Font size"
+                       MinWidth="120"/>
+
+        <Button DockPanel.Dock="Left"
+                Margin="0,0,0,0"
+                Background="#7F8b44ac"
+                Content="Run" 
+                Command="{Binding RunCommand}" />
         <Button DockPanel.Dock="Left"
                 Margin="0,0,0,0"
                 Background="#7F8b44ac"
@@ -119,37 +134,28 @@
             </Flyout>
           </Button.Flyout>
         </Button>
-        <Menu Height="NaN" VerticalAlignment="Center">
-          <MenuItem Margin="0,0,0,0"
-                    CornerRadius="3"
-                    Classes="popup"
-                    Items="{Binding Samples}">
-            <MenuItem.Header>
-              <StackPanel Orientation="Horizontal"
-                          Margin="0,4,0,3">
-                <Label Content="Samples"
-                       Classes="text" />
-                <Path Data="M 0 0 L 7 7 L 14 0"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      Stretch="None"
-                      Stroke="{DynamicResource SystemBaseHighColor}"
-                      StrokeThickness="1" 
-                      Margin="6,0,0,0"/>
-              </StackPanel>
-            </MenuItem.Header>
-            <MenuItem.Styles>
-              <Style Selector="MenuItem > MenuItem" x:DataType="vm:SampleViewModel">
-                <Setter Property="Padding" Value="6"/>
-                <Setter Property="Header" Value="{Binding Name}"/>
-                <Setter Property="Command" Value="{Binding OpenCommand}"/>
-              </Style>
-              <Style Selector="MenuItem.popup /template/ Popup#PART_Popup" x:DataType="vm:SampleViewModel">
-                <Setter Property="MaxHeight" Value="430"/>
-              </Style>
-            </MenuItem.Styles>
-          </MenuItem>
-        </Menu>
+
+        <Button DockPanel.Dock="Left"
+                Margin="0,0,0,0"
+                Background="#7F8b44ac"
+                Content="Open Xaml"
+                Command="{Binding OpenXamlFileCommand}" />
+        <Button DockPanel.Dock="Left"
+                Margin="0,0,0,0"
+                Background="#7F8b44ac"
+                Content="Save Xaml"
+                Command="{Binding SaveXamlFileCommand}" />
+        <Button DockPanel.Dock="Left"
+                Margin="0,0,0,0"
+                Background="#7F8b44ac"
+                Content="Open Code"
+                Command="{Binding OpenCodeFileCommand}" />
+        <Button DockPanel.Dock="Left"
+                Margin="0,0,0,0"
+                Background="#7F8b44ac"
+                Content="Save Code"
+                Command="{Binding SaveCodeFileCommand}" />
+
       </StackPanel>
     </ScrollViewer>
     <Separator Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
