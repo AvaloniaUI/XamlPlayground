@@ -33,11 +33,11 @@ public partial class MainViewModel : ViewModelBase
     private (Assembly? Assembly, AssemblyLoadContext? Context)? _previous;
     private IStorageFile? _openXamlFile;
     private IStorageFile? _openCodeFile;
-    private readonly Subject<(string? xaml, string? code)> _sample;
+    private readonly Subject<(string? xaml, string? code)> _runSubject;
 
     public MainViewModel()
     {
-        _sample = new Subject<(string? xaml, string? code)>();
+        _runSubject = new Subject<(string? xaml, string? code)>();
         _editorFontSize = 12;
         _samples = GetSamples(".xml");
         _enableAutoRun = true;
@@ -55,7 +55,8 @@ public partial class MainViewModel : ViewModelBase
 
         CurrentSample = _samples.FirstOrDefault();
 
-        _sample.AsObservable().Throttle(TimeSpan.FromMilliseconds(400))
+        _runSubject.AsObservable()
+            .Throttle(TimeSpan.FromMilliseconds(400))
             .ObserveOn(AvaloniaScheduler.Instance)
             .Subscribe(OnRun);
 
@@ -205,7 +206,7 @@ public partial class MainViewModel : ViewModelBase
 
     private void Run(string? xaml, string? code)
     {
-        _sample.OnNext((xaml, code));
+        _runSubject.OnNext((xaml, code));
     }
 
     private async Task RunInternal(string? xaml, string? code)
