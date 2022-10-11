@@ -43,7 +43,7 @@ public static class CompilerService
                 try
                 {
                     var name = reference.GetName().Name;
-                    var requestUri = $"{BaseUri}_framework/{name}.dll";
+                    var requestUri = $"{BaseUri}managed/{name}.dll";
                     Console.WriteLine($"Loading reference requestUri: {requestUri}, FullName: {reference.FullName}");
                     var stream = await client.GetStreamAsync(requestUri);
                     appDomainReferences.Add(MetadataReference.CreateFromStream(stream));
