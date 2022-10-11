@@ -21,8 +21,8 @@ jobs:
     - name: Publish .NET Project
       run: dotnet publish src/XamlPlayground.Wasm/XamlPlayground.Wasm.csproj -c Release -o release --nologo
 
-    #- name: Change base-tag in index.html from / to XamlPlayground
-    #  run: sed -i 's/<base href="\/" \/>/<base href="\/XamlPlayground\/" \/>/g' src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/index.html
+    - name: Change base-tag in index.html from / to XamlPlayground
+      run: sed -i 's/<base href="\/" \/>/<base href="\/XamlPlayground\/" \/>/g' src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/index.html
 
     - name: copy index.html to 404.html
       run: cp src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/index.html src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/404.html
