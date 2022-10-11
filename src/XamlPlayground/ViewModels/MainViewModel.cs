@@ -217,8 +217,8 @@ public partial class MainViewModel : ViewModelBase
         _update = true;
         try
         {
-            Control = null;
-
+            // Control = null;
+#if false
             if (!Utilities.IsBrowser())
             {
                 // TODO: Unload previously loaded assembly.
@@ -231,7 +231,7 @@ public partial class MainViewModel : ViewModelBase
                     GC.WaitForPendingFinalizers();
                 }
             }
- 
+ #endif
             Assembly? scriptAssembly = null;
 
             if (code is { } && !string.IsNullOrWhiteSpace(code))
