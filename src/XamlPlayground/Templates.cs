@@ -11,16 +11,16 @@ internal static class Templates
         "{\n" +
         "    public class SampleView : UserControl\n" +
         "    {\n" +
-        "        public SampleView()\n" +
-        "        {\n" +
-        "            InitializeComponent();\n" +
-        "        }\n" +
-        "\n" +
-        "        private void InitializeComponent()\n" +
-        "        {\n" +
-        "            // AvaloniaXamlLoader.Load(this);\n" +
-        "        }\n" +
-        "\n" +
+        // "        public SampleView()\n" +
+        // "        {\n" +
+        // "            InitializeComponent();\n" +
+        // "        }\n" +
+        // "\n" +
+        // "        private void InitializeComponent()\n" +
+        // "        {\n" +
+        // "            // AvaloniaXamlLoader.Load(this);\n" +
+        // "        }\n" +
+        // "\n" +
         "        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)\n" +
         "        {\n" +
         "            var count = 0;\n" +
@@ -32,9 +32,10 @@ internal static class Templates
         "}\n";
 
     public static string s_xaml = 
-        "<UserControl xmlns=\"https://github.com/avaloniaui\"\n" +
-        "             xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n" +
-        "             x:Class=\"XamlPlayground.Views.SampleView\">\n" +
+        // "<UserControl xmlns=\"https://github.com/avaloniaui\"\n" +
+        // "             xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\n" +
+        // "             x:Class=\"XamlPlayground.Views.SampleView\">\n" +
+        "<UserControl xmlns=\"https://github.com/avaloniaui\">\n" +
         "    <Button Name=\"button\" Content=\"Click Me\" HorizontalAlignment=\"Center\" />\n" +
         "</UserControl>";
 }
