@@ -18,6 +18,8 @@ const gist = exports.XamlPlayground.Wasm.Interop.Gist();
 
 let router = (evt) => {
     const url = window.location.hash.slice(1) || "/";
+    console.log(window.location.hash);
+    console.log(url);
     gist(url);
 };
 
