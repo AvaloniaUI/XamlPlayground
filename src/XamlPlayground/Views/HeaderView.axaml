@@ -32,7 +32,20 @@
       <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="6" Margin="6,0,6,0">
 
         <Menu VerticalAlignment="Center">
-          <MenuItem Header="File" Foreground="White">
+
+          <Menu.Styles>
+            <Style Selector="MenuItem.main">
+              <Setter Property="Foreground" Value="White" />
+            </Style>
+            <Style Selector="MenuItem:pointerover.main">
+              <Setter Property="Foreground" Value="White" />
+            </Style>
+            <Style Selector="MenuItem:pointerover.main AccessText">
+              <Setter Property="Foreground" Value="White" />
+            </Style>
+          </Menu.Styles>
+
+          <MenuItem Header="File" Classes="main">
             <MenuItem Header="Open Xaml..." Command="{Binding OpenXamlFileCommand}" />
             <MenuItem Header="Save Xaml As..." Command="{Binding SaveXamlFileCommand}" />
             <Separator />
@@ -41,12 +54,11 @@
           </MenuItem>
 
           <MenuItem Header="Run" 
-                    Foreground="White" 
+                    Classes="main"
                     Command="{Binding RunCommand}" />
 
           <MenuItem CornerRadius="3"
-                    Classes="popup"
-                    Foreground="White"
+                    Classes="main popup"
                     Items="{Binding Samples}">
             <MenuItem.Header>
               <StackPanel Orientation="Horizontal"
