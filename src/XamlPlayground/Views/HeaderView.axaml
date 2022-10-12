@@ -26,7 +26,7 @@
 
       <StackPanel Orientation="Horizontal" Spacing="6" Margin="6,0,6,0">
         <Menu>
-          <MenuItem Header="File">
+          <MenuItem Header="File" Foreground="White">
             <MenuItem Header="Open Xaml" Command="{Binding OpenXamlFileCommand}" />
             <MenuItem Header="Save Xaml" Command="{Binding SaveXamlFileCommand}" />
             <MenuItem Header="Open Code" Command="{Binding OpenCodeFileCommand}" />
@@ -42,6 +42,7 @@
         <Button DockPanel.Dock="Left"
                 Margin="0,0,0,0"
                 Background="#7F8b44ac"
+                Foreground="White"
                 Content="Run"
                 Command="{Binding RunCommand}" />
         <Button DockPanel.Dock="Left"
