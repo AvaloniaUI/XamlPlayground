@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:XamlPlayground.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="412" d:DesignHeight="915"
+             mc:Ignorable="d" d:DesignWidth="915" d:DesignHeight="64"
              x:Class="XamlPlayground.Views.HeaderView"
              Background="#8B44AC"
              x:CompileBindings="True" x:DataType="vm:MainViewModel">
