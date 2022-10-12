@@ -38,7 +38,7 @@ public partial class MainViewModel : ViewModelBase
     public MainViewModel()
     {
         _runSubject = new Subject<(string? xaml, string? code)>();
-        _editorFontSize = 12;
+        _editorFontSize = 14;
         _samples = GetSamples(".xml");
         _enableAutoRun = true;
 

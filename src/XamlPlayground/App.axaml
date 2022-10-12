@@ -14,11 +14,5 @@
       <Setter Property="ClipToBounds" Value="False" />
       <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
-    <Style Selector="AccessText">
-      <Setter Property="(TextElement.Foreground)" Value="{DynamicResource ButtonForeground}" />
-    </Style>
-    <Style Selector="TextBlock">
-      <Setter Property="Foreground" Value="{DynamicResource ButtonForeground}" />
-    </Style>
   </Application.Styles>
 </Application>

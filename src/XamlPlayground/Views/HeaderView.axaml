@@ -5,7 +5,7 @@
              xmlns:vm="clr-namespace:XamlPlayground.ViewModels"
              mc:Ignorable="d" d:DesignWidth="412" d:DesignHeight="915"
              x:Class="XamlPlayground.Views.HeaderView"
-             Background="#1b2a4e"
+             Background="#8B44AC"
              x:CompileBindings="True" x:DataType="vm:MainViewModel">
   <Design.DataContext>
     <vm:MainViewModel />
@@ -23,97 +23,26 @@
              VerticalAlignment="Center"
              Classes="text"
              Content="Xaml Playground" />
-    </DockPanel>
-    <ScrollViewer Grid.Row="0" Grid.Column="1"  
-                  VerticalAlignment="Center"
-                  HorizontalAlignment="Right"
-                  HorizontalScrollBarVisibility="Auto"
-                  VerticalScrollBarVisibility="Disabled"
-                  Padding="0,0,0,0">
+
       <StackPanel Orientation="Horizontal" Spacing="6" Margin="6,0,6,0">
-        <NumericUpDown Value="{Binding EditorFontSize, Mode=TwoWay}"
-                       Increment="1"
-                       Minimum="1"
-                       Watermark="Font size"
-                       Foreground="White"
-                       MinWidth="120"/>
-        <Button DockPanel.Dock="Left"
-                Margin="0,0,0,0"
-                Background="#7F8b44ac"
-                Foreground="White"
-                Content="Open Xaml"
-                Command="{Binding OpenXamlFileCommand}" />
-        <Button DockPanel.Dock="Left"
-                Margin="0,0,0,0"
-                Background="#7F8b44ac"
-                Foreground="White"
-                Content="Save Xaml"
-                Command="{Binding SaveXamlFileCommand}" />
-        <Button DockPanel.Dock="Left"
-                Margin="0,0,0,0"
-                Background="#7F8b44ac"
-                Foreground="White"
-                Content="Open Code"
-                Command="{Binding OpenCodeFileCommand}" />
-        <Button DockPanel.Dock="Left"
-                Margin="0,0,0,0"
-                Background="#7F8b44ac"
-                Foreground="White"
-                Content="Save Code"
-                Command="{Binding SaveCodeFileCommand}" />
-        <Button DockPanel.Dock="Left"
-                Margin="0,0,0,0"
-                Background="#7F8b44ac"
-                Foreground="White"
-                Content="Run" 
-                Command="{Binding RunCommand}" />
+        <Menu>
+          <MenuItem Header="File">
+            <MenuItem Header="Open Xaml" Command="{Binding OpenXamlFileCommand}" />
+            <MenuItem Header="Save Xaml" Command="{Binding SaveXamlFileCommand}" />
+            <MenuItem Header="Open Code" Command="{Binding OpenCodeFileCommand}" />
+            <MenuItem Header="Save Code" Command="{Binding SaveCodeFileCommand}" />
+          </MenuItem>
+        </Menu>
         <CheckBox DockPanel.Dock="Left"
                   Margin="0,0,0,0"
-                  Content="Live Preview" 
+                  Content="Live Preview"
                   Foreground="White"
-                  IsChecked="{Binding EnableAutoRun}">
-          <CheckBox.Styles>
-            <Style Selector="CheckBox /template/ Path#CheckGlyph">
-              <Setter Property="Fill" Value="Transparent" />
-              <Setter Property="Stroke" Value="Transparent" />
-            </Style>
-            <Style Selector="CheckBox:checked /template/ Path#CheckGlyph">
-              <Setter Property="IsVisible" Value="True" />
-              <Setter Property="Fill" Value="#FF8b44ac" />
-              <Setter Property="Stroke" Value="Transparent" />
-            </Style>
-            <Style Selector="CheckBox:pointerover:checked /template/ Path#CheckGlyph">
-              <Setter Property="Fill" Value="#7F8b44ac" />
-            </Style>
-            <Style Selector="CheckBox /template/ Border#NormalRectangle">
-              <Setter Property="BorderBrush" Value="#FF8b44ac" />
-              <Setter Property="Background" Value="Transparent" />
-            </Style>
-            <Style Selector="CheckBox:pointerover /template/ Border#NormalRectangle">
-              <Setter Property="BorderBrush" Value="#7F8b44ac" />
-              <Setter Property="Background" Value="Transparent" />
-            </Style>
-            <Style Selector="CheckBox:checked /template/ Border#NormalRectangle">
-              <Setter Property="BorderBrush" Value="#FF8b44ac" />
-              <Setter Property="Background" Value="Transparent" />
-            </Style>
-            <Style Selector="CheckBox:checked:pointerover /template/ Border#NormalRectangle">
-              <Setter Property="BorderBrush" Value="#7F8b44ac" />
-              <Setter Property="Background" Value="Transparent" />
-            </Style>
-          </CheckBox.Styles>
-        </CheckBox>
-
-        <NumericUpDown Value="{Binding EditorFontSize, Mode=TwoWay}"
-                       Increment="1"
-                       Minimum="1"
-                       Watermark="Font size"
-                       MinWidth="120"/>
+                  IsChecked="{Binding EnableAutoRun}" />
 
         <Button DockPanel.Dock="Left"
                 Margin="0,0,0,0"
                 Background="#7F8b44ac"
-                Content="Run" 
+                Content="Run"
                 Command="{Binding RunCommand}" />
         <Button DockPanel.Dock="Left"
                 Margin="0,0,0,0"
@@ -123,20 +52,20 @@
           <Button.Flyout>
             <Flyout Placement="Bottom">
               <DockPanel Width="400">
-                <Label Content="The GitHub gist must contain file named Main.axaml" 
+                <Label Content="The GitHub gist must contain file named Main.axaml"
                        Margin="0,0,0,10"
                        Classes="text"
                        DockPanel.Dock="Top" />
                 <Button DockPanel.Dock="Bottom"
                         Margin="0,10,0,0"
                         HorizontalAlignment="Right"
-                        Content="Get" 
+                        Content="Get"
                         Command="{Binding GistCommand}"
                         CommandParameter="{Binding #Id.Text}" />
-                <Label Content="Id:" 
-                       VerticalAlignment="Center" 
+                <Label Content="Id:"
+                       VerticalAlignment="Center"
                        Classes="text"/>
-                <TextBox Name="Id" 
+                <TextBox Name="Id"
                          Text="" />
               </DockPanel>
             </Flyout>
@@ -158,7 +87,7 @@
                       VerticalAlignment="Center"
                       Stretch="None"
                       Stroke="{DynamicResource SystemBaseHighColor}"
-                      StrokeThickness="1" 
+                      StrokeThickness="1"
                       Margin="6,0,0,0"/>
               </StackPanel>
             </MenuItem.Header>
@@ -175,7 +104,9 @@
           </MenuItem>
         </Menu>
       </StackPanel>
-    </ScrollViewer>
+    </DockPanel>
+    
+      
     <Separator Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                Margin="0,0,0,0"
                Background="{DynamicResource SystemChromeAltLowColor}" 
