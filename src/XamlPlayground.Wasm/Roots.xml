@@ -36,4 +36,8 @@
 
   <assembly fullname="AvaloniaEdit" preserve="All" />
 
+  <!-- AvaloniaEdit -->
+
+  <assembly fullname="Octokit" preserve="All" />
+
 </linker>
