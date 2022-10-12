@@ -14,7 +14,7 @@ The gist must contain a file named *Main.axaml* and optional *Main.axaml.cs* wit
 To share a xaml with others you should do the following:
 * Create a gist with *Main.axaml*.
 * Create an optional gist with *Main.axaml.cs*
-* Append the gist ID to XamlPlayground URL. For example, to view [gist.github.com/6b6f586cecb37ada37da24c8e1fe408b](https://gist.github.com/6b6f586cecb37ada37da24c8e1fe408b) in XamlPlayground, use the URL [wieslawsoltes.github.io/XamlPlayground/6b6f586cecb37ada37da24c8e1fe408b](https://wieslawsoltes.github.io/XamlPlayground//6b6f586cecb37ada37da24c8e1fe408b).
+* Append the gist ID to XamlPlayground URL. For example, to view [gist.github.com/6b6f586cecb37ada37da24c8e1fe408b](https://gist.github.com/6b6f586cecb37ada37da24c8e1fe408b) in XamlPlayground, use the URL [avaloniaui.github.io/XamlPlayground/6b6f586cecb37ada37da24c8e1fe408b](https://avaloniaui.github.io/XamlPlayground/6b6f586cecb37ada37da24c8e1fe408b).
 
 Example gists:
 
