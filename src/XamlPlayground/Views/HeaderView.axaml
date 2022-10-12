@@ -13,7 +13,8 @@
   <Design.DataContext>
     <vm:MainViewModel />
   </Design.DataContext>
-  <Grid ColumnDefinitions="Auto,*" RowDefinitions="*,Auto">
+  <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="*,Auto">
+
     <DockPanel Grid.Row="0" Grid.Column="0">
       <Image Source="/Assets/Logo.png"
              Margin="6,6,6,6" 
@@ -43,6 +44,7 @@
                 Foreground="White"
                 Content="Run"
                 Command="{Binding RunCommand}" />
+
         <Button Margin="0,0,0,0"
                 Background="#7F8b44ac"
                 Foreground="White"
@@ -104,33 +106,35 @@
           </MenuItem>
         </Menu>
 
-        <Button DockPanel.Dock="Left"
-                Margin="0,0,0,0"
-                Background="#7F8b44ac"
-                Foreground="White"
-                ToolTip.Tip="Settings">
-          <Button.Flyout>
-            <Flyout ShowMode="TransientWithDismissOnPointerMoveAway" 
-                    Placement="BottomEdgeAlignedRight">
-              <StackPanel Spacing="12">
-                <CheckBox Margin="0,0,0,0"
-                          Content="Live Preview"
-                          IsChecked="{Binding EnableAutoRun}" />
-                <Label Content="Font size:" />
-                <NumericUpDown Value="{Binding EditorFontSize, Mode=TwoWay}"
-                               Increment="1"
-                               Minimum="1"
-                               Watermark="Font size"
-                               MinWidth="120"/>
-              </StackPanel>
-            </Flyout>
-          </Button.Flyout>
-          <PathIcon Width="16" Height="16" 
-                    Margin="6,0,6,0"
-                    Data="{DynamicResource SettingsIcon}"/>
-        </Button>
       </StackPanel>
+
     </DockPanel>
+
+    <Button Grid.Row="0" Grid.Column="2" 
+            Margin="0,0,0,0"
+            Background="#7F8b44ac"
+            Foreground="White"
+            ToolTip.Tip="Settings">
+      <Button.Flyout>
+        <Flyout ShowMode="TransientWithDismissOnPointerMoveAway" 
+                Placement="BottomEdgeAlignedRight">
+          <StackPanel Spacing="12">
+            <CheckBox Margin="0,0,0,0"
+                      Content="Live Preview"
+                      IsChecked="{Binding EnableAutoRun}" />
+            <Label Content="Font size:" />
+            <NumericUpDown Value="{Binding EditorFontSize, Mode=TwoWay}"
+                           Increment="1"
+                           Minimum="1"
+                           Watermark="Font size"
+                           MinWidth="120"/>
+          </StackPanel>
+        </Flyout>
+      </Button.Flyout>
+      <PathIcon Width="16" Height="16" 
+                Margin="6,0,6,0"
+                Data="{DynamicResource SettingsIcon}"/>
+    </Button>
 
     <Separator Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                Margin="0,0,0,0"
