@@ -16,17 +16,6 @@
   </Design.DataContext>
   
   <UserControl.Styles>
-
-    <Style Selector="MenuItem.main">
-      <Setter Property="Foreground" Value="White" />
-    </Style>
-    <Style Selector="MenuItem.main:pointerover">
-      <Setter Property="Foreground" Value="White" />
-    </Style>
-    <Style Selector="MenuItem.main:pointerover AccessText">
-      <Setter Property="Foreground" Value="White" />
-    </Style>
-
     <Style Selector="Button.main">
       <Setter Property="Margin" Value="0" />
       <Setter Property="Background" Value="#7F8b44ac" />
