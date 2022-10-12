@@ -30,4 +30,8 @@
     <EmbeddedResource Include="Samples\*.xml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Assets\Logo.png" />
+  </ItemGroup>
+
 </Project>

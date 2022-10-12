@@ -12,5 +12,5 @@
   <ScrollViewer HorizontalScrollBarVisibility="Auto" 
                 VerticalScrollBarVisibility="Auto">
     <ContentControl Content="{Binding Control}" />
-  </ScrollViewer>
+  </ScrollViewer> 
 </UserControl>

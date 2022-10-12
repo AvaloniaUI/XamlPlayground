@@ -7,7 +7,7 @@
   <PropertyGroup>
     <AvaloniaVersion>11.0.999-cibuild0024381-beta</AvaloniaVersion>
     <AvaloniaBehaviorsVersion>11.0.0-preview1</AvaloniaBehaviorsVersion>
-    <AvaloniaEditVersion>11.0.999-cibuild0024401-beta</AvaloniaEditVersion>
+    <AvaloniaEditVersion>11.0.999-cibuild0024568-beta</AvaloniaEditVersion>
     <AvaloniaEditTextMateGrammarsVersion>0.10.12</AvaloniaEditTextMateGrammarsVersion>
     <OctokitVersion>2.0.1</OctokitVersion>
     <CommunityToolkitMvvmVersion>8.0.0</CommunityToolkitMvvmVersion>

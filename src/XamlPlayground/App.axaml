@@ -7,18 +7,12 @@
     <local:ViewLocator />
   </Application.DataTemplates>
   <Application.Styles>
-    <FluentTheme Mode="Dark" />
+    <FluentTheme Mode="Light" />
     <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />
     <StyleInclude Source="avares://XamlPlayground/Controls/AdaptiveControl.axaml" />
     <Style Selector="Label.text > AccessText">
       <Setter Property="ClipToBounds" Value="False" />
       <Setter Property="TextWrapping" Value="Wrap" />
-    </Style>
-    <Style Selector="AccessText">
-      <Setter Property="(TextElement.Foreground)" Value="{DynamicResource ButtonForeground}" />
-    </Style>
-    <Style Selector="TextBlock">
-      <Setter Property="Foreground" Value="{DynamicResource ButtonForeground}" />
     </Style>
   </Application.Styles>
 </Application>

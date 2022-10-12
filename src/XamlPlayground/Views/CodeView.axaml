@@ -12,11 +12,12 @@
   <Design.DataContext>
     <vm:MainViewModel />
   </Design.DataContext>
+  
   <UserControl.Styles>
     <Style Selector="TabControl.code TabItem">
-      <Setter Property="MinHeight" Value="24" />
-      <Setter Property="Margin" Value="2" />
-      <Setter Property="Padding" Value="0" />
+      <Setter Property="MinHeight" Value="32" />
+      <Setter Property="Margin" Value="12,2,2,2" />
+      <Setter Property="Padding" Value="8" />
       <Setter Property="(TextBlock.FontSize)" Value="16" />
     </Style>
     <Style Selector="TabControl.code TabItem /template/ Border#PART_LayoutRoot">
@@ -26,6 +27,7 @@
       <Setter Property="Padding" Value="0" />
     </Style>
   </UserControl.Styles>
+  
   <DockPanel>
     <Label Content="{Binding LastErrorMessage}" 
            IsVisible="{Binding !!LastErrorMessage}"
@@ -33,7 +35,8 @@
            Foreground="White"
            Classes="text"
            DockPanel.Dock="Bottom" />
-    <TabControl TabStripPlacement="Bottom" Classes="code">
+    
+    <TabControl TabStripPlacement="Bottom" Classes="code" BorderBrush="#283e74" BorderThickness="0,0,1,0">
       <TabControl.Styles>
         <Style Selector="TabControl">
           <Setter Property="Padding" Value="0" />
