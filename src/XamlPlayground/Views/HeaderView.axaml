@@ -14,9 +14,34 @@
   <Design.DataContext>
     <vm:MainViewModel />
   </Design.DataContext>
+  
+  <UserControl.Styles>
+
+    <Style Selector="MenuItem.main">
+      <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style Selector="MenuItem:pointerover.main">
+      <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style Selector="MenuItem:pointerover.main AccessText">
+      <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <Style Selector="Button.main">
+      <Setter Property="Margin" Value="0" />
+      <Setter Property="Background" Value="#7F8b44ac" />
+      <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style Selector="Button:pointerover.main">
+      <Setter Property="Foreground" Value="White" />
+    </Style>  
+
+  </UserControl.Styles>
+  
   <Grid ColumnDefinitions="Auto,*,Auto,Auto" RowDefinitions="*,Auto">
 
     <DockPanel Grid.Row="0" Grid.Column="0">
+
       <Image Source="/Assets/Logo.png"
              Margin="6,6,6,6" 
              Height="32"
@@ -32,18 +57,6 @@
       <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="6" Margin="6,0,6,0">
 
         <Menu VerticalAlignment="Center">
-
-          <Menu.Styles>
-            <Style Selector="MenuItem.main">
-              <Setter Property="Foreground" Value="White" />
-            </Style>
-            <Style Selector="MenuItem:pointerover.main">
-              <Setter Property="Foreground" Value="White" />
-            </Style>
-            <Style Selector="MenuItem:pointerover.main AccessText">
-              <Setter Property="Foreground" Value="White" />
-            </Style>
-          </Menu.Styles>
 
           <MenuItem Header="File" Classes="main">
             <MenuItem Header="Open Xaml..." Command="{Binding OpenXamlFileCommand}" />
@@ -92,11 +105,10 @@
 
     </DockPanel>
 
-    <Button Grid.Row="0" Grid.Column="2" 
-                        Margin="0,0,0,0"
-                        Background="#7F8b44ac"
-                        Foreground="White"
-                        ToolTip.Tip="Gist">
+    <Button Grid.Row="0" 
+            Grid.Column="2" 
+            Classes="main"
+            ToolTip.Tip="Gist">
       <Button.Flyout>
         <Flyout Placement="Bottom">
           <DockPanel Width="400">
@@ -123,10 +135,9 @@
                 Data="{DynamicResource GistIcon}"/>
     </Button>
 
-    <Button Grid.Row="0" Grid.Column="3" 
-            Margin="0,0,0,0"
-            Background="#7F8b44ac"
-            Foreground="White"
+    <Button Grid.Row="0" 
+            Grid.Column="3" 
+            Classes="main"
             ToolTip.Tip="Settings">
       <Button.Flyout>
         <Flyout ShowMode="TransientWithDismissOnPointerMoveAway" 
