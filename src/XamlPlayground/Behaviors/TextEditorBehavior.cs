@@ -43,6 +43,8 @@ public class TextEditorBehavior : Behavior<TextEditor>
 
         _textEditor = textEditor;
 
+        _textEditor.TextArea.SelectionCornerRadius = 0;
+
         if (UseTextMate)
         {
             _registryOptions = new RegistryOptions(ThemeName.DarkPlus);
