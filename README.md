@@ -3,7 +3,7 @@
 [![CI](https://github.com/AvaloniaUI/XamlPlayground/actions/workflows/build.yml/badge.svg)](https://github.com/AvaloniaUI/XamlPlayground/actions/workflows/build.yml)
 [![Deploy to GitHub Pages](https://github.com/AvaloniaUI/XamlPlayground/actions/workflows/pages.yml/badge.svg)](https://github.com/AvaloniaUI/XamlPlayground/actions/workflows/pages.yml)
 
-![image](https://user-images.githubusercontent.com/2297442/152438665-9e2e9e54-c461-4978-915b-31101dcaace0.png)
+![image](https://user-images.githubusercontent.com/2297442/195329309-f9a5dad0-db36-447b-9bcd-d6cf4e919cf8.png)
 
 ## Sharing Xaml
 
