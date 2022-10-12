@@ -30,10 +30,13 @@
     <Style Selector="Button.main">
       <Setter Property="Margin" Value="0" />
       <Setter Property="Background" Value="#7F8b44ac" />
-      <Setter Property="Foreground" Value="White" />
+      <Setter Property="(TextElement.Foreground)" Value="White" />
     </Style>
     <Style Selector="Button:pointerover.main">
-      <Setter Property="Foreground" Value="White" />
+      <Setter Property="(TextElement.Foreground)" Value="White" />
+    </Style>  
+    <Style Selector="Button:pointerover.main PathIcon">
+      <Setter Property="(TextElement.Foreground)" Value="White" />
     </Style>  
 
   </UserControl.Styles>
