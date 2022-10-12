@@ -20,10 +20,10 @@
     <Style Selector="MenuItem.main">
       <Setter Property="Foreground" Value="White" />
     </Style>
-    <Style Selector="MenuItem:pointerover.main">
+    <Style Selector="MenuItem.main:pointerover">
       <Setter Property="Foreground" Value="White" />
     </Style>
-    <Style Selector="MenuItem:pointerover.main AccessText">
+    <Style Selector="MenuItem.main:pointerover AccessText">
       <Setter Property="Foreground" Value="White" />
     </Style>
 
@@ -32,10 +32,10 @@
       <Setter Property="Background" Value="#7F8b44ac" />
       <Setter Property="(TextElement.Foreground)" Value="White" />
     </Style>
-    <Style Selector="Button:pointerover.main">
+    <Style Selector="Button.main:pointerover">
       <Setter Property="(TextElement.Foreground)" Value="White" />
     </Style>  
-    <Style Selector="Button:pointerover.main PathIcon">
+    <Style Selector="Button.main:pointerover PathIcon">
       <Setter Property="(TextElement.Foreground)" Value="White" />
     </Style>  
 
