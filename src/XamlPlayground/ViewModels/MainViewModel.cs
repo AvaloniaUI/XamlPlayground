@@ -63,7 +63,7 @@ public partial class MainViewModel : ViewModelBase
             await RunInternal(x.xaml, x.code);
         }
 
-        CurrentSample = _samples.FirstOrDefault();
+        CurrentSample = _samples.FirstOrDefault(x => x.Name == "Demo");
     }
 
     public ICommand RunCommand { get; }
