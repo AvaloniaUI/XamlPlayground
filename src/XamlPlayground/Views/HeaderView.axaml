@@ -18,23 +18,32 @@
   <UserControl.Styles>
 
     <Style Selector="MenuItem.main">
-      <Setter Property="Foreground" Value="White" />
+      <Setter Property="TextBlock.Foreground" Value="{DynamicResource SystemAltHighColor}" />
+      <Style Selector="^:selected">
+        <Style Selector="^ /template/ ContentPresenter#PART_HeaderPresenter">
+          <Setter Property="Foreground" Value="{DynamicResource SystemAltHighColor}" />
+        </Style>
+      </Style>
+      <Style Selector="^:pressed /template/ Border#PART_LayoutRoot:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackgroundPressed}" />
+        <Style Selector="^ ContentPresenter#PART_HeaderPresenter">
+          <Setter Property="Foreground" Value="{DynamicResource SystemAltHighColor}" />
+        </Style>
+      </Style>
     </Style>
-    <Style Selector="MenuItem.main:pointerover">
-      <Setter Property="Foreground" Value="White" />
-    </Style>
+    
 
     <Style Selector="Button.main">
       <Setter Property="Margin" Value="0" />
       <Setter Property="Background" Value="#7F8b44ac" />
-      <Setter Property="(TextElement.Foreground)" Value="White" />
+      <Setter Property="(TextElement.Foreground)" Value="{DynamicResource SystemAltHighColor}" />
     </Style>
     <Style Selector="Button.main:pointerover">
-      <Setter Property="(TextElement.Foreground)" Value="White" />
+      <Setter Property="(TextElement.Foreground)" Value="{DynamicResource SystemAltHighColor}" />
     </Style>  
     <Style Selector="Button.main:pointerover PathIcon">
-      <Setter Property="(TextElement.Foreground)" Value="White" />
-    </Style>  
+      <Setter Property="(TextElement.Foreground)" Value="{DynamicResource SystemAltHighColor}" />
+    </Style>
 
   </UserControl.Styles>
   
@@ -82,7 +91,7 @@
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"
                       Stretch="None"
-                      Stroke="{DynamicResource SystemBaseHighColor}"
+                      Stroke="{DynamicResource SystemAltHighColor}"
                       StrokeThickness="1"
                       Margin="6,0,0,0"/>
               </StackPanel>
