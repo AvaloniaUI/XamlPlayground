@@ -166,7 +166,7 @@ var SizeWatcher = class {
     watcherElement.SizeWatcher = {
       callback
     };
-    SizeWatcher.elements.set(elementId, element);
+    SizeWatcher.elements.set(elementId != null ? elementId : element.id, element);
     SizeWatcher.observer.observe(element);
     SizeWatcher.invoke(element);
   }
@@ -488,18 +488,22 @@ var AvaloniaDOM = class {
     element.classList.add(className);
   }
   static createAvaloniaHost(host) {
+    const randomIdPart = Math.random().toString(36).replace(/[^a-z]+/g, "").substr(2, 10);
     host.classList.add("avalonia-container");
     host.tabIndex = 0;
     host.oncontextmenu = function() {
       return false;
     };
+    host.style.overflow = "hidden";
     const canvas = document.createElement("canvas");
+    canvas.id = `canvas${randomIdPart}`;
     canvas.classList.add("avalonia-canvas");
     canvas.style.backgroundColor = "#ccc";
     canvas.style.width = "100%";
     canvas.style.height = "100%";
     canvas.style.position = "absolute";
     const nativeHost = document.createElement("div");
+    canvas.id = `nativeHost${randomIdPart}`;
     nativeHost.classList.add("avalonia-native-host");
     nativeHost.style.left = "0px";
     nativeHost.style.top = "0px";
@@ -507,6 +511,7 @@ var AvaloniaDOM = class {
     nativeHost.style.height = "100%";
     nativeHost.style.position = "absolute";
     const inputElement = document.createElement("input");
+    canvas.id = `input${randomIdPart}`;
     inputElement.classList.add("avalonia-input-element");
     inputElement.autocapitalize = "none";
     inputElement.type = "text";
@@ -521,6 +526,7 @@ var AvaloniaDOM = class {
     inputElement.style.color = "transparent";
     inputElement.style.display = "none";
     inputElement.style.height = "20px";
+    inputElement.style.zIndex = "-1";
     inputElement.onpaste = function() {
       return false;
     };
@@ -644,9 +650,9 @@ var NativeControlHost = class {
 };
 
 // modules/avalonia.ts
-function createAvaloniaRuntime(api) {
+function registerAvaloniaModule(api) {
   return __async(this, null, function* () {
-    api.setModuleImports("avalonia.ts", {
+    api.setModuleImports("avalonia", {
       Caniuse,
       Canvas,
       InputHelper,
@@ -659,6 +665,14 @@ function createAvaloniaRuntime(api) {
   });
 }
 export {
-  createAvaloniaRuntime
+  AvaloniaDOM,
+  Caniuse,
+  Canvas,
+  DpiWatcher,
+  InputHelper,
+  NativeControlHost,
+  SizeWatcher,
+  StreamHelper,
+  registerAvaloniaModule
 };
 //# sourceMappingURL=avalonia.js.map

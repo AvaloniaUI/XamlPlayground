@@ -81,6 +81,10 @@
     },
     {
       "behavior": "assembly",
+      "name": "MicroCom.Runtime.dll"
+    },
+    {
+      "behavior": "assembly",
       "name": "Microsoft.CodeAnalysis.CSharp.dll"
     },
     {
