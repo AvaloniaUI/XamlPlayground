@@ -48,6 +48,7 @@
       </TabControl.Styles>
       <TabItem Header="Xaml">
         <ae:TextEditor Margin="0"
+                       IsReadOnly="{OnFormFactor False, Mobile=True}"
                        Document="{Binding CurrentSample.Xaml}"
                        Background="WhiteSmoke"
                        HorizontalScrollBarVisibility="Auto"
