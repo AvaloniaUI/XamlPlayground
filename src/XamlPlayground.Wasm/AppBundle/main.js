@@ -26,4 +26,9 @@ let router = (evt) => {
 window.addEventListener('load', router);
 window.addEventListener('hashchange', router);
 
+const url = window.location.hash.slice(1) || "/";
+console.log(window.location.hash);
+console.log(url);
+gist(url);
+
 await dotnetRuntime.runMainAndExit(config.mainAssemblyName, ["dotnet", "is", "great!"]);
