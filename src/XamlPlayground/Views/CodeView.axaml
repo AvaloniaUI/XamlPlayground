@@ -66,6 +66,7 @@
       </TabItem>
       <TabItem Header="Code">
         <ae:TextEditor Margin="0"
+                       IsReadOnly="{OnFormFactor False, Mobile=True}"
                        Document="{Binding CurrentSample.Code}"
                        Background="WhiteSmoke"
                        HorizontalScrollBarVisibility="Auto"
