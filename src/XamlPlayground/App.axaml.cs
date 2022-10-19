@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -8,6 +9,8 @@ namespace XamlPlayground;
 
 public class App : Application
 {
+    public string? InitialGist { get; set; }
+    
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -19,14 +22,14 @@ public class App : Application
         {
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainViewModel()
+                DataContext = new MainViewModel(InitialGist)
             };
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
             singleViewPlatform.MainView = new MainView
             {
-                DataContext = new MainViewModel()
+                DataContext = new MainViewModel(InitialGist)
             };
         }
 

@@ -13,21 +13,4 @@ await registerAvaloniaModule(dotnetRuntime);
 
 const config = dotnetRuntime.getConfig();
 
-const exports = await dotnetRuntime.getAssemblyExports(config.mainAssemblyName);
-const gist = exports.XamlPlayground.Wasm.Interop.Gist();
-
-let router = (evt) => {
-    const url = window.location.hash.slice(1) || "/";
-    console.log(window.location.hash);
-    console.log(url);
-    gist(url);
-};
-
-window.addEventListener('load', router);
-window.addEventListener('hashchange', router);
-
-const url = window.location.hash.slice(1) || "/";
-console.log(window.location.hash);
-console.log(url);
-
-await dotnetRuntime.runMainAndExit(config.mainAssemblyName, ["dotnet", "is", "great!"]);
+await dotnetRuntime.runMainAndExit(config.mainAssemblyName, [window.location.pathname]);

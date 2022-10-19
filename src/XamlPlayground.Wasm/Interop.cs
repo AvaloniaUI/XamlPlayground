@@ -12,8 +12,6 @@ internal static partial class Interop
     [JSExport]
     internal static void Gist(string? id)
     {
-        Console.WriteLine($"Gist: {id}");
-
         if (id is { } && !string.IsNullOrEmpty(id) && id.Length > 1)
         {
             if (Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime single)

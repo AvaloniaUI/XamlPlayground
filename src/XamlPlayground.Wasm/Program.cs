@@ -1,28 +1,33 @@
 using System;
+using System.Linq;
 using System.Runtime.InteropServices.JavaScript;
 using System.Runtime.Versioning;
 using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Web;
 using XamlPlayground;
 using XamlPlayground.Services;
+using XamlPlayground.ViewModels;
+using XamlPlayground.Views;
 using XamlPlayground.Wasm;
 
 [assembly:SupportedOSPlatform("browser")]
 
 internal partial class Program
 {
-    private static void Initialize()
+    private static void Initialize(string? id)
     {
-        _ = JSHost.ImportAsync("interop.js", "./interop.js").ContinueWith(_ =>
+        id = id?.Replace("?gist=", "").Replace("/", "");
+
+        if (Application.Current is App app)
         {
-            CompilerService.BaseUri = Interop.GetBaseUri();
-            Console.WriteLine($"BaseUri: {CompilerService.BaseUri}");
-        });
+            app.InitialGist = id;
+        }
     }
     
     private static void Main(string[] args) =>
         BuildAvaloniaApp()
-            .AfterSetup(_ => Initialize())
+            .AfterSetup(_ => Initialize(args.FirstOrDefault()))
             .SetupBrowserApp("out");
 
     public static AppBuilder BuildAvaloniaApp()

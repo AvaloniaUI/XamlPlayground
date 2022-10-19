@@ -35,7 +35,7 @@ public partial class MainViewModel : ViewModelBase
     private IStorageFile? _openCodeFile;
     private readonly Subject<(string? xaml, string? code)> _runSubject;
 
-    public MainViewModel()
+    public MainViewModel(string? initialGist)
     {
         _runSubject = new Subject<(string? xaml, string? code)>();
         _editorFontSize = 12;
@@ -63,7 +63,14 @@ public partial class MainViewModel : ViewModelBase
             await RunInternal(x.xaml, x.code);
         }
 
-        CurrentSample = _samples.FirstOrDefault(x => x.Name == "Demo");
+        if (!string.IsNullOrEmpty(initialGist))
+        {
+            Gist(initialGist);
+        }
+        else
+        {
+            CurrentSample = _samples.FirstOrDefault(x => x.Name == "Demo");
+        }
     }
 
     public ICommand RunCommand { get; }
