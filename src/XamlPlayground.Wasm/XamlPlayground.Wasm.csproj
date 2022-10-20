@@ -17,7 +17,6 @@
     <TrimMode>full</TrimMode>
     <WasmBuildNative>true</WasmBuildNative>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <WasmEnableSIMD>true</WasmEnableSIMD>
     <EmccCompileOptimizationFlag>-O3</EmccCompileOptimizationFlag>
     <EmccLinkOptimizationFlag>-O3</EmccLinkOptimizationFlag>
   </PropertyGroup>
