@@ -50,7 +50,11 @@
             BorderThickness="1"
             BorderBrush="Gray"
             Margin="5">
-      <DrawingPresenter Drawing="{DynamicResource Bulb}" />
+      <Image>
+        <Image.Source>
+          <DrawingImage Drawing="{DynamicResource Bulb}" />
+        </Image.Source>
+      </Image>
     </Border>
     <TextBlock Text="Fill"
                Margin="3"
@@ -62,10 +66,11 @@
             BorderThickness="1"
             BorderBrush="Gray"
             Margin="5">
-      <DrawingPresenter Drawing="{DynamicResource Bulb}"
-                        Width="100"
-                        Height="50"
-                        Stretch="Fill" />
+      <Image Width="100" Height="50" Stretch="Fill">
+        <Image.Source>
+          <DrawingImage Drawing="{DynamicResource Bulb}" />
+        </Image.Source>
+      </Image>
     </Border>
     <TextBlock Text="Uniform"
                Margin="3"
@@ -77,10 +82,11 @@
             BorderThickness="1"
             BorderBrush="Gray"
             Margin="5">
-      <DrawingPresenter Drawing="{DynamicResource Bulb}"
-                        Width="100"
-                        Height="50"
-                        Stretch="Uniform" />
+      <Image Width="100" Height="50" Stretch="Uniform">
+        <Image.Source>
+          <DrawingImage Drawing="{DynamicResource Bulb}" />
+        </Image.Source>
+      </Image>
     </Border>
     <TextBlock Text="UniformToFill"
                Margin="3"
@@ -92,10 +98,11 @@
             BorderThickness="1"
             BorderBrush="Gray"
             Margin="5">
-      <DrawingPresenter Drawing="{DynamicResource Bulb}"
-                        Width="100"
-                        Height="50"
-                        Stretch="UniformToFill" />
+      <Image Width="100" Height="50" Stretch="UniformToFill">
+        <Image.Source>
+          <DrawingImage Drawing="{DynamicResource Bulb}" />
+        </Image.Source>
+      </Image>
     </Border>
 
     <!-- For comparison -->
