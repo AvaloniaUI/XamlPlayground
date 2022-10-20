@@ -17,7 +17,7 @@ internal partial class Program
 {
     private static void Initialize(string? id)
     {
-        id = id?.Replace("XamlPlayground/","").Replace("?gist=", "").Replace("/", "");
+        id = id?.Replace("XamlPlayground/","").Replace("gist/","").Replace("?gist=", "").Replace("/", "");
 
         if (Application.Current is App app)
         {
