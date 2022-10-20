@@ -61,7 +61,7 @@
              Margin="6,6,0,6" 
              VerticalAlignment="Center"
              Classes="text"
-             Content="Xaml Playground" />
+             Content="Avalonia Play" />
 
       <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="6" Margin="6,0,6,0">
 
