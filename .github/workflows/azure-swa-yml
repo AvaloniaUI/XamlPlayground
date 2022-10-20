@@ -1,0 +1,45 @@
+name: Azure Static Web Apps CI/CD
+
+on:
+  push:
+    branches:
+      - main # You can change it to whatever is your deployment branch
+
+jobs:
+  build_and_deploy_job:
+    runs-on: ubuntu-latest
+    name: Build and Deploy Job
+    steps:
+        - uses: actions/checkout@v2
+          with:
+            submodules: recursive
+
+        - name: Setup .NET Core SDK
+          uses: actions/setup-dotnet@v1.9.0
+
+        - name: Install wasm-tools
+          run: dotnet workload install wasm-tools wasm-experimental
+
+        - name: Publish .NET Project
+          run: dotnet publish src/XamlPlayground.Wasm/XamlPlayground.Wasm.csproj -c Release -o release --nologo
+
+        - name: Change base-tag in index.html from / to XamlPlayground
+          run: sed -i 's/<base href="\/" \/>/<base href="\/XamlPlayground\/" \/>/g' src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/index.html
+
+        - name: copy index.html to 404.html
+          run: cp src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/index.html src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/404.html
+
+        - name: Add .nojekyll file
+          run: touch src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/.nojekyll
+          
+        - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_POLITE_DESERT_014E22103 }}
+          repo_token: $ # Used for GitHub integration
+          action: "upload"
+          app_location: "/" # This will typically be the repository root
+          api_location: "" # No API here, therefore
+          skip_api_build: true # skip API build
+          output_location: "src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/" # Modify this to where your SSG places the built HTML - could be `dist`, `build`... check your config          
