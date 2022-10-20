@@ -22,7 +22,7 @@ jobs:
         run: dotnet workload install wasm-tools wasm-experimental
 
       - name: Install DotNetCompress
-        run: dotnet tool install --global DotNetCompress --version 1.0.0-preview.3 --no-cache
+        run: dotnet tool install --global DotNetCompress --version 1.0.0-preview.4 --no-cache
 
       - name: Publish .NET Project
         run: dotnet publish src/XamlPlayground.Wasm/XamlPlayground.Wasm.csproj -c Release -o release --nologo
@@ -38,9 +38,6 @@ jobs:
 
       - name: copy index.html to 404.html
         run: cp src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/index.html src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/404.html
-
-      - name: Add .nojekyll file
-        run: touch src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/.nojekyll
         
       - name: Build And Deploy
         id: builddeploy
