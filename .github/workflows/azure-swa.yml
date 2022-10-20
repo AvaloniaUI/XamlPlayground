@@ -35,9 +35,6 @@ jobs:
 
       - name: Brotli Compress Output (wasm)
         run: DotNetCompress -d src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/ -p '*.wasm'
-
-      - name: copy index.html to 404.html
-        run: cp src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/index.html src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/404.html
         
       - name: Build And Deploy
         id: builddeploy
