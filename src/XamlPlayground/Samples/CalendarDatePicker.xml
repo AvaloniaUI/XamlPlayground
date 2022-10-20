@@ -39,8 +39,6 @@
         <TextBlock Text="Disabled"/>
         <CalendarDatePicker IsEnabled="False"/>
 
-        <TextBlock Text="Validation Example"/>
-        <CalendarDatePicker SelectedDate="{Binding ValidatedDateExample, Mode=TwoWay}"/>
       </StackPanel>
 
     </StackPanel>
