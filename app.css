@@ -8,9 +8,8 @@
     color: #8b44ac;
 }
 
-
 .icon {
-    opacity : 0.03;
+    opacity : 0.05;
     height: 35%;
     width: 35%;
     position : absolute;
@@ -21,6 +20,7 @@
     margin-bottom: 5%;
     z-index: 5000;
     background-position: right bottom;
+    pointer-events: none;
 }
 
 #out {
@@ -62,7 +62,6 @@
     animation: fadeout 0.5s linear 1s forwards;
 }
 
-
 @keyframes fadeout {
     0% { 
         opacity:100%;
@@ -71,8 +70,4 @@
         opacity:0;
         visibility: collapse;
     }
-}
-
-.avalonia-input-element {
-    z-index: -1;
 }
