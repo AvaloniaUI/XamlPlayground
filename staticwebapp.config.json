@@ -1,0 +1,14 @@
+{
+    "routes": [
+        {
+            "route": "/*.*",
+            "headers": {
+                "Cache-Control": "public, must-revalidate, max-age=2419200"
+            }
+        },
+        {
+            "route": "/gist/*",
+            "rewrite": "/index.html"
+        }
+    ]
+}
