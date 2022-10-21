@@ -33,6 +33,15 @@ jobs:
     - name: Brotli Compress Output (wasm)
       run: DotNetCompress -d src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/ -p '*.wasm' --format br --threads 4
 
+    - name: GZip Compress Output (dll)
+      run: DotNetCompress -d src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/managed -p '*.dll' --format gz --threads 4
+
+    - name: GZip Compress Output (js)
+      run: DotNetCompress -d src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/ -p '*.js' --format gz --threads 4
+
+    - name: GZip Compress Output (wasm)
+      run: DotNetCompress -d src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/ -p '*.wasm' --format gz --threads 4
+
     - name: Change base-tag in index.html from / to XamlPlayground
       run: sed -i 's/<base href="\/" \/>/<base href="\/XamlPlayground\/" \/>/g' src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/index.html
 
