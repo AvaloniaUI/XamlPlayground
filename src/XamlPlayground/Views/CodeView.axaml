@@ -60,7 +60,7 @@
                        FontSize="{Binding EditorFontSize}"
                        WordWrap="False">
           <i:Interaction.Behaviors>
-            <behaviors:TextEditorBehavior Extension=".xml" UseTextMate="False" />
+            <behaviors:TextEditorBehavior Extension=".xml" />
           </i:Interaction.Behaviors>
         </ae:TextEditor>
       </TabItem>
@@ -78,7 +78,7 @@
                        FontSize="{Binding EditorFontSize}"
                        WordWrap="False">
           <i:Interaction.Behaviors>
-            <behaviors:TextEditorBehavior Extension=".cs" UseTextMate="False" />
+            <behaviors:TextEditorBehavior Extension=".cs" />
           </i:Interaction.Behaviors>
         </ae:TextEditor>
       </TabItem>
