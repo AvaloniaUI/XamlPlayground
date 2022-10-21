@@ -1,25 +1,18 @@
-using System;
-using System.Linq;
-using System.Runtime.InteropServices.JavaScript;
 using System.Runtime.Versioning;
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Web;
 using XamlPlayground;
 using XamlPlayground.Services;
-using XamlPlayground.ViewModels;
-using XamlPlayground.Views;
-using XamlPlayground.Wasm;
 
 [assembly:SupportedOSPlatform("browser")]
 
 internal partial class Program
 {
-    private static void Initialize(string? id)
+    private static void Initialize(string id, string baseUri)
     {
-        CompilerService.BaseUri = Interop.GetBaseUri();
+        CompilerService.BaseUri = baseUri;
         
-        id = id?.Replace("XamlPlayground/","").Replace("gist/","").Replace("?gist=", "").Replace("/", "");
+        id = id.Replace("XamlPlayground/","").Replace("gist/","").Replace("?gist=", "").Replace("/", "");
 
         if (Application.Current is App app)
         {
@@ -29,7 +22,7 @@ internal partial class Program
     
     private static void Main(string[] args) =>
         BuildAvaloniaApp()
-            .AfterSetup(_ => Initialize(args.FirstOrDefault()))
+            .AfterSetup(_ => Initialize(args[0], args[1]))
             .SetupBrowserApp("out");
 
     public static AppBuilder BuildAvaloniaApp()
