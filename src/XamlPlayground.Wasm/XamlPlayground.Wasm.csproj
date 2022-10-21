@@ -8,7 +8,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <MSBuildEnableWorkloadResolver>true</MSBuildEnableWorkloadResolver>
     <WasmBuildNative>true</WasmBuildNative>
-    <WasmEmitSymbolMap>false</WasmEmitSymbolMap>
     <EmccFlags>-sVERBOSE -sERROR_ON_UNDEFINED_SYMBOLS=0</EmccFlags>
   </PropertyGroup>
 
@@ -19,6 +18,9 @@
     <InvariantGlobalization>true</InvariantGlobalization>
     <EmccCompileOptimizationFlag>-O3</EmccCompileOptimizationFlag>
     <EmccLinkOptimizationFlag>-O3</EmccLinkOptimizationFlag>
+    <WasmEmitSymbolMap>false</WasmEmitSymbolMap>
+    <WasmNativeDebugSymbols>false</WasmNativeDebugSymbols>
+    <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>
