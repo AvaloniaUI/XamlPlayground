@@ -8,6 +8,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <MSBuildEnableWorkloadResolver>true</MSBuildEnableWorkloadResolver>
     <WasmBuildNative>true</WasmBuildNative>
+    <WasmEmitSymbolMap>false</WasmEmitSymbolMap>
     <EmccFlags>-sVERBOSE -sERROR_ON_UNDEFINED_SYMBOLS=0</EmccFlags>
   </PropertyGroup>
 
