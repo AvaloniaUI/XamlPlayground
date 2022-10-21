@@ -32,6 +32,15 @@ jobs:
       - name: Brotli Compress Output (js)
         run: DotNetCompress -d src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/ -p '*.js'
 
+      - name: Brotli Compress Output (symbols)
+        run: DotNetCompress -d src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/ -p '*.symbols'
+      
+      - name: Brotli Compress Output (blat)
+        run: DotNetCompress -d src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/ -p '*.blat'
+
+      - name: Brotli Compress Output (bin)
+        run: DotNetCompress -d src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/ -p '*.bin'
+
       - name: Brotli Compress Output (wasm)
         run: DotNetCompress -d src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/ -p '*.wasm'
         
