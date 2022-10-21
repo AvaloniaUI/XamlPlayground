@@ -21,6 +21,7 @@
     <WasmEmitSymbolMap>false</WasmEmitSymbolMap>
     <WasmNativeDebugSymbols>false</WasmNativeDebugSymbols>
     <InvariantGlobalization>true</InvariantGlobalization>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
 
   <ItemGroup>
