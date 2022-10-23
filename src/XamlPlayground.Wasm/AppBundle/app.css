@@ -23,15 +23,6 @@
     pointer-events: none;
 }
 
-#out {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    height: 100vh;
-    overflow:hidden;
-}
-
 #avalonia-splash a{
     color: whitesmoke;
     text-decoration: none;
