@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup>
-    <AvaloniaVersion>11.0.999-cibuild0025141-beta</AvaloniaVersion>
+    <AvaloniaVersion>11.0.0-preview3</AvaloniaVersion>
     <AvaloniaBehaviorsVersion>11.0.0-preview1</AvaloniaBehaviorsVersion>
     <AvaloniaEditVersion>11.0.999-cibuild0024568-beta</AvaloniaEditVersion>
     <AvaloniaEditTextMateGrammarsVersion>0.10.12</AvaloniaEditTextMateGrammarsVersion>
