@@ -9,7 +9,7 @@
     position: absolute;
     height: 100%;
     width: 100%;
-    background: #171C2C;
+    background: white;
     justify-content: center;
     align-items: center;
 }
@@ -74,14 +74,14 @@
 }
 .loader:before {
     animation: ball1 1s infinite;
-    background-color: white;
-    box-shadow: 30px 0 0 white;
+    background-color: black;
+    box-shadow: 30px 0 0 black;
     margin-bottom: 10px;
 }
 .loader:after {
     animation: ball2 1s infinite;
-    background-color: white;
-    box-shadow: 30px 0 0 white;
+    background-color: black;
+    box-shadow: 30px 0 0 black;
 }
 
 @keyframes rotate {
@@ -101,32 +101,32 @@
 
 @keyframes ball1 {
     0% {
-        box-shadow: 30px 0 0 white;
+        box-shadow: 30px 0 0 black;
     }
     50% {
-        box-shadow: 0 0 0 white;
+        box-shadow: 0 0 0 black;
         margin-bottom: 0;
         -webkit-transform: translate(15px,15px);
         -moz-transform: translate(15px, 15px);
     }
     100% {
-        box-shadow: 30px 0 0 white;
+        box-shadow: 30px 0 0 black;
         margin-bottom: 10px;
     }
 }
 
 @keyframes ball2 {
     0% {
-        box-shadow: 30px 0 0 white;
+        box-shadow: 30px 0 0 black;
     }
     50% {
-        box-shadow: 0 0 0 white;
+        box-shadow: 0 0 0 black;
         margin-top: -20px;
         -webkit-transform: translate(15px,15px);
         -moz-transform: translate(15px, 15px);
     }
     100% {
-        box-shadow: 30px 0 0 white;
+        box-shadow: 30px 0 0 black;
         margin-top: 0;
     }
 }
