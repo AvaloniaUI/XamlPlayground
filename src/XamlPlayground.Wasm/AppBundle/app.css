@@ -43,6 +43,7 @@
     100% {
         opacity: 0;
         visibility: collapse;
+        left: 100%;
     }
 }
 
