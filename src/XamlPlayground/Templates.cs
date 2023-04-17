@@ -9,7 +9,7 @@ internal static class Templates
         "\n" +
         "namespace XamlPlayground.Views\n" +
         "{\n" +
-        "    public class SampleView : UserControl\n" +
+        "    public partial class SampleView : UserControl\n" +
         "    {\n" +
         // "        public SampleView()\n" +
         // "        {\n" +

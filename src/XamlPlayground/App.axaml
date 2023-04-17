@@ -2,13 +2,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:XamlPlayground"
              Name="XamlPlayground"
+             RequestedThemeVariant="Light"
              x:Class="XamlPlayground.App">
   <Application.DataTemplates>
     <local:ViewLocator />
   </Application.DataTemplates>
   <Application.Styles>
-    <FluentTheme Mode="Light" />
-    <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />
+    <FluentTheme />
+    <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
     <StyleInclude Source="avares://XamlPlayground/Controls/AdaptiveControl.axaml" />
     <Style Selector="Label.text > AccessText">
       <Setter Property="ClipToBounds" Value="False" />

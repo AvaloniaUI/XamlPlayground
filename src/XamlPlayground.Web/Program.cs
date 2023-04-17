@@ -1,15 +1,30 @@
 ﻿using System;
 using System.Net.Http;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
-using XamlPlayground.Web;
+using Avalonia;
+using Avalonia.Browser.Blazor;
+using Avalonia.Fonts.Inter;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using XamlPlayground.Web;
+
+[assembly: SupportedOSPlatform("browser")]
 
 public class Program
 {
     public static async Task Main(string[] args)
     {
-        await CreateHostBuilder(args).Build().RunAsync();
+        var host = CreateHostBuilder(args).Build();
+        await StartAvaloniaApp();
+        await host.RunAsync();
+    }
+
+    public static async Task StartAvaloniaApp()
+    {
+        await AppBuilder.Configure<XamlPlayground.App>()
+            .WithInterFont()
+            .StartBlazorAppAsync();
     }
 
     public static WebAssemblyHostBuilder CreateHostBuilder(string[] args)
