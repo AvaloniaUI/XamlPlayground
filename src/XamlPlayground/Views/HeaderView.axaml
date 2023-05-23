@@ -81,7 +81,7 @@
 
           <MenuItem CornerRadius="3"
                     Classes="main popup"
-                    Items="{Binding Samples}">
+                    ItemsSource="{Binding Samples}">
             <MenuItem.Header>
               <StackPanel Orientation="Horizontal"
                           Margin="0,4,0,3">
