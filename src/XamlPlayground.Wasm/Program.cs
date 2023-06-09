@@ -2,7 +2,6 @@ using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Browser;
-using Avalonia.Fonts.Inter;
 using XamlPlayground;
 using XamlPlayground.Services;
 

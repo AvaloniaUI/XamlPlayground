@@ -4,7 +4,6 @@ using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Browser.Blazor;
-using Avalonia.Fonts.Inter;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using XamlPlayground.Web;
