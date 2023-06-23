@@ -8,19 +8,138 @@
              mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="450"
              x:Class="XamlPlayground.Views.MainView"
              x:CompileBindings="True" x:DataType="vm:MainViewModel"
-             FontFamily="avares://Avalonia.Themes.Fluent/Assets#Inter">
+             FontFamily="fonts:Inter#Inter">
+  <UserControl.Styles>
+    <Style>
+      <Style.Resources>
+        <DrawingImage x:Key="Avalonia">
+          <DrawingGroup>
+            <GeometryDrawing Brush="Black"
+                             Geometry="M43 14.6a28.3 28.3 0 0 0-27.6 22.1 6.4 6.4 0 0 1 0 12.4 28.3 28.3 0 0 0 41.2 18.6V71h14.7V42.9a28.3 28.3 0 0 0-28.2-28.3ZM29.6 43a13.5 13.5 0 1 1 27.1 0 13.5 13.5 0 0 1-27 0Z" />
+            <GeometryDrawing Brush="Black"
+                             Geometry="M18.1 42.9a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" />
+          </DrawingGroup>
+        </DrawingImage>
+      </Style.Resources>
+    </Style>
+    <Style Selector="Panel.splashContent">
+      <Style.Animations>
+        <Animation Delay="0:0:0" Duration="0:0:2" Easing="QuadraticEaseInOut" FillMode="Both">
+          <KeyFrame Cue="0%">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="Opacity" Value="0" />
+          </KeyFrame>
+          <KeyFrame Cue="20%">
+            <Setter Property="Opacity" Value="1" />
+          </KeyFrame>
+          <KeyFrame Cue="80%">
+            <Setter Property="Opacity" Value="1" />
+          </KeyFrame>
+          <KeyFrame Cue="100%">
+            <Setter Property="Opacity" Value="0" />
+            <Setter Property="IsVisible" Value="False" />
+          </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+    <Style Selector="Panel.splashContent Image">
+      <Style.Animations>
+        <Animation Delay="0:0:0" Duration="0:0:2" Easing="QuadraticEaseInOut" FillMode="Both">
+          <KeyFrame Cue="0%">
+            <Setter Property="(ScaleTransform.ScaleX)" Value="0.7" />
+            <Setter Property="(ScaleTransform.ScaleY)" Value="0.7" />
+          </KeyFrame>
+          <KeyFrame Cue="20%">
+            <Setter Property="(ScaleTransform.ScaleX)" Value="1" />
+            <Setter Property="(ScaleTransform.ScaleY)" Value="1" />
+          </KeyFrame>
+          <KeyFrame Cue="80%">
+            <Setter Property="(ScaleTransform.ScaleX)" Value="1" />
+            <Setter Property="(ScaleTransform.ScaleY)" Value="1" />
+          </KeyFrame>
+          <KeyFrame Cue="100%">
+            <Setter Property="(ScaleTransform.ScaleX)" Value="1.5" />
+            <Setter Property="(ScaleTransform.ScaleY)" Value="1.5" />
+          </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+    <Style Selector="Panel.mainContent">
+      <Style.Animations>
+        <Animation Delay="0:0:2" Duration="0:0:1" Easing="QuadraticEaseInOut" FillMode="Both">
+          <KeyFrame Cue="0%">
+            <Setter Property="(ScaleTransform.ScaleX)" Value="0.7" />
+            <Setter Property="(ScaleTransform.ScaleY)" Value="0.7" />
+            <Setter Property="Opacity" Value="0" />
+          </KeyFrame>
+          <KeyFrame Cue="20%">
+            <Setter Property="(ScaleTransform.ScaleX)" Value="1" />
+            <Setter Property="(ScaleTransform.ScaleY)" Value="1" />
+            <Setter Property="Opacity" Value="1" />
+          </KeyFrame>
+          <KeyFrame Cue="80%">
+            <Setter Property="(ScaleTransform.ScaleX)" Value="1" />
+            <Setter Property="(ScaleTransform.ScaleY)" Value="1" />
+            <Setter Property="Opacity" Value="1" />
+          </KeyFrame>
+          <KeyFrame Cue="100%">
+            <Setter Property="Opacity" Value="1" />
+            <Setter Property="(ScaleTransform.ScaleX)" Value="1" />
+            <Setter Property="(ScaleTransform.ScaleY)" Value="1" />
+          </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+    <Style Selector="Button">
+      <Setter Property="Margin" Value="5" />
+    </Style>
+    <Style Selector="Button TextBlock">
+      <Setter Property="FontSize" Value="20" />
+    </Style>
+    <Style Selector="TextBlock.screen">
+      <Setter Property="Background" Value="#2f2a2c" />
+      <Setter Property="Margin" Value="5" />
+      <Setter Property="FontSize" Value="30" />
+      <Setter Property="MinHeight" Value="35" />
+      <Setter Property="TextAlignment" Value="Right" />
+      <Setter Property="Foreground" Value="#ddffffff" />
+    </Style>
+  </UserControl.Styles>
   <Design.DataContext>
     <vm:MainViewModel />
   </Design.DataContext>
-  <c:AdaptiveControl>
-    <c:AdaptiveControl.Header>
-      <views:HeaderView />
-    </c:AdaptiveControl.Header>
-    <c:AdaptiveControl.Left>
-      <views:CodeView />
-    </c:AdaptiveControl.Left>
-    <c:AdaptiveControl.Right>
-      <views:PreviewView />
-    </c:AdaptiveControl.Right>
-  </c:AdaptiveControl>
+
+  <Panel>
+    <Panel Classes="mainContent">
+      <Panel.RenderTransform>
+        <TransformGroup>
+          <ScaleTransform />
+          <TranslateTransform />
+        </TransformGroup>
+      </Panel.RenderTransform>
+      <c:AdaptiveControl>
+        <c:AdaptiveControl.Header>
+          <views:HeaderView />
+        </c:AdaptiveControl.Header>
+        <c:AdaptiveControl.Left>
+          <views:CodeView />
+        </c:AdaptiveControl.Left>
+        <c:AdaptiveControl.Right>
+          <views:PreviewView />
+        </c:AdaptiveControl.Right>
+      </c:AdaptiveControl>
+    </Panel>
+
+    <Panel Classes="splashContent">
+      <Panel Background="White" />
+      <Image Source="{StaticResource Avalonia}" MinWidth="24" MinHeight="24" MaxHeight="128" MaxWidth="128">
+        <Image.RenderTransform>
+          <TransformGroup>
+            <ScaleTransform />
+            <TranslateTransform />
+          </TransformGroup>
+        </Image.RenderTransform>
+      </Image>
+    </Panel>
+  </Panel>
 </UserControl>

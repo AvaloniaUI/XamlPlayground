@@ -26,20 +26,16 @@
         <Slider Minimum="10" Maximum="200" Value="100" x:Name="HeightSlider" TickFrequency="25" TickPlacement="TopLeft" />
         <TextBlock Text="Stretch" />
         <ComboBox x:Name="StretchSelector" HorizontalAlignment="Stretch" SelectedIndex="0" Margin="0,0,0,2">
-          <collections:ArrayList>
-            <Stretch>Uniform</Stretch>
-            <Stretch>UniformToFill</Stretch>
-            <Stretch>Fill</Stretch>
-            <Stretch>None</Stretch>
-          </collections:ArrayList>
+          <Stretch>Uniform</Stretch>
+          <Stretch>UniformToFill</Stretch>
+          <Stretch>Fill</Stretch>
+          <Stretch>None</Stretch>
         </ComboBox>
         <TextBlock Text="Stretch Direction" />
         <ComboBox x:Name="StretchDirectionSelector" SelectedIndex="0" HorizontalAlignment="Stretch">
-          <collections:ArrayList>
-            <StretchDirection>Both</StretchDirection>
-            <StretchDirection>DownOnly</StretchDirection>
-            <StretchDirection>UpOnly</StretchDirection>
-          </collections:ArrayList>
+          <StretchDirection>Both</StretchDirection>
+          <StretchDirection>DownOnly</StretchDirection>
+          <StretchDirection>UpOnly</StretchDirection>
         </ComboBox>
       </StackPanel>
     </Grid>

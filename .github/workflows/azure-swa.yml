@@ -21,16 +21,25 @@ jobs:
         run: dotnet workload install wasm-tools wasm-experimental
 
       - name: Install DotNetCompress
-        run: dotnet tool install --global DotNetCompress --version 1.0.0-preview.4 --no-cache
+        run: dotnet tool install --global DotNetCompress --version 1.0.0-preview.6 --no-cache
 
       - name: Publish .NET Project
         run: dotnet publish src/XamlPlayground.Wasm/XamlPlayground.Wasm.csproj -c Release -o release --nologo
 
       - name: Brotli Compress Output (dll)
-        run: DotNetCompress -d src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/managed -p '*.dll'
+        run: DotNetCompress -d src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/ -p '*.dll'
 
       - name: Brotli Compress Output (js)
         run: DotNetCompress -d src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/ -p '*.js'
+
+      - name: Brotli Compress Output (symbols)
+        run: DotNetCompress -d src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/ -p '*.symbols'
+      
+      - name: Brotli Compress Output (blat)
+        run: DotNetCompress -d src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/ -p '*.blat'
+
+      - name: Brotli Compress Output (bin)
+        run: DotNetCompress -d src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/ -p '*.bin'
 
       - name: Brotli Compress Output (wasm)
         run: DotNetCompress -d src/XamlPlayground.Wasm/bin/Release/net7.0/browser-wasm/AppBundle/ -p '*.wasm'

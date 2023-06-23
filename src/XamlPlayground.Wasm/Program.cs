@@ -1,35 +1,32 @@
-using System;
-using System.Linq;
-using System.Runtime.InteropServices.JavaScript;
 using System.Runtime.Versioning;
+using System.Threading.Tasks;
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Web;
+using Avalonia.Browser;
 using XamlPlayground;
 using XamlPlayground.Services;
-using XamlPlayground.ViewModels;
-using XamlPlayground.Views;
-using XamlPlayground.Wasm;
 
-[assembly:SupportedOSPlatform("browser")]
+[assembly: SupportedOSPlatform("browser")]
 
 internal partial class Program
 {
-    private static void Initialize(string? id)
+    private static void Initialize(string id, string baseUri)
     {
-        id = id?.Replace("XamlPlayground/","").Replace("gist/","").Replace("?gist=", "").Replace("/", "");
+        CompilerService.BaseUri = baseUri;
+
+        id = id.Replace("XamlPlayground/", "").Replace("gist/", "").Replace("?gist=", "").Replace("/", "");
 
         if (Application.Current is App app)
         {
             app.InitialGist = id;
         }
     }
-    
-    private static void Main(string[] args) =>
+
+    private static Task Main(string[] args) =>
         BuildAvaloniaApp()
-            .AfterSetup(_ => Initialize(args.FirstOrDefault()))
-            .SetupBrowserApp("out");
+            .AfterSetup(_ => Initialize(args[0], args[1]))
+            .StartBrowserAppAsync("out");
 
     public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>();
+        => AppBuilder.Configure<App>()
+            .WithInterFont();
 }

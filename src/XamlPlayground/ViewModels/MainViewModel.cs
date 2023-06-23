@@ -18,6 +18,7 @@ using ReactiveMarbles.PropertyChanged;
 using XamlPlayground.Services;
 using System.Reactive.Subjects;
 using Avalonia.Threading;
+using Avalonia.ReactiveUI;
 
 namespace XamlPlayground.ViewModels;
 
@@ -25,7 +26,7 @@ public partial class MainViewModel : ViewModelBase
 {
     [ObservableProperty] private ObservableCollection<SampleViewModel> _samples;
     [ObservableProperty] private SampleViewModel? _currentSample;
-    [ObservableProperty] private IControl? _control;
+    [ObservableProperty] private Control? _control;
     [ObservableProperty] private bool _enableAutoRun;
     [ObservableProperty] private string? _lastErrorMessage;
     [ObservableProperty] private int _editorFontSize;
@@ -288,7 +289,7 @@ public partial class MainViewModel : ViewModelBase
             }
             else
             {
-                var control = AvaloniaRuntimeXamlLoader.Parse<IControl?>(xaml, null);
+                var control = AvaloniaRuntimeXamlLoader.Parse<Control?>(xaml, null);
                 if (control is { })
                 {
                     Control = control;
@@ -330,22 +331,19 @@ public partial class MainViewModel : ViewModelBase
         var file = result.FirstOrDefault();
         if (file is not null)
         {
-            if (file.CanOpenRead)
+            try
             {
-                try
-                {
-                    _openXamlFile = file;
-                    await using var stream = await _openXamlFile.OpenReadAsync();
-                    using var reader = new StreamReader(stream);
-                    var fileContent = await reader.ReadToEndAsync();
-                    CurrentSample.Xaml.Text = fileContent; 
-                    AutoRun(CurrentSample);
-                    reader.Dispose();
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception);
-                }
+                _openXamlFile = file;
+                await using var stream = await _openXamlFile.OpenReadAsync();
+                using var reader = new StreamReader(stream);
+                var fileContent = await reader.ReadToEndAsync();
+                CurrentSample.Xaml.Text = fileContent;
+                AutoRun(CurrentSample);
+                reader.Dispose();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
             }
         }
     }
@@ -376,23 +374,20 @@ public partial class MainViewModel : ViewModelBase
 
             if (file is not null)
             {
-                if (file.CanOpenWrite)
+                try
                 {
-                    try
-                    {
-                        _openXamlFile = file;
-                        await using var stream = await _openXamlFile.OpenWriteAsync();
-                        await using var writer = new StreamWriter(stream);
-                        await writer.WriteAsync(CurrentSample.Xaml.Text);
-                    }
-                    catch (Exception exception)
-                    {
-                        Console.WriteLine(exception);
-                    }
+                    _openXamlFile = file;
+                    await using var stream = await _openXamlFile.OpenWriteAsync();
+                    await using var writer = new StreamWriter(stream);
+                    await writer.WriteAsync(CurrentSample.Xaml.Text);
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
                 }
             }
         }
-        else if (_openXamlFile.CanOpenWrite)
+        else
         {
             await using var stream = await _openXamlFile.OpenWriteAsync();
             await using var writer = new StreamWriter(stream);
@@ -423,22 +418,19 @@ public partial class MainViewModel : ViewModelBase
         var file = result.FirstOrDefault();
         if (file is not null)
         {
-            if (file.CanOpenRead)
+            try
             {
-                try
-                {
-                    _openCodeFile = file;
-                    await using var stream = await _openCodeFile.OpenReadAsync();
-                    using var reader = new StreamReader(stream);
-                    var fileContent = await reader.ReadToEndAsync();
-                    CurrentSample.Code.Text = fileContent;
-                    AutoRun(CurrentSample);
-                    reader.Dispose();
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception);
-                }
+                _openCodeFile = file;
+                await using var stream = await _openCodeFile.OpenReadAsync();
+                using var reader = new StreamReader(stream);
+                var fileContent = await reader.ReadToEndAsync();
+                CurrentSample.Code.Text = fileContent;
+                AutoRun(CurrentSample);
+                reader.Dispose();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
             }
         }
     }
@@ -469,23 +461,20 @@ public partial class MainViewModel : ViewModelBase
 
             if (file is not null)
             {
-                if (file.CanOpenWrite)
+                try
                 {
-                    try
-                    {
-                        _openCodeFile = file;
-                        await using var stream = await _openCodeFile.OpenWriteAsync();
-                        await using var writer = new StreamWriter(stream);
-                        await writer.WriteAsync(CurrentSample.Code.Text);
-                    }
-                    catch (Exception exception)
-                    {
-                        Console.WriteLine(exception);
-                    }
+                    _openCodeFile = file;
+                    await using var stream = await _openCodeFile.OpenWriteAsync();
+                    await using var writer = new StreamWriter(stream);
+                    await writer.WriteAsync(CurrentSample.Code.Text);
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
                 }
             }
         }
-        else if (_openCodeFile.CanOpenWrite)
+        else
         {
             await using var stream = await _openCodeFile.OpenWriteAsync();
             await using var writer = new StreamWriter(stream);

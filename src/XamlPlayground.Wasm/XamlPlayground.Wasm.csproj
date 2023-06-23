@@ -12,31 +12,37 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <RunAOTCompilation>true</RunAOTCompilation>
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>full</TrimMode>
     <WasmBuildNative>true</WasmBuildNative>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <EmccCompileOptimizationFlag>-O3</EmccCompileOptimizationFlag>
-    <EmccLinkOptimizationFlag>-O3</EmccLinkOptimizationFlag>
+    <EmccCompileOptimizationFlag>-Oz</EmccCompileOptimizationFlag>
+    <EmccLinkOptimizationFlag>-Oz</EmccLinkOptimizationFlag>
+    <WasmEmitSymbolMap>false</WasmEmitSymbolMap>
+    <WasmNativeDebugSymbols>false</WasmNativeDebugSymbols>
+    <WasmDebugLevel>0</WasmDebugLevel>
+    <WasmEnableExceptionHandling>false</WasmEnableExceptionHandling>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <IncludeSatelliteDllsProjectOutputGroup>false</IncludeSatelliteDllsProjectOutputGroup>
+    <DebuggerSupport>false</DebuggerSupport>
+    <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+    <EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+    <EventSourceSupport>false</EventSourceSupport>
+    <HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+    <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+    <UseNativeHttpHandler>true</UseNativeHttpHandler>
+    <UseSystemResourceKeys>true</UseSystemResourceKeys>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
 
   <ItemGroup>
     <TrimmerRootDescriptor Include="Roots.xml" />
+    <WasmExtraFilesToDeploy Include="AppBundle\*" />
   </ItemGroup>
 
-  <ItemGroup>
-    <WasmExtraFilesToDeploy Include="AppBundle\app.css" />
-    <WasmExtraFilesToDeploy Include="AppBundle\favicon.ico" />
-    <WasmExtraFilesToDeploy Include="AppBundle\index.html" />
-    <WasmExtraFilesToDeploy Include="AppBundle\Logo.svg" />
-    <WasmExtraFilesToDeploy Include="AppBundle\main.js" />
-    <WasmExtraFilesToDeploy Include="AppBundle\interop.js" />
-    <WasmExtraFilesToDeploy Include="AppBundle\staticwebapp.config.json" />
-  </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia.Web" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Browser" Version="$(AvaloniaVersion)" />
   </ItemGroup>
 
   <ItemGroup>
