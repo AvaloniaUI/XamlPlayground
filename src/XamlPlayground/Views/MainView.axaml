@@ -130,7 +130,8 @@
       </c:AdaptiveControl>
     </Panel>
 
-    <Panel Classes="splashContent">
+    <Panel Classes.splashContent="{Binding Source={OnPlatform False, Browser=True}}"
+           IsVisible="{OnPlatform False, Browser=True}">
       <Panel Background="White" />
       <Image Source="{StaticResource Avalonia}" MinWidth="24" MinHeight="24" MaxHeight="128" MaxWidth="128">
         <Image.RenderTransform>
