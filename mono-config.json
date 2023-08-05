@@ -41,6 +41,10 @@
     },
     {
       "behavior": "assembly",
+      "name": "Avalonia.Metal.dll"
+    },
+    {
+      "behavior": "assembly",
       "name": "Avalonia.MicroCom.dll"
     },
     {
