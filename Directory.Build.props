@@ -5,13 +5,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup>
-    <AvaloniaVersion>11.0.2</AvaloniaVersion>
-    <AvaloniaBehaviorsVersion>11.0.2</AvaloniaBehaviorsVersion>
-    <AvaloniaEditVersion>11.0.1</AvaloniaEditVersion>
+    <AvaloniaVersion>11.0.6</AvaloniaVersion>
+    <AvaloniaBehaviorsVersion>11.0.5</AvaloniaBehaviorsVersion>
+    <AvaloniaEditVersion>11.0.5</AvaloniaEditVersion>
     <AvaloniaEditTextMateGrammarsVersion>0.10.12</AvaloniaEditTextMateGrammarsVersion>
-    <OctokitVersion>2.0.1</OctokitVersion>
-    <CommunityToolkitMvvmVersion>8.0.0</CommunityToolkitMvvmVersion>
+    <OctokitVersion>9.0.0</OctokitVersion>
+    <CommunityToolkitMvvmVersion>8.2.2</CommunityToolkitMvvmVersion>
     <ReactiveMarblesPropertyChangedVersion>2.0.27</ReactiveMarblesPropertyChangedVersion>
-    <MicrosoftCodeAnalysisVersion>4.4.0-1.final</MicrosoftCodeAnalysisVersion>
+    <MicrosoftCodeAnalysisVersion>4.8.0</MicrosoftCodeAnalysisVersion>
   </PropertyGroup>
 </Project>
