@@ -310,41 +310,19 @@
     </Styles>
   </UserControl.Styles>
   <Grid>
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="False">
-      <StackPanel.Clock>
-        <Clock />
-      </StackPanel.Clock>
-      <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="20">
-        <TextBlock VerticalAlignment="Center">Hover to activate Keyframe Animations.</TextBlock>
-        <Button Name="Pause" Content="Pause">
-          <i:Interaction.Behaviors>
-            <ia:EventTriggerBehavior EventName="Click" SourceObject="{Binding #Pause}">
-              <ia:ChangePropertyAction TargetObject="{Binding #Pause.Clock}" PropertyName="PlayState" Value="{x:Static PlayState.Pause}" />
-            </ia:EventTriggerBehavior>
-          </i:Interaction.Behaviors>
-        </Button>
-        <Button Name="Run" Content="Run">
-          <i:Interaction.Behaviors>
-            <ia:EventTriggerBehavior EventName="Click" SourceObject="{Binding #Run}">
-              <ia:ChangePropertyAction TargetObject="{Binding #Run.Clock}" PropertyName="PlayState" Value="{x:Static PlayState.Run}" />
-            </ia:EventTriggerBehavior>
-          </i:Interaction.Behaviors>
-        </Button>
-      </StackPanel>
-      <WrapPanel ClipToBounds="False">
-        <Border Classes="Test Rect1" Background="DarkRed"/>
-        <Border Classes="Test Rect2" Background="Magenta"/>
-        <Border Classes="Test Rect3"/>
-        <Border Classes="Test Rect4" Background="Navy"/>
-        <Border Classes="Test Rect5" Background="SeaGreen"/>
-        <Border Classes="Test Rect6" Background="Red"/>
-        <Border Classes="Test Shadow" CornerRadius="10" Child="{x:Null}" />
-        <Border Classes="Test Shadow" CornerRadius="0 30 60 0" Child="{x:Null}" />
-        <Border Classes="Test Rect7" Child="{x:Null}" />
-        <Border Classes="Test Rect8" Child="{x:Null}" />
-        <Border Classes="Test Rect9" Child="{x:Null}" />
-        <Border Classes="Test Rect10" Child="{x:Null}" />
-      </WrapPanel>
-    </StackPanel>
+    <WrapPanel ClipToBounds="False">
+      <Border Classes="Test Rect1" Background="DarkRed"/>
+      <Border Classes="Test Rect2" Background="Magenta"/>
+      <Border Classes="Test Rect3"/>
+      <Border Classes="Test Rect4" Background="Navy"/>
+      <Border Classes="Test Rect5" Background="SeaGreen"/>
+      <Border Classes="Test Rect6" Background="Red"/>
+      <Border Classes="Test Shadow" CornerRadius="10" Child="{x:Null}" />
+      <Border Classes="Test Shadow" CornerRadius="0 30 60 0" Child="{x:Null}" />
+      <Border Classes="Test Rect7" Child="{x:Null}" />
+      <Border Classes="Test Rect8" Child="{x:Null}" />
+      <Border Classes="Test Rect9" Child="{x:Null}" />
+      <Border Classes="Test Rect10" Child="{x:Null}" />
+    </WrapPanel>
   </Grid>
 </UserControl>
