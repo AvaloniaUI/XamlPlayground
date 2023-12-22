@@ -21,7 +21,7 @@ jobs:
         run: dotnet workload install wasm-tools wasm-experimental
 
       - name: Install DotNetCompress
-        run: dotnet tool install --global DotNetCompress --version 1.0.0-preview.6 --no-cache
+        run: dotnet tool install --global DotNetCompress --version 2.0.0 --no-cache
 
       - name: Publish .NET Project
         run: dotnet publish src/XamlPlayground.Wasm/XamlPlayground.Wasm.csproj -c Release -o release --nologo
