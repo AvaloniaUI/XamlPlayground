@@ -56,6 +56,8 @@ public partial class MainViewModel : ViewModelBase
         }
     }
 
+    public IStorageProvider? StorageProvider { get; set; }
+    
     public ICommand RunCommand { get; }
 
     public ICommand GistCommand { get; }
@@ -301,13 +303,12 @@ public partial class MainViewModel : ViewModelBase
             return;
         }
 
-        var storageProvider = StorageService.GetStorageProvider();
-        if (storageProvider is null)
+        if (StorageProvider is null)
         {
             return;
         }
 
-        var result = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        var result = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
             Title = "Open xaml",
             FileTypeFilter = GetXamlFileTypes(),
@@ -343,13 +344,12 @@ public partial class MainViewModel : ViewModelBase
 
         if (_openXamlFile is null)
         {
-            var storageProvider = StorageService.GetStorageProvider();
-            if (storageProvider is null)
+            if (StorageProvider is null)
             {
                 return;
             }
 
-            var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+            var file = await StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
             {
                 Title = "Save xaml",
                 FileTypeChoices = GetXamlFileTypes(),
@@ -388,13 +388,12 @@ public partial class MainViewModel : ViewModelBase
             return;
         }
 
-        var storageProvider = StorageService.GetStorageProvider();
-        if (storageProvider is null)
+        if (StorageProvider is null)
         {
             return;
         }
 
-        var result = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        var result = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
             Title = "Open code",
             FileTypeFilter = GetCodeFileTypes(),
@@ -412,7 +411,6 @@ public partial class MainViewModel : ViewModelBase
                 var fileContent = await reader.ReadToEndAsync();
                 CurrentSample.Code.Text = fileContent;
                 AutoRun(CurrentSample);
-                reader.Dispose();
             }
             catch (Exception exception)
             {
@@ -430,13 +428,12 @@ public partial class MainViewModel : ViewModelBase
 
         if (_openCodeFile is null)
         {
-            var storageProvider = StorageService.GetStorageProvider();
-            if (storageProvider is null)
+            if (StorageProvider is null)
             {
                 return;
             }
 
-            var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+            var file = await StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
             {
                 Title = "Save code",
                 FileTypeChoices = GetCodeFileTypes(),

@@ -9,13 +9,14 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <RunAOTCompilation>true</RunAOTCompilation>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <WasmEnableExceptionHandling>false</WasmEnableExceptionHandling>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
 
   <ItemGroup>
+    <TrimmerRootDescriptor Include="Roots.xml" />
     <WasmExtraFilesToDeploy Include="AppBundle\*" />
   </ItemGroup>
 
