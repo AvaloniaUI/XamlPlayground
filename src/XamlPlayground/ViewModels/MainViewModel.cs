@@ -138,7 +138,8 @@ public partial class MainViewModel : ViewModelBase
         var assembly = typeof(MainViewModel).Assembly;
         var resourceNames = assembly.GetManifestResourceNames();
 
-        samples.Add(new SampleViewModel("Code", Templates.s_xaml, Templates.s_code, Open, AutoRun));
+        // .NET 8 doesn't ship "dlls" with bundled app anymore, disabled for now
+        // samples.Add(new SampleViewModel("Code", Templates.s_xaml, Templates.s_code, Open, AutoRun));
 
         foreach (var resourceName in resourceNames)
         {
