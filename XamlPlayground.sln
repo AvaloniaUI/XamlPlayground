@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlPlayground", "src\XamlP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlPlayground.NetCore", "src\XamlPlayground.NetCore\XamlPlayground.NetCore.csproj", "{5B0621D6-B7D4-49EF-8C24-FD81823D56AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlPlayground.Web", "src\XamlPlayground.Web\XamlPlayground.Web.csproj", "{5E83BE38-4F45-4966-8821-761B91C532C0}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9CF0A712-DEA1-42BC-AB3A-ED8E6DAE523C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{2629EA9C-FEFD-4604-BD92-C23DBB54316A}"
@@ -14,9 +12,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{2629EA9C
 		Directory.Build.props = Directory.Build.props
 		global.json = global.json
 		nuget.config = nuget.config
+		.github\workflows\azure-swa.yml = .github\workflows\azure-swa.yml
+		.github\workflows\build.yml = .github\workflows\build.yml
+		.github\workflows\pages.yml = .github\workflows\pages.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlPlayground.Wasm", "src\XamlPlayground.Wasm\XamlPlayground.Wasm.csproj", "{00E8340C-7F10-446C-A1B4-48C68D8F1612}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlPlayground.Browser", "src\XamlPlayground.Browser\XamlPlayground.Browser.csproj", "{00E8340C-7F10-446C-A1B4-48C68D8F1612}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D38F82B0-74ED-4F7E-A060-62FCF6330CE7}"
 	ProjectSection(SolutionItems) = preProject
@@ -38,10 +39,6 @@ Global
 		{5B0621D6-B7D4-49EF-8C24-FD81823D56AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B0621D6-B7D4-49EF-8C24-FD81823D56AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B0621D6-B7D4-49EF-8C24-FD81823D56AF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5E83BE38-4F45-4966-8821-761B91C532C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5E83BE38-4F45-4966-8821-761B91C532C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5E83BE38-4F45-4966-8821-761B91C532C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5E83BE38-4F45-4966-8821-761B91C532C0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{00E8340C-7F10-446C-A1B4-48C68D8F1612}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{00E8340C-7F10-446C-A1B4-48C68D8F1612}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00E8340C-7F10-446C-A1B4-48C68D8F1612}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -50,7 +47,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{4E84133A-4280-41FC-A4E1-34463403CA8A} = {9CF0A712-DEA1-42BC-AB3A-ED8E6DAE523C}
 		{5B0621D6-B7D4-49EF-8C24-FD81823D56AF} = {9CF0A712-DEA1-42BC-AB3A-ED8E6DAE523C}
-		{5E83BE38-4F45-4966-8821-761B91C532C0} = {9CF0A712-DEA1-42BC-AB3A-ED8E6DAE523C}
 		{00E8340C-7F10-446C-A1B4-48C68D8F1612} = {9CF0A712-DEA1-42BC-AB3A-ED8E6DAE523C}
 	EndGlobalSection
 EndGlobal

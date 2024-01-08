@@ -13,12 +13,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Avalonia.Platform.Storage;
 using System.Collections.Generic;
-using System.Reactive.Linq;
-using ReactiveMarbles.PropertyChanged;
+using System.ComponentModel;
 using XamlPlayground.Services;
-using System.Reactive.Subjects;
 using Avalonia.Threading;
-using Avalonia.ReactiveUI;
 
 namespace XamlPlayground.ViewModels;
 
@@ -34,11 +31,10 @@ public partial class MainViewModel : ViewModelBase
     private (Assembly? Assembly, AssemblyLoadContext? Context)? _previous;
     private IStorageFile? _openXamlFile;
     private IStorageFile? _openCodeFile;
-    private readonly Subject<(string? xaml, string? code)> _runSubject;
+    private IDisposable? _timer;
 
     public MainViewModel(string? initialGist)
     {
-        _runSubject = new Subject<(string? xaml, string? code)>();
         _editorFontSize = 12;
         _samples = GetSamples(".xml");
         _enableAutoRun = true;
@@ -49,20 +45,6 @@ public partial class MainViewModel : ViewModelBase
         SaveCodeFileCommand = new AsyncRelayCommand(async () => await SaveCodeFile());
         RunCommand = new RelayCommand(() => Run(_currentSample?.Xaml.Text, _currentSample?.Code.Text));
         GistCommand = new AsyncRelayCommand<string?>(Gist);
-
-        this.WhenChanged(x => x.CurrentSample)
-            .DistinctUntilChanged()
-            .Subscribe(CurrentSampleChanged);
-
-        _runSubject.AsObservable()
-            .Throttle(TimeSpan.FromMilliseconds(400))
-            .ObserveOn(AvaloniaScheduler.Instance)
-            .Subscribe(OnRun);
-
-        async void OnRun((string? xaml, string? code) x)
-        {
-            await RunInternal(x.xaml, x.code);
-        }
 
         if (!string.IsNullOrEmpty(initialGist))
         {
@@ -86,9 +68,12 @@ public partial class MainViewModel : ViewModelBase
 
     public ICommand SaveCodeFileCommand { get; }
 
-    private void CurrentSampleChanged(SampleViewModel? sampleViewModel)
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
-        if (sampleViewModel is { })
+        base.OnPropertyChanged(e);
+
+        if (e.PropertyName == nameof(CurrentSample)
+            && CurrentSample is { } sampleViewModel)
         {
             Open(sampleViewModel);
         }
@@ -214,7 +199,8 @@ public partial class MainViewModel : ViewModelBase
 
     private void Run(string? xaml, string? code)
     {
-        _runSubject.OnNext((xaml, code));
+        _timer?.Dispose();
+        _timer = DispatcherTimer.RunOnce(() => _ = RunInternal(xaml, code), TimeSpan.FromMicroseconds(1000));
     }
 
     private async Task RunInternal(string? xaml, string? code)
@@ -273,10 +259,10 @@ public partial class MainViewModel : ViewModelBase
                 {
                     var rootInstance = Activator.CreateInstance(type);
 
-                    using var stream = new MemoryStream();
-                    var writer = new StreamWriter(stream);
-                    writer.Write(xaml);
-                    writer.Flush();
+                    await using var stream = new MemoryStream();
+                    await using var writer = new StreamWriter(stream);
+                    await writer.WriteAsync(xaml);
+                    await writer.FlushAsync();
                     stream.Position = 0;
 
                     var control = AvaloniaRuntimeXamlLoader.Load(stream, scriptAssembly, rootInstance);

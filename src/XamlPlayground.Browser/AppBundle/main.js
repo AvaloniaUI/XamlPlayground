@@ -10,4 +10,4 @@ const dotnetRuntime = await dotnet
 
 const config = dotnetRuntime.getConfig();
 
-await dotnetRuntime.runMainAndExit(config.mainAssemblyName, [window.location.search, globalThis.document.baseURI]);
+await dotnetRuntime.runMain(config.mainAssemblyName, [window.location.search, globalThis.document.baseURI]);

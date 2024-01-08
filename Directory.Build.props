@@ -3,10 +3,11 @@
     <Deterministic>true</Deterministic>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
+    <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
   <PropertyGroup>
     <AvaloniaVersion>11.0.6</AvaloniaVersion>
-    <AvaloniaBehaviorsVersion>11.0.5</AvaloniaBehaviorsVersion>
+    <AvaloniaBehaviorsVersion>11.0.6</AvaloniaBehaviorsVersion>
     <AvaloniaEditVersion>11.0.5</AvaloniaEditVersion>
     <AvaloniaEditTextMateGrammarsVersion>0.10.12</AvaloniaEditTextMateGrammarsVersion>
     <OctokitVersion>9.0.0</OctokitVersion>
