@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
+    <ApplicationIcon>../XamlPlayground/Assets/icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

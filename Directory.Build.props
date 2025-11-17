@@ -4,15 +4,14 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <IsAotCompatible>true</IsAotCompatible>
+    <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
   <PropertyGroup>
-    <AvaloniaVersion>11.0.6</AvaloniaVersion>
-    <AvaloniaBehaviorsVersion>11.0.6</AvaloniaBehaviorsVersion>
-    <AvaloniaEditVersion>11.0.5</AvaloniaEditVersion>
-    <AvaloniaEditTextMateGrammarsVersion>0.10.12</AvaloniaEditTextMateGrammarsVersion>
-    <OctokitVersion>9.0.0</OctokitVersion>
-    <CommunityToolkitMvvmVersion>8.2.2</CommunityToolkitMvvmVersion>
-    <ReactiveMarblesPropertyChangedVersion>2.0.27</ReactiveMarblesPropertyChangedVersion>
-    <MicrosoftCodeAnalysisVersion>4.8.0</MicrosoftCodeAnalysisVersion>
+    <AvaloniaVersion>11.3.8</AvaloniaVersion>
+    <AvaloniaBehaviorsVersion>11.3.8.2</AvaloniaBehaviorsVersion>
+    <AvaloniaEditVersion>11.3.0</AvaloniaEditVersion>
+    <OctokitVersion>14.0.0</OctokitVersion>
+    <CommunityToolkitMvvmVersion>8.4.0</CommunityToolkitMvvmVersion>
+    <MicrosoftCodeAnalysisVersion>4.14.0</MicrosoftCodeAnalysisVersion>
   </PropertyGroup>
 </Project>

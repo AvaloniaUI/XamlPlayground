@@ -14,6 +14,7 @@ using CommunityToolkit.Mvvm.Input;
 using Avalonia.Platform.Storage;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using XamlPlayground.Services;
 using Avalonia.Threading;
 
@@ -33,6 +34,11 @@ public partial class MainViewModel : ViewModelBase
     private IStorageFile? _openCodeFile;
     private IDisposable? _timer;
 
+    public MainViewModel() : this(null)
+    {
+        
+    }
+    
     public MainViewModel(string? initialGist)
     {
         _editorFontSize = 12;
@@ -138,8 +144,7 @@ public partial class MainViewModel : ViewModelBase
         var assembly = typeof(MainViewModel).Assembly;
         var resourceNames = assembly.GetManifestResourceNames();
 
-        // .NET 8 doesn't ship "dlls" with bundled app anymore, disabled for now
-        // samples.Add(new SampleViewModel("Code", Templates.s_xaml, Templates.s_code, Open, AutoRun));
+        samples.Add(new SampleViewModel("Code", Templates.s_xaml, Templates.s_code, Open, AutoRun));
 
         foreach (var resourceName in resourceNames)
         {
@@ -206,6 +211,10 @@ public partial class MainViewModel : ViewModelBase
         _timer = DispatcherTimer.RunOnce(() => _ = RunInternal(xaml, code), TimeSpan.FromMicroseconds(1000));
     }
 
+    [UnconditionalSuppressMessage("Trimming", "IL2026")]
+    [UnconditionalSuppressMessage("Trimming", "IL2072")]
+    // PasswordBox="*" uses Char.Parse for some reason, so we need to preserve that. TODO: fix compiler.
+    [DynamicDependency(DynamicallyAccessedMemberTypes.PublicMethods, typeof(char))]
     private async Task RunInternal(string? xaml, string? code)
     {
         if (_update)
@@ -214,9 +223,8 @@ public partial class MainViewModel : ViewModelBase
         _update = true;
         try
         {
-            // Control = null;
-#if false
-            if (!Utilities.IsBrowser())
+            Control = null;
+            if (!OperatingSystem.IsBrowser())
             {
                 // TODO: Unload previously loaded assembly.
                 if (_previous is { })
@@ -228,14 +236,14 @@ public partial class MainViewModel : ViewModelBase
                     GC.WaitForPendingFinalizers();
                 }
             }
- #endif
+
             Assembly? scriptAssembly = null;
 
             if (code is { } && !string.IsNullOrWhiteSpace(code))
             {
                 try
                 {
-                    _previous = await Task.Run(async () => await CompilerService.GetScriptAssembly(code));
+                    _previous = CompilerService.GetScriptAssembly(code);
                     if (_previous?.Assembly is { })
                     {
                         scriptAssembly = _previous?.Assembly;
@@ -269,21 +277,15 @@ public partial class MainViewModel : ViewModelBase
                     stream.Position = 0;
 
                     var control = AvaloniaRuntimeXamlLoader.Load(stream, scriptAssembly, rootInstance);
-                    if (control is { })
-                    {
-                        Control = (Control)control;
-                        LastErrorMessage = null;
-                    }
+                    Control = (Control)control;
+                    LastErrorMessage = null;
                 }
             }
             else
             {
                 var control = AvaloniaRuntimeXamlLoader.Parse<Control?>(xaml, null);
-                if (control is { })
-                {
-                    Control = control;
-                    LastErrorMessage = null;
-                }
+                Control = control;
+                LastErrorMessage = null;
             }
         }
         catch (Exception exception)
@@ -327,7 +329,6 @@ public partial class MainViewModel : ViewModelBase
                 var fileContent = await reader.ReadToEndAsync();
                 CurrentSample.Xaml.Text = fileContent;
                 AutoRun(CurrentSample);
-                reader.Dispose();
             }
             catch (Exception exception)
             {

@@ -1,8 +1,6 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:c="clr-namespace:XamlPlayground.Controls"
-        xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
-        xmlns:ir="clr-namespace:Avalonia.Xaml.Interactions.Responsive;assembly=Avalonia.Xaml.Interactions.Responsive">
+        xmlns:c="using:XamlPlayground.Controls">
   <Design.PreviewWith>
     <c:AdaptiveControl Width="900" Height="500">
       <c:AdaptiveControl.Header>
@@ -41,12 +39,12 @@
                   <Setter Property="(Grid.Row)" Value="0" />
                 </Style>
               </ContentPresenter.Styles>
-              <i:Interaction.Behaviors>
-                <ir:AdaptiveBehavior SourceControl="{Binding #PART_DockPanel}">
-                  <ir:AdaptiveClassSetter MinWidth="0" MaxWidth="{DynamicResource WidthTrigger}" ClassName="vertical" />
-                  <ir:AdaptiveClassSetter MinWidth="{DynamicResource WidthTrigger}" MaxWidth="Infinity" ClassName="horizontal" />
-                </ir:AdaptiveBehavior>
-              </i:Interaction.Behaviors>
+              <Interaction.Behaviors>
+                <AdaptiveBehavior SourceControl="{Binding #PART_DockPanel}">
+                  <AdaptiveClassSetter MinWidth="0" MaxWidth="{DynamicResource WidthTrigger}" ClassName="vertical" />
+                  <AdaptiveClassSetter MinWidth="{DynamicResource WidthTrigger}" MaxWidth="Infinity" ClassName="horizontal" />
+                </AdaptiveBehavior>
+              </Interaction.Behaviors>
             </ContentPresenter>
             <GridSplitter Name="PART_GridSplitter">
               <GridSplitter.Styles>
@@ -95,12 +93,12 @@
                   </Setter>
                 </Style>
               </GridSplitter.Styles>
-              <i:Interaction.Behaviors>
-                <ir:AdaptiveBehavior SourceControl="{Binding #PART_DockPanel}">
-                  <ir:AdaptiveClassSetter MinWidth="0" MaxWidth="{DynamicResource WidthTrigger}" ClassName="vertical" />
-                  <ir:AdaptiveClassSetter MinWidth="{DynamicResource WidthTrigger}" MaxWidth="Infinity" ClassName="horizontal" />
-                </ir:AdaptiveBehavior>
-              </i:Interaction.Behaviors>
+              <Interaction.Behaviors>
+                <AdaptiveBehavior SourceControl="{Binding #PART_DockPanel}">
+                  <AdaptiveClassSetter MinWidth="0" MaxWidth="{DynamicResource WidthTrigger}" ClassName="vertical" />
+                  <AdaptiveClassSetter MinWidth="{DynamicResource WidthTrigger}" MaxWidth="Infinity" ClassName="horizontal" />
+                </AdaptiveBehavior>
+              </Interaction.Behaviors>
             </GridSplitter>
             <ContentPresenter Name="PART_RightContentPresenter"
                               Content="{TemplateBinding Right}">
@@ -116,12 +114,12 @@
                   <Setter Property="(Grid.Row)" Value="2" />
                 </Style>
               </ContentPresenter.Styles>
-              <i:Interaction.Behaviors>
-                <ir:AdaptiveBehavior SourceControl="{Binding #PART_DockPanel}">
-                  <ir:AdaptiveClassSetter MinWidth="0" MaxWidth="{DynamicResource WidthTrigger}" ClassName="vertical" />
-                  <ir:AdaptiveClassSetter MinWidth="{DynamicResource WidthTrigger}" MaxWidth="Infinity" ClassName="horizontal" />
-                </ir:AdaptiveBehavior>
-              </i:Interaction.Behaviors>
+              <Interaction.Behaviors>
+                <AdaptiveBehavior SourceControl="{Binding #PART_DockPanel}">
+                  <AdaptiveClassSetter MinWidth="0" MaxWidth="{DynamicResource WidthTrigger}" ClassName="vertical" />
+                  <AdaptiveClassSetter MinWidth="{DynamicResource WidthTrigger}" MaxWidth="Infinity" ClassName="horizontal" />
+                </AdaptiveBehavior>
+              </Interaction.Behaviors>
             </ContentPresenter>
           </Grid>
         </DockPanel>
