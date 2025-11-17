@@ -4,9 +4,10 @@
     <TargetFramework>net10.0-browser</TargetFramework>
     <OutputType>Exe</OutputType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseSystemResourceKeys>false</UseSystemResourceKeys>
   </PropertyGroup>
 
-  <PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <RunAOTCompilation>true</RunAOTCompilation>
     <InvariantGlobalization>true</InvariantGlobalization>
     <InvariantTimezone>true</InvariantTimezone>
@@ -20,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TrimmerRootAssembly Include="XamlPlayground" />
     <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
     <TrimmerRootAssembly Include="Avalonia.Base" />
     <TrimmerRootAssembly Include="Avalonia.Controls" />

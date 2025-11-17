@@ -12,7 +12,6 @@ internal partial class Program
     private static void Initialize(string id, string baseUri)
     {
         CompilerService.BaseUri = baseUri;
-
         id = id.Replace("XamlPlayground/", "").Replace("gist/", "").Replace("?gist=", "").Replace("/", "");
 
         if (Application.Current is App app)

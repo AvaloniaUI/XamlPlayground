@@ -208,6 +208,8 @@ public partial class MainViewModel : ViewModelBase
 
     [UnconditionalSuppressMessage("Trimming", "IL2026")]
     [UnconditionalSuppressMessage("Trimming", "IL2072")]
+    // PasswordBox="*" uses Char.Parse for some reason, so we need to preserve that. TODO: fix compiler.
+    [DynamicDependency(DynamicallyAccessedMemberTypes.PublicMethods, typeof(char))]
     private async Task RunInternal(string? xaml, string? code)
     {
         if (_update)
