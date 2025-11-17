@@ -34,6 +34,11 @@ public partial class MainViewModel : ViewModelBase
     private IStorageFile? _openCodeFile;
     private IDisposable? _timer;
 
+    public MainViewModel() : this(null)
+    {
+        
+    }
+    
     public MainViewModel(string? initialGist)
     {
         _editorFontSize = 12;

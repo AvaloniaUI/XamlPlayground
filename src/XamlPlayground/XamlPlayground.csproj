@@ -29,4 +29,11 @@
     <EmbeddedResource Include="Samples\*.xml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Assets\icon.ico">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
