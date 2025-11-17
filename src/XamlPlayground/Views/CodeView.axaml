@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:XamlPlayground.ViewModels"
              xmlns:ae="using:AvaloniaEdit"
-             xmlns:behaviors="clr-namespace:XamlPlayground.Behaviors"
+             xmlns:behaviors="using:XamlPlayground.Behaviors"
              mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="450"
              x:Class="XamlPlayground.Views.CodeView"
              x:CompileBindings="True" x:DataType="vm:MainViewModel">

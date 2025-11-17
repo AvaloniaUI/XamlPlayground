@@ -1,6 +1,5 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:sys="clr-namespace:System;assembly=System.Private.CoreLib">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <StackPanel Orientation="Vertical" Spacing="4">
     <TextBlock Classes="h2">A control that lets the user select from a range of values by moving a Thumb control along a Track.</TextBlock>
 
@@ -39,9 +38,6 @@
                 Maximum="100"
                 TickFrequency="10"
                 Width="300">
-          <DataValidationErrors.Error>
-            <sys:Exception />
-          </DataValidationErrors.Error>
         </Slider>
         <Slider Value="0"
                 IsDirectionReversed="True"

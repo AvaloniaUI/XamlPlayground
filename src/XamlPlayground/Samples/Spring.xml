@@ -1,6 +1,5 @@
-﻿<UserControl
-  xmlns="https://github.com/avaloniaui"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <UserControl.Resources>
     <SpringEasing x:Key="SpringEasing" Mass="1" Stiffness="2000" Damping="20" InitialVelocity="0" />
   </UserControl.Resources>
