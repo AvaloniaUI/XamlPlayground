@@ -2,9 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="clr-namespace:XamlPlayground.ViewModels"
-             xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
-             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:vm="using:XamlPlayground.ViewModels"
+             xmlns:ae="using:AvaloniaEdit"
              xmlns:behaviors="clr-namespace:XamlPlayground.Behaviors"
              mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="450"
              x:Class="XamlPlayground.Views.CodeView"
@@ -59,9 +58,9 @@
                        FontWeight="Normal"
                        FontSize="{Binding EditorFontSize}"
                        WordWrap="False">
-          <i:Interaction.Behaviors>
+          <Interaction.Behaviors>
             <behaviors:TextEditorBehavior Extension=".xml" />
-          </i:Interaction.Behaviors>
+          </Interaction.Behaviors>
         </ae:TextEditor>
       </TabItem>
       <TabItem Header="Code">
@@ -77,9 +76,9 @@
                        FontWeight="Normal"
                        FontSize="{Binding EditorFontSize}"
                        WordWrap="False">
-          <i:Interaction.Behaviors>
+          <Interaction.Behaviors>
             <behaviors:TextEditorBehavior Extension=".cs" />
-          </i:Interaction.Behaviors>
+          </Interaction.Behaviors>
         </ae:TextEditor>
       </TabItem>
     </TabControl>
