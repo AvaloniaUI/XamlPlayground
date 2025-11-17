@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Runtime.Loader;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
@@ -19,61 +19,42 @@ public static class CompilerService
 
     public static string? BaseUri { get; set; }
 
-    private static async Task LoadReferences()
+    [UnconditionalSuppressMessage("Trimming", "IL3000")]
+    private static void LoadReferences()
     {
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-        if (Utilities.IsBrowser())
+        var appDomainReferences = new List<PortableExecutableReference>();
+
+        foreach(var assembly in assemblies)
         {
-            if (BaseUri is null)
+            if (!string.IsNullOrWhiteSpace(assembly.Location))
             {
-                return;
+                appDomainReferences.Add(MetadataReference.CreateFromFile(assembly.Location));
             }
-            
-            var appDomainReferences = new List<PortableExecutableReference>();
-            var client = new HttpClient 
+            else
             {
-                // BaseAddress = new Uri(BaseUri)
-            };
-
-            Console.WriteLine($"Loading references BaseUri: {BaseUri}");
-
-            foreach(var reference in assemblies.Where(x => !x.IsDynamic))
-            {
-                try
+                unsafe
                 {
-                    var name = reference.GetName().Name;
-                    var requestUri = $"{BaseUri}managed/{name}.dll";
-                    Console.WriteLine($"Loading reference requestUri: {requestUri}, FullName: {reference.FullName}");
-                    var stream = await client.GetStreamAsync(requestUri);
-                    appDomainReferences.Add(MetadataReference.CreateFromStream(stream));
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception);
+                    if (assembly.TryGetRawMetadata(out var blob, out var length))
+                    {
+                        var moduleMetadata = ModuleMetadata.CreateFromMetadata((IntPtr)blob, length);
+                        var assemblyMetadata = AssemblyMetadata.Create(moduleMetadata);
+                        appDomainReferences.Add(assemblyMetadata.GetReference());
+                    }
                 }
             }
-
-            s_references = appDomainReferences.ToArray();
         }
-        else
-        {
-            var appDomainReferences = new List<PortableExecutableReference>();
 
-            foreach(var reference in assemblies.Where(x => !x.IsDynamic && !string.IsNullOrWhiteSpace(x.Location)))
-            {
-                appDomainReferences.Add(MetadataReference.CreateFromFile(reference.Location));
-            }
-
-            s_references = appDomainReferences.ToArray();
-        }
+        s_references = appDomainReferences.ToArray();
     }
 
-    public static async Task<(Assembly? Assembly, AssemblyLoadContext? Context)> GetScriptAssembly(string code)
+    [UnconditionalSuppressMessage("Trimming", "IL2026")]
+    public static (Assembly? Assembly, AssemblyLoadContext? Context) GetScriptAssembly(string code)
     {
         if (s_references is null)
         {
-            await LoadReferences();
+            LoadReferences();
         }
 
         var stringText = SourceText.From(code, Encoding.UTF8);
