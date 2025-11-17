@@ -1,9 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net10.0-browser</TargetFramework>
-    <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
-    <WasmMainJSPath>AppBundle\main.js</WasmMainJSPath>
     <OutputType>Exe</OutputType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
@@ -11,18 +9,23 @@
   <PropertyGroup>
     <RunAOTCompilation>true</RunAOTCompilation>
     <InvariantGlobalization>true</InvariantGlobalization>
+    <InvariantTimezone>true</InvariantTimezone>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <WasmEmitSourceMap>false</WasmEmitSourceMap>
+    <WasmNativeDebugSymbols>false</WasmNativeDebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
-    <TrimmerRootDescriptor Include="Roots.xml" />
-    <WasmExtraFilesToDeploy Include="AppBundle\*" />
+    <PackageReference Include="Avalonia.Browser" Version="$(AvaloniaVersion)" />
   </ItemGroup>
 
-
   <ItemGroup>
-    <PackageReference Include="Avalonia.Browser" Version="$(AvaloniaVersion)" />
+    <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
+    <TrimmerRootAssembly Include="Avalonia.Base" />
+    <TrimmerRootAssembly Include="Avalonia.Controls" />
+    <TrimmerRootAssembly Include="Avalonia.Markup" />
+    <TrimmerRootAssembly Include="Avalonia.Markup.Xaml" />
+    <TrimmerRootAssembly Include="Avalonia.Markup.Xaml.Loader" />
   </ItemGroup>
 
   <ItemGroup>
