@@ -12,50 +12,29 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Setup .NET 8
+    - name: Setup .NET 10
       uses: actions/setup-dotnet@v3
       with:
-          dotnet-version: 8.0.100
+          dotnet-version: 10.0.100
 
     - name: Install wasm-tools
       run: dotnet workload install wasm-tools
 
-    - name: Install DotNetCompress
-      run: dotnet tool install --global DotNetCompress --version 3.0.0 --no-cache
-
     - name: Publish .NET Project
-      run: dotnet publish src/XamlPlayground.Browser/XamlPlayground.Browser.csproj -c Release -o release --nologo
-
-    - name: Brotli Compress Output (dll)
-      run: DotNetCompress -d src/XamlPlayground.Browser/bin/Release/net8.0-browser/browser-wasm/AppBundle/managed -p '*.dll' --format br --threads 4
-
-    - name: Brotli Compress Output (js)
-      run: DotNetCompress -d src/XamlPlayground.Browser/bin/Release/net8.0-browser/browser-wasm/AppBundle/ -p '*.js' --format br --threads 4
-
-    - name: Brotli Compress Output (wasm)
-      run: DotNetCompress -d src/XamlPlayground.Browser/bin/Release/net8.0-browser/browser-wasm/AppBundle/ -p '*.wasm' --format br --threads 4
-
-    - name: GZip Compress Output (dll)
-      run: DotNetCompress -d src/XamlPlayground.Browser/bin/Release/net8.0-browser/browser-wasm/AppBundle/managed -p '*.dll' --format gz --threads 4
-
-    - name: GZip Compress Output (js)
-      run: DotNetCompress -d src/XamlPlayground.Browser/bin/Release/net8.0-browser/browser-wasm/AppBundle/ -p '*.js' --format gz --threads 4
-
-    - name: GZip Compress Output (wasm)
-      run: DotNetCompress -d src/XamlPlayground.Browser/bin/Release/net8.0-browser/browser-wasm/AppBundle/ -p '*.wasm' --format gz --threads 4
+      run: dotnet publish src/XamlPlayground.Browser/XamlPlayground.Browser.csproj -c Release --nologo
 
     - name: Change base-tag in index.html from / to XamlPlayground
-      run: sed -i 's/<base href="\/" \/>/<base href="\/XamlPlayground\/" \/>/g' src/XamlPlayground.Browser/bin/Release/net8.0-browser/browser-wasm/AppBundle/index.html
+      run: sed -i 's/<base href="\/" \/>/<base href="\/XamlPlayground\/" \/>/g' src/XamlPlayground.Browser/bin/Release/net10.0-browser/publish/wwwroot/index.html
 
     - name: copy index.html to 404.html
-      run: cp src/XamlPlayground.Browser/bin/Release/net8.0-browser/browser-wasm/AppBundle/index.html src/XamlPlayground.Browser/bin/Release/net8.0-browser/browser-wasm/AppBundle/404.html
+      run: cp src/XamlPlayground.Browser/bin/Release/net10.0-browser/publish/wwwroot/index.html src/XamlPlayground.Browser/bin/Release/net10.0-browser/publish/wwwroot/404.html
 
     - name: Add .nojekyll file
-      run: touch src/XamlPlayground.Browser/bin/Release/net8.0-browser/browser-wasm/AppBundle/.nojekyll
+      run: touch src/XamlPlayground.Browser/bin/Release/net10.0-browser/publish/.nojekyll
 
     - name: Commit wwwroot to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@4.1.7
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: gh-pages
-        FOLDER: src/XamlPlayground.Browser/bin/Release/net8.0-browser/browser-wasm/AppBundle
+        FOLDER: src/XamlPlayground.Browser/bin/Release/net10.0-browser/publish/wwwroot
