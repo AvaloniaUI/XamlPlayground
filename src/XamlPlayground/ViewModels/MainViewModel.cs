@@ -17,6 +17,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using XamlPlayground.Services;
 using Avalonia.Threading;
+using System.Diagnostics;
 
 namespace XamlPlayground.ViewModels;
 
@@ -43,7 +44,7 @@ public partial class MainViewModel : ViewModelBase
     {
         _editorFontSize = 12;
         _samples = GetSamples(".xml");
-        _enableAutoRun = true;
+        _enableAutoRun = false;
 
         OpenXamlFileCommand = new AsyncRelayCommand(async () => await OpenXamlFile());
         SaveXamlFileCommand = new AsyncRelayCommand(async () => await SaveXamlFile());
@@ -116,7 +117,7 @@ public partial class MainViewModel : ViewModelBase
         }
         catch (Exception exception)
         {
-            Console.WriteLine(exception);
+            Debug.WriteLine(exception);
         }
     }
 
@@ -148,6 +149,8 @@ public partial class MainViewModel : ViewModelBase
 
         foreach (var resourceName in resourceNames)
         {
+            Debug.WriteLine(resourceName);
+
             if (!resourceName.EndsWith(sampleExtension, StringComparison.OrdinalIgnoreCase))
             {
                 continue;
@@ -247,7 +250,7 @@ public partial class MainViewModel : ViewModelBase
                     if (_previous?.Assembly is { })
                     {
                         scriptAssembly = _previous?.Assembly;
-                        Console.WriteLine($"Compiled assembly: {scriptAssembly?.GetName().Name}");
+                        Debug.WriteLine($"Compiled assembly: {scriptAssembly?.GetName().Name}");
                     }
                     else
                     {
@@ -257,7 +260,7 @@ public partial class MainViewModel : ViewModelBase
                 catch (Exception exception)
                 {
                     LastErrorMessage = exception.Message;
-                    Console.WriteLine(exception);
+                    Debug.WriteLine(exception);
                     return;
                 }
             }
@@ -291,7 +294,7 @@ public partial class MainViewModel : ViewModelBase
         catch (Exception exception)
         {
             LastErrorMessage = exception.Message;
-            Console.WriteLine(exception);
+            Debug.WriteLine(exception);
         }
         finally
         {
@@ -332,7 +335,7 @@ public partial class MainViewModel : ViewModelBase
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
+                Debug.WriteLine(exception);
             }
         }
     }
@@ -371,7 +374,7 @@ public partial class MainViewModel : ViewModelBase
                 }
                 catch (Exception exception)
                 {
-                    Console.WriteLine(exception);
+                    Debug.WriteLine(exception);
                 }
             }
         }
@@ -416,7 +419,7 @@ public partial class MainViewModel : ViewModelBase
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
+                Debug.WriteLine(exception);
             }
         }
     }
@@ -455,7 +458,7 @@ public partial class MainViewModel : ViewModelBase
                 }
                 catch (Exception exception)
                 {
-                    Console.WriteLine(exception);
+                    Debug.WriteLine(exception);
                 }
             }
         }
