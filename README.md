@@ -1,5 +1,10 @@
 # Avalonia Xaml Playground
 
+> [!IMPORTANT]
+> You can find an inline interactive XAML playground in our [developer docs](https://docs.avaloniaui.net/)!
+
+
+
 [![CI](https://github.com/AvaloniaUI/XamlPlayground/actions/workflows/build.yml/badge.svg)](https://github.com/AvaloniaUI/XamlPlayground/actions/workflows/build.yml)
 [![Deploy to GitHub Pages](https://github.com/AvaloniaUI/XamlPlayground/actions/workflows/pages.yml/badge.svg)](https://github.com/AvaloniaUI/XamlPlayground/actions/workflows/pages.yml)
 
