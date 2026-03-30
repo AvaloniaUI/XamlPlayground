@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -70,7 +71,7 @@ public static class CompilerService
         {
             foreach (var error in errors)
             {
-                Console.WriteLine(error);
+                Debug.WriteLine(error);
             }
 
             return (null, null);

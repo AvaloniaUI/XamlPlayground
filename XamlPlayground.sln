@@ -1,5 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36717.8 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlPlayground", "src\XamlPlayground\XamlPlayground.csproj", "{4E84133A-4280-41FC-A4E1-34463403CA8A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlPlayground.NetCore", "src\XamlPlayground.NetCore\XamlPlayground.NetCore.csproj", "{5B0621D6-B7D4-49EF-8C24-FD81823D56AF}"
@@ -9,9 +12,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{2629EA9C-FEFD-4604-BD92-C23DBB54316A}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		Directory.Build.props = Directory.Build.props
 		.github\workflows\azure-swa.yml = .github\workflows\azure-swa.yml
 		.github\workflows\build.yml = .github\workflows\build.yml
+		Directory.Build.props = Directory.Build.props
 		.github\workflows\pages.yml = .github\workflows\pages.yml
 	EndProjectSection
 EndProject
@@ -22,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D38F82B0-7
 		LICENSE.md = LICENSE.md
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlPlayground.Android", "src\XamlPlayground.Android\XamlPlayground.Android.csproj", "{1ABE8F08-18BF-8AF7-71F8-B2DD081FA757}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +46,23 @@ Global
 		{00E8340C-7F10-446C-A1B4-48C68D8F1612}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00E8340C-7F10-446C-A1B4-48C68D8F1612}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00E8340C-7F10-446C-A1B4-48C68D8F1612}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ABE8F08-18BF-8AF7-71F8-B2DD081FA757}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ABE8F08-18BF-8AF7-71F8-B2DD081FA757}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ABE8F08-18BF-8AF7-71F8-B2DD081FA757}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{1ABE8F08-18BF-8AF7-71F8-B2DD081FA757}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ABE8F08-18BF-8AF7-71F8-B2DD081FA757}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ABE8F08-18BF-8AF7-71F8-B2DD081FA757}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4E84133A-4280-41FC-A4E1-34463403CA8A} = {9CF0A712-DEA1-42BC-AB3A-ED8E6DAE523C}
 		{5B0621D6-B7D4-49EF-8C24-FD81823D56AF} = {9CF0A712-DEA1-42BC-AB3A-ED8E6DAE523C}
 		{00E8340C-7F10-446C-A1B4-48C68D8F1612} = {9CF0A712-DEA1-42BC-AB3A-ED8E6DAE523C}
+		{1ABE8F08-18BF-8AF7-71F8-B2DD081FA757} = {9CF0A712-DEA1-42BC-AB3A-ED8E6DAE523C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {467552CC-5E9E-4CAB-9C3C-69AC5343B019}
 	EndGlobalSection
 EndGlobal
